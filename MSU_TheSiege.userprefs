@@ -1,0 +1,33 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GUIScript2.cs">
+    <Files>
+      <File FileName="Assets\Scripts\ObjectFader.cs" Line="35" Column="43" />
+      <File FileName="Assets\Scripts\LevelCreator.cs" Line="171" Column="10" />
+      <File FileName="Assets\Scripts\Map\Location.cs" Line="27" Column="18" />
+      <File FileName="Assets\Scripts\Map\MapGui.cs" Line="27" Column="76" />
+      <File FileName="Assets\Scripts\ArmyMovement.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\EnemyMovement.cs" Line="11" Column="44" />
+      <File FileName="Assets\Scripts\BoulderBehaviour.cs" Line="15" Column="6" />
+      <File FileName="Assets\Scripts\EnemyAttack.cs" Line="57" Column="36" />
+      <File FileName="Assets\Scripts\HeroAttack.cs" Line="123" Column="5" />
+      <File FileName="Assets\Scripts\ObstacleBehaviour.cs" Line="24" Column="23" />
+      <File FileName="Assets\Scripts\GUIScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\CameraLock.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ObstacleController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\HeroMovement.cs" Line="151" Column="6" />
+      <File FileName="Assets\Scripts\MainMenu\MainMenuScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\MainMenu\OptionsMenuScript.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ObstacleCreator.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Map\CurrentGameState.cs" Line="25" Column="5" />
+      <File FileName="Assets\Scripts\GUIScript2.cs" Line="40" Column="24" />
+      <File FileName="Assets\Scripts\Map\FigurineFader.cs" Line="13" Column="21" />
+      <File FileName="Assets\Scripts\BoulderCreator.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Map\PreviousLines.cs" Line="15" Column="11" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
