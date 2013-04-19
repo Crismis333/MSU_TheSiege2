@@ -25,11 +25,19 @@ public class HeroAttack : MonoBehaviour
 
     private float a, b, c;
 
+    private Animator anim;
+
     // Use this for initialization
     void Start()
     {
         if (ObstacleController.PLAYER != null)
+        {
             hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
+            anim = ObstacleController.PLAYER.GetComponent<Animator>();
+            anim.SetInteger("AttackingState", 0);
+            anim.SetLayerWeight(1, 1);
+            anim.SetBool("Attacking", false);
+        }
         AttackList = new List<GameObject>();
         GUI = GameObject.Find("GUI").GetComponent<GUIScript>();
         hitableEnemies = new List<GameObject>();
@@ -107,16 +115,21 @@ public class HeroAttack : MonoBehaviour
         if (hm == null)
         {
             hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
+            anim = ObstacleController.PLAYER.GetComponent<Animator>();
+            anim.SetLayerWeight(1, 1);
         }
 
         if (Input.GetButtonDown("Fire1"))
         {
-            print("Fire1 down");
+            //print("Fire1 down");
             // Start charging attack
             charging = true;
             chargePercent = 0;
             chargeTime = 0;
             GUI.BarActive = true;
+
+            anim.SetBool("Attacking", true);
+            anim.SetInteger("AttackState", 1);
         }
 
         if (charging)
@@ -142,7 +155,7 @@ public class HeroAttack : MonoBehaviour
                 lastChargePercent = chargePercent;
                 chargePercent = ChargeSmoothing(chargeTime);
                 //}
-                print("ChargePercent: " + chargePercent);
+                //print("ChargePercent: " + chargePercent);
                 float percent = chargePercent * 100;
                 if (lastChargePercent > chargePercent)
                 {
@@ -156,8 +169,11 @@ public class HeroAttack : MonoBehaviour
 
         if (Input.GetButtonUp("Fire1"))
         {
-            print("Fire1 up");
+            //print("Fire1 up");
             // Release attack - hit if in a collider box
+
+            anim.SetBool("Attacking", false);
+            anim.SetInteger("AttackState", 0);
 
             GUI.ResetBar();
             GUI.BarActive = false;
