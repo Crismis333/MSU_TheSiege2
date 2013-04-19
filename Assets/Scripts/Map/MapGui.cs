@@ -97,7 +97,6 @@ public class MapGui : MonoBehaviour {
             GUI.Label(new Rect(15 + 100, 215 + 20 + 2 * 20, 128, 128), toNumerals(current_location.difficulty_obstacles-CurrentGameState.obstacleModifier));
             SetColor(CurrentGameState.catapultModifier);
             GUI.Label(new Rect(15 + 100, 215 + 20 + 3 * 20, 128, 128), toNumerals(current_location.difficulty_catapults -CurrentGameState.catapultModifier));
-            CurrentGameState.soldierModifier = 8;
             GUI.color = Color.red;
             if ((current_location.modifiers.Contains(Modifier.Soldier)))
                 GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 1 * 20, 128, 128), "+");

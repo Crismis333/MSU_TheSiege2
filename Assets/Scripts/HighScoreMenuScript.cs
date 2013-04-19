@@ -8,9 +8,11 @@ public class HighScoreMenuScript : MonoBehaviour {
     public Vector2 scrollOffset;
     public Texture2D backgroundScroll2;
     public Vector2 scrollOffset2;
+    public Texture2D black;
     public bool mainMenu;
-    private bool addnewScore;
+    private bool addnewScore, started, returned;
     private string setname;
+    private float countdown;
 
     void Menu_HighScore()
     {
@@ -26,8 +28,26 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 5 * 35, 790, 10 * 35));
             //GUI.Box(new Rect(0, 0, 790, 15 * 35), "");
             GUI.color = Color.black;
-            GUI.Label(new Rect(0, 1 * 35, 790, 64), "You have made a high score! You are truly");
-            GUI.Label(new Rect(0, 2 * 35, 790, 64), "A great barbarian! Conglaturations!");
+            switch (CurrentGameState.highscorecondition) {
+                case EndState.Won:
+                    {
+                        GUI.Label(new Rect(0, 1 * 35, 790, 64), "You have made a high score! You are truly");
+                        GUI.Label(new Rect(0, 2 * 35, 790, 64), "a great barbarian! Conglaturations!");
+                        break;
+                    }
+                case EndState.Lost:
+                    {
+                        GUI.Label(new Rect(0, 1 * 35, 790, 64), "You made the high score. Still,");
+                        GUI.Label(new Rect(0, 2 * 35, 790, 64), "try to be less bad next time.");
+                        break;
+                    }
+                case EndState.GaveUp:
+                    {
+                        GUI.Label(new Rect(0, 1 * 35, 790, 64), "A true barbarian never gives up.");
+                        GUI.Label(new Rect(0, 2 * 35, 790, 64), "But you still made the high score.");
+                        break;
+                    }
+        }
 
             GUI.Label(new Rect(0, 4 * 35, 790, 64), "Final score      ");
             GUI.Label(new Rect(0, 6 * 35, 790, 64), "Name: ");
@@ -84,18 +104,47 @@ public class HighScoreMenuScript : MonoBehaviour {
             if (GUI.Button(new Rect(60, 12 * 35, 640, 64), "Return")) { Return(); }
             GUI.EndGroup();
         }
+        if (started)
+        {
+            GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+            GUI.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, 1 - countdown));
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+        }
+        else if (returned)
+        {
+            GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+            GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, 1 - countdown));
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+        }
     }
 
     void Start()
     {
         setname = "";
-        CurrentGameState.Restart();
-        CurrentGameState.currentScore = 1000000000;
+        started = true;
+        returned = false;
+        countdown = 1.2f;
         if (!mainMenu)
             if (CurrentGameState.currentScore >= CurrentGameState.MinimumHighscoreRequirement())
                 addnewScore = true;
             else
                 addnewScore = false;
+    }
+
+    void Update()
+    {
+        if (started)
+        {
+            countdown -= 0.02f;
+            if (countdown <= 0)
+                started = false;
+        }
+        if (returned)
+        {
+            countdown -= 0.02f;
+            if (countdown <= 0)
+                Application.LoadLevel(0);
+        }
     }
 
     void OnGUI()
@@ -112,12 +161,16 @@ public class HighScoreMenuScript : MonoBehaviour {
 
     void Return()
     {
-        this.enabled = false;
+
         if (mainMenu)
+        {
+            this.enabled = false;
             GetComponent<MainMenuScript>().enabled = true;
+        }
         else
         {
-            Application.LoadLevel(0);
+            returned = false;
+            countdown = 1.2f;
         }
             
     }
