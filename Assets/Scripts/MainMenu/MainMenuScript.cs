@@ -12,6 +12,9 @@ public class MainMenuScript : MonoBehaviour {
     private bool stopped, started;
 
 	void Menu_Main() {
+        GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+        GUI.Label(new Rect(Screen.width / 2 - 400, 40, 800, 100), "The assault on East Castle");
+        GUI.EndGroup();
         GUI.BeginGroup(new Rect(0, Screen.height / 2 - 100, Screen.width, Screen.height));
         if (GUI.Button(new Rect(0, 0 * 70, Screen.width - 30, 64), "Start Game")) { Menu_Main_Start_Game(); }
         if (GUI.Button(new Rect(0, 1 * 70, Screen.width - 30, 64), "Options")) { Menu_Main_Options(); }
