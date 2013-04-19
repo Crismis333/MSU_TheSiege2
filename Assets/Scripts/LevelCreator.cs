@@ -41,7 +41,13 @@ public class LevelCreator : MonoBehaviour {
         specialModule = Resources.Load("SpecialModules/" + SPECIAL_MODULE, typeof(GameObject)) as GameObject;
 
         if (specialModule != null)
-            specialModuleIndex = RandomGaussian(0, moduleCount);
+        {
+            specialModuleIndex = RandomGaussian(2, moduleCount-2);
+            while (specialModuleIndex + SPECIAL_PART_COUNT >= moduleCount)
+            {
+                specialModuleIndex--;
+            }
+        }
 
 		defaultRoad = Resources.Load("RoadModules/"+DEFAULT_ROAD, typeof(GameObject)) as GameObject;
 		
@@ -105,6 +111,7 @@ public class LevelCreator : MonoBehaviour {
 		int randomSide = 0;
 		int variationCounter = 0;
 		int variationCap = 7;
+        bool forceSide = false;
 		for (int i = 0; i < moduleCount; i++) {
 			GameObject tmp;
 			Vector3 pos = transform.position;
@@ -119,11 +126,12 @@ public class LevelCreator : MonoBehaviour {
 
             if (i >= specialModuleIndex && i < specialModuleIndex + SPECIAL_PART_COUNT)
             {
+                forceSide = false;
                 continue;
             }
 			
 
-			if (transitionState == -1) {
+			if (transitionState == -1 && !forceSide) {
 				randomSide = Random.Range(0,sideModules.Count);
 				if (variationCounter >= variationCap) {
 					int q = randomSide;
@@ -132,25 +140,37 @@ public class LevelCreator : MonoBehaviour {
 					}
 				}
 			}
-            if (i + 3 == specialModuleIndex)
+            if (((i + 4 + Mathf.Max(transitionState, 0) == specialModuleIndex) || 
+                (i + 3 + Mathf.Max(transitionState, 0) == specialModuleIndex) || 
+                (prevSide == 0 && i + 6 == specialModuleIndex)) && 
+                !forceSide)
             {
                 randomSide = 0;
-                variationCounter += 2;
+                variationCounter += SPECIAL_PART_COUNT - 1;
+                forceSide = true;
             }
-			
+
 			if (prevSide != -1)
 			{
 				string tmpName = Regex.Replace(sideModules[randomSide].name, @"[\d-]", string.Empty);
 				string prevName = Regex.Replace(sideModules[prevSide].name, @"[\d-]", string.Empty);
 				GameObject side = null;
-				
-				if (!tmpName.Equals(prevName) && transitionState == -1) {
-					transitionState = 0;
-					variationCounter = 0;
+
+                if (!tmpName.Equals(prevName) && transitionState == -1)
+                {
+                    transitionState = 0;
+                    if (!forceSide)
+                        variationCounter = 0;
 				}
-				else{
-					variationCounter++;
-				}
+                else
+                {
+                    variationCounter++;
+                }
+
+                if (tmpName.Equals(prevName) && forceSide)
+                {
+                    transitionState = -1;
+                }
 
                 string realName = sideModules[randomSide].name;
 			
@@ -176,7 +196,7 @@ public class LevelCreator : MonoBehaviour {
 					transitionState = -1;
 					break;
 				}
-				
+
 				tmp = Instantiate(side,pos,side.transform.rotation) as GameObject;
 				
 				if (((transitionState == 1 || transitionState == 2) && left) || (transitionState == 3 && !left)) {
@@ -203,11 +223,6 @@ public class LevelCreator : MonoBehaviour {
 
     private void CreateSpecials()
     {
-        while (specialModuleIndex + SPECIAL_PART_COUNT >= moduleCount)
-        {
-            specialModuleIndex--;
-        }
-
         for (int i = specialModuleIndex; i < specialModuleIndex + SPECIAL_PART_COUNT; i++)
         {
             GameObject tmp;
