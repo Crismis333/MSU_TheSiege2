@@ -28,7 +28,8 @@ public class HeroAttack : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
+        if (ObstacleController.PLAYER != null)
+            hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
         AttackList = new List<GameObject>();
         GUI = GameObject.Find("GUI").GetComponent<GUIScript>();
         hitableEnemies = new List<GameObject>();
@@ -46,7 +47,9 @@ public class HeroAttack : MonoBehaviour
 
     void KillEnemy(GameObject enemy)
     {
-        enemy.GetComponent<EnemyAttack>().AddExplosion((ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4) * (100 + 500 * chargePercent), ObstacleController.PLAYER.transform.position + Vector3.up);
+        Vector3 exppos = ObstacleController.PLAYER.transform.position;
+        exppos.y = 1;
+        enemy.GetComponent<EnemyAttack>().AddExplosion((ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4) * (100 + 500 * chargePercent), exppos);
 
         enemy.GetComponent<EnemyAttack>().KillSelf(chargePercent);
     }
@@ -67,8 +70,10 @@ public class HeroAttack : MonoBehaviour
         }
         if (other.gameObject.name.Equals("EnemyBox"))
         {
+            Vector3 exppos = ObstacleController.PLAYER.transform.position;
+            exppos.y = 1;
             other.transform.parent.GetComponent<EnemyAttack>().
-                AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 400, ObstacleController.PLAYER.transform.position + Vector3.up);
+                AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 400, exppos);
             //  other.transform.parent.GetComponent<EnemyAttack>().KillSelf();
             gameObject.GetComponent<HeroMovement>().SlowHero(SlowTime, SlowAmount);
         }
@@ -99,6 +104,11 @@ public class HeroAttack : MonoBehaviour
 
     void Update()
     {
+        if (hm == null)
+        {
+            hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
+        }
+
         if (Input.GetButtonDown("Fire1"))
         {
             print("Fire1 down");

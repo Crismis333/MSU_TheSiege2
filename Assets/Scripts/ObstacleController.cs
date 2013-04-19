@@ -17,7 +17,7 @@ public class ObstacleController : MonoBehaviour {
 
     void Start()
     {
-        PLAYER = GameObject.Find("HeroTemp");
+        PLAYER = GameObject.Find("Hero");
 		ARMY = GameObject.Find("FellowHeroes");
 		
 		PLAYER.GetComponent<HeroMovement>().MoveSpeed *= MOVEMENT_MODIFIER;
