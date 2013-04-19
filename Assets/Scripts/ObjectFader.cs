@@ -8,6 +8,8 @@ public class ObjectFader : MonoBehaviour
     private Renderer[] rendererObjects;
     private bool startFade;
 
+    private bool setColor = false;
+
     void Start()
     {
         rendererObjects = GetComponentsInChildren<Renderer>();
@@ -39,14 +41,18 @@ public class ObjectFader : MonoBehaviour
 				}
             }
         }
-        else
+        else if (setColor == false)
+        {
             for (int i = 0; i < rendererObjects.Length; i++)
             {
-				if (rendererObjects[i].material.HasProperty("_Color")) {
+                if (rendererObjects[i].material.HasProperty("_Color"))
+                {
                     Color newColor = rendererObjects[i].material.color;
-                	rendererObjects[i].material.SetColor("_Color", newColor);
-				}
+                    rendererObjects[i].material.SetColor("_Color", newColor);
+                }
             }
+            setColor = true;
+        }
 	}
  
 }

@@ -14,7 +14,7 @@ public class BoulderBehaviour : MonoBehaviour {
     void Start()
     {
 		ps = gameObject.GetComponentInChildren<ParticleSystem>();
-		ps.Stop();
+		//ps.Stop();
     }
 
     // Update is called once per frame

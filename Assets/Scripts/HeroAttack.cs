@@ -50,7 +50,7 @@ public class HeroAttack : MonoBehaviour
         b = (float)solvr.bTerm();
         c = (float)solvr.cTerm();
 
-        print("a: " + a + ", b: " + b + ", c: " + c);
+        //print("a: " + a + ", b: " + b + ", c: " + c);
     }
 
     void KillEnemy(GameObject enemy)
@@ -69,7 +69,7 @@ public class HeroAttack : MonoBehaviour
             //    print("Enter release box");
 
             GameObject enemy = other.transform.parent.gameObject;
-            enemy.GetComponent<Animator>().SetInteger("State", 1);
+            //enemy.GetComponent<Animator>().SetInteger("State", 1);
             //enemy.GetComponent<Animator>().enabled = false;
             if (!hitableEnemies.Contains(enemy))
             {
@@ -187,7 +187,7 @@ public class HeroAttack : MonoBehaviour
                     ha.NumberOfHits = hitableEnemies.Count;
                     ha.CurrentSpeed = hm.CurrentSpeed;
 
-                    print(ha.ToString());
+                    //print(ha.ToString());
 
                     GUI.AddHit(ha);
 

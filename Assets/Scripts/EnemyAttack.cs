@@ -21,7 +21,7 @@ public class EnemyAttack : MonoBehaviour {
     {
         player = ObstacleController.PLAYER;
         ps = gameObject.GetComponentInChildren<ParticleSystem>();
-        ps.Stop();
+        //ps.Stop();
     }
 
     //void enterInRange()

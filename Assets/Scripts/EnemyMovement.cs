@@ -12,7 +12,7 @@ public class EnemyMovement : MonoBehaviour {
 	void Start () {
         player = ObstacleController.PLAYER;
 		anim = gameObject.GetComponent<Animator>();
-		anim.SetInteger("State",0);
+		//anim.SetInteger("State",0);
 	}
 	
 	// Update is called once per frame

@@ -172,7 +172,7 @@ public class GUIScript : MonoBehaviour {
             }
             float score = baseScore * hitMult * hit.CurrentSpeed * Multiplier;
             SCORE += (long)score;
-            print("Score increase: " + (long)score);
+            //print("Score increase: " + (long)score);
         }
      //   print("Efficiency: " + eff);
     }
