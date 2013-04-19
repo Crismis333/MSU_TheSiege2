@@ -9,7 +9,7 @@ public class GUIScript : MonoBehaviour {
 	
     public GUISkin gSkin;
     public Texture2D runningSoldiers1, runningSoldiers2, runningHero1, runningHero2, runningGoal, damagebar, swordLeft, swordRight, bloodsplatter;
-    public Texture2D backgroundScrollScore,backgroundScrollLeft,backgroundScrollMid,backgroundScrollRight;
+    public Texture2D backgroundScrollScore, backgroundScrollLeft, backgroundScrollMid, backgroundScrollRight, black;
     public Vector2 scrollScoreOffset, scrollLeftOffset, scrollMidOffset, scrollRightOffset;
     public float engagePercent, releasePercent;
     public float fixedEngagePercent;
@@ -27,7 +27,7 @@ public class GUIScript : MonoBehaviour {
 	private float maxZ;
 
     private float soldierAnim;
-    
+    private float countdown;
 
 	// Use this for initialization
 	void Start () {
@@ -203,7 +203,7 @@ public class GUIScript : MonoBehaviour {
        
         if (BarActive)
         {
-            if (engagePercent > 0 && engagePercent < 100.1)
+            if (engagePercent > 0 && engagePercent < 110.1)
             {
                 float pos = engagePercent / 95 * width / 2;
                 GUI.DrawTexture(new Rect(Screen.width / 2 - 250 - swordLeft.width / 2 + pos, Screen.height - 90 - swordLeft.height / 2 + 6, swordLeft.width, swordLeft.height), swordLeft);

@@ -121,6 +121,12 @@ public class MapGui : MonoBehaviour {
             if (GUI.Button(new Rect(155, 35 + 20 + 10 * 20, 190, 190), "")) { Battle_Pressed(); }
 
         }
+        GUI.color = Color.black;
+        GUI.skin.label.fontSize = 16;
+        GUI.Label(new Rect(15 + 15, 215 + 20 + 12 * 20, 128, 128), "Score:");
+        GUI.color = Color.red;
+        GUI.Label(new Rect(15 + 15, 215 + 20 + 12 * 20, 350, 128), "               " + CurrentGameState.currentScore);
+        GUI.skin.label.fontSize = 10;
         GUI.color = Color.white;
         GUI.EndGroup();
         if (stopped)
@@ -215,7 +221,7 @@ public class MapGui : MonoBehaviour {
 
     void Start()
     {
-        
+        CurrentGameState.previousScore = CurrentGameState.currentScore;
         ResetScroll();
         stopped = false;
         startReset = true;
