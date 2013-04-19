@@ -60,7 +60,7 @@ public class DeathScreenScript : MonoBehaviour {
         decreaseComplete = false;
 
         score = CurrentGameState.previousScore;
-        score = 5000000;
+        //score = 5000000;
         newscore = score / 2;
         
     }
@@ -79,7 +79,7 @@ public class DeathScreenScript : MonoBehaviour {
 
     void GiveUp()
     {
-        if (!started)
+        if (!started && !gaveup)
         {
             gaveup = true;
             countdown = 1.2f;
@@ -88,7 +88,7 @@ public class DeathScreenScript : MonoBehaviour {
 
     void ReturnToCamp()
     {
-        if (!started)
+        if (!started && !gaveup)
         {
             returned = true;
             countdown = 2f;
@@ -117,7 +117,12 @@ public class DeathScreenScript : MonoBehaviour {
             {
                 countdown -= 0.02f;
                 if (countdown <= 0)
+                {
+                    CurrentGameState.previousPosition = CurrentGameState.previousPreviousPosition;
+                    CurrentGameState.currentScore = newscore;
+                    CurrentGameState.failedlast = true;
                     Application.LoadLevel(1);
+                }
             }
         }
         else if (gaveup)

@@ -34,7 +34,7 @@ public class ArmyMovement : MonoBehaviour {
 			
 			if (dZ <= 0)
 			{
-				//TODO fail level
+                Application.LoadLevel(4);
 			}
 		}
 		

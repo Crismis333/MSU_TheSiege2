@@ -11,7 +11,7 @@ public class CameraLock : MonoBehaviour {
 
     private float y_bump;
 
-    public bool UseBump = true;
+    public bool UseBump = false;
 
 	// Use this for initialization
 	void Start () {

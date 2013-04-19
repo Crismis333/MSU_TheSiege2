@@ -9,7 +9,7 @@ public class GUIScript : MonoBehaviour {
 	
     public GUISkin gSkin;
     public Texture2D runningSoldiers1, runningSoldiers2, runningHero1, runningHero2, runningGoal, damagebar, swordLeft, swordRight, bloodsplatter;
-    public Texture2D backgroundScrollScore,backgroundScrollLeft,backgroundScrollMid,backgroundScrollRight;
+    public Texture2D backgroundScrollScore, backgroundScrollLeft, backgroundScrollMid, backgroundScrollRight, black;
     public Vector2 scrollScoreOffset, scrollLeftOffset, scrollMidOffset, scrollRightOffset;
     public float engagePercent, releasePercent;
     public float fixedEngagePercent;
@@ -27,13 +27,16 @@ public class GUIScript : MonoBehaviour {
 	private float maxZ;
 
     private float soldierAnim;
-    
+    private float countdown;
+
+    public static float Multiplier = 1;
 
 	// Use this for initialization
 	void Start () {
 		maxZ = (LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64)-32;
         HitList = new List<HitAccuracy>();
         soldierAnim = 0;
+        Screen.lockCursor = false;
 	}
 	
 	// Update is called once per frame
@@ -63,6 +66,11 @@ public class GUIScript : MonoBehaviour {
         }
 	}
 
+    string TrimFloat(float f)
+    {
+        return f.ToString(".0#");
+    }
+
     void Level_Interface()
     {
         GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
@@ -73,7 +81,7 @@ public class GUIScript : MonoBehaviour {
         //GUI.Box(new Rect(Screen.width-225, 25, 200, 75), "");
         GUI.color = Color.black;
         GUI.Label(new Rect(Screen.width - 225 + 15, 25 + 15-5, 200, 75), "Score:   "+ SCORE);
-        GUI.Label(new Rect(Screen.width - 225 + 15, 25 + 15*2, 200, 75), "Multiplier:   x2");
+        GUI.Label(new Rect(Screen.width - 225 + 15, 25 + 15*2, 200, 75), "Multiplier:   x" + Multiplier);
         GUI.color = Color.white;
         if (backgroundScrollLeft != null)
         {
@@ -151,8 +159,22 @@ public class GUIScript : MonoBehaviour {
     public void AddHit(HitAccuracy hit)
     {
         HitList.Add(hit);
-        float eff = CalculateEfficiency();
-        print("Efficiency: " + eff);
+        Multiplier = CalculateEfficiency() / 2;
+
+        if (hit.Accuracy > HeroAttack.MIN_CHARGE)
+        {
+            // Calculate score increase
+            float baseScore = 100;
+            float hitMult = 1;
+            if (hit.NumberOfHits > 1)
+            {
+                hitMult = hit.NumberOfHits * 1.5f;
+            }
+            float score = baseScore * hitMult * hit.CurrentSpeed * Multiplier;
+            SCORE += (long)score;
+            print("Score increase: " + (long)score);
+        }
+     //   print("Efficiency: " + eff);
     }
 
     float CalculateEfficiency()
@@ -203,7 +225,7 @@ public class GUIScript : MonoBehaviour {
        
         if (BarActive)
         {
-            if (engagePercent > 0 && engagePercent < 100.1)
+            if (engagePercent > 0 && engagePercent < 110.1)
             {
                 float pos = engagePercent / 95 * width / 2;
                 GUI.DrawTexture(new Rect(Screen.width / 2 - 250 - swordLeft.width / 2 + pos, Screen.height - 90 - swordLeft.height / 2 + 6, swordLeft.width, swordLeft.height), swordLeft);
@@ -246,6 +268,13 @@ public class HitAccuracy
 
     // How many enemies were hit with one attack
     public int NumberOfHits
+    {
+        get;
+        set;
+    }
+
+    // The speed the hero had when hitting
+    public float CurrentSpeed
     {
         get;
         set;

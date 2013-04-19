@@ -68,8 +68,10 @@ public class PreviousLines : MonoBehaviour {
 	void Update () {
         if (herolinerenderer != null)
         {
+            if (!hero.endmove)
+                herolinerenderer.GetComponent<LineRenderer>().SetPosition(0, hero.transform.position);
             herolinerenderer.GetComponent<LineRenderer>().SetPosition(1, hero.transform.position);
-            float diff = Vector3.Distance(herostart, hero.transform.position);
+            float diff = Vector3.Distance(hero.startLocation, hero.transform.position);
             if (diff > 0.03)
                 herolinerenderer.GetComponent<LineRenderer>().enabled = true;
             herolinerenderer.GetComponent<LineRenderer>().material.mainTextureScale = new Vector2(1F * (diff) * 10f, 1F);
