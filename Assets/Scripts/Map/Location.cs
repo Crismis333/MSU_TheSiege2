@@ -12,6 +12,7 @@ public class Location : MonoBehaviour {
     public int difficulty_soldier, difficulty_length, difficulty_pits, difficulty_obstacles, difficulty_catapults;
     public Location[] locations;
     public Material Line_Material;
+    [HideInInspector]
     public List<Modifier> modifiers;
     [HideInInspector]
     public Vector3 startLocation;
@@ -116,6 +117,32 @@ public class Location : MonoBehaviour {
             foreach (MeshRenderer mr in this.GetComponentsInChildren<MeshRenderer>())
                 mr.enabled = false;
         }
+
+        float advantage = Random.value;
+
+        if (advantage > 0.9)
+        {
+            while (modifiers.Count != 3)
+            {
+                Modifier m = getRandomModifier();
+                if (!modifiers.Contains(m))
+                    modifiers.Add(m);
+            }
+        }
+        else if (advantage > 0.7)
+        {
+            while (modifiers.Count != 2)
+            {
+                Modifier m = getRandomModifier();
+                if (!modifiers.Contains(m))
+                    modifiers.Add(m);
+            }
+        }
+        else
+        {
+            modifiers.Add(getRandomModifier());   
+        }
+
         description += "\nTaking this route will lead to:";
         if ((modifiers.Contains(Modifier.Soldier)))
             description += "\n- fewer soldiers";
@@ -130,6 +157,22 @@ public class Location : MonoBehaviour {
         //if ((modifiers.Contains(Modifier.SlowDown)))
             //description += "\nTaking this route will allow you to charge more frequently.";
 
+    }
+
+    private Modifier getRandomModifier()
+    {
+        int rI = Random.Range(1, 6);
+
+        switch (rI)
+        {
+            case 1: return Modifier.Catapult;
+            case 2: return Modifier.Obstacle;
+            case 3: return Modifier.Soldier;
+            case 4: return Modifier.MoveSpeed;
+            case 5: return Modifier.Jump;
+        }
+
+        return Modifier.Catapult;
     }
 
     private void SetupLineRenderer(LineRenderer lr, Location lo)

@@ -32,7 +32,9 @@ public class ObstacleBehaviour : MonoBehaviour {
 			foreach(Rigidbody rb in this.GetComponentsInChildren<Rigidbody>())
 			{
 				rb.isKinematic = false;
-				rb.AddExplosionForce(other.GetComponent<HeroMovement>().CurrentSpeed/4,other.transform.position + Vector3.up,0);
+                Vector3 exppos = ObstacleController.PLAYER.transform.position;
+                exppos.y = 1;
+				rb.AddExplosionForce(other.GetComponent<HeroMovement>().CurrentSpeed/4,exppos,0);
 				
 				Physics.IgnoreCollision(rb.gameObject.collider, other);
 			}
