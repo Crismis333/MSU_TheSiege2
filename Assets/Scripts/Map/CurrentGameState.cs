@@ -24,6 +24,7 @@ public class CurrentGameState : MonoBehaviour {
     public static long currentScore;
     public static long previousScore;
     public static EndState highscorecondition;
+    public static bool failedlast;
     private static List<Modifier> wins;
     private static int nextLevel;
     private static LinkedList<HighScoreElement> highscore;

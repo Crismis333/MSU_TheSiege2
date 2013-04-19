@@ -120,6 +120,7 @@ public class DeathScreenScript : MonoBehaviour {
                 {
                     CurrentGameState.previousPosition = CurrentGameState.previousPreviousPosition;
                     CurrentGameState.currentScore = newscore;
+                    CurrentGameState.failedlast = true;
                     Application.LoadLevel(1);
                 }
             }

@@ -52,7 +52,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.Label(new Rect(0, 4 * 35, 790, 64), "Final score      ");
             GUI.Label(new Rect(0, 6 * 35, 790, 64), "Name: ");
             GUI.color = Color.red;
-            GUI.Label(new Rect(0, 4 * 35, 790, 64), "                      " + CurrentGameState.currentScore);
+            GUI.Label(new Rect(0, 4 * 35, 790, 64), "                      " + CurrentGameState.previousScore);
             GUI.color = Color.white;
             setname = GUI.TextField(new Rect(170, 6 * 35, 540, 64), setname, 10);
             if (GUI.Button(new Rect(60, 8 * 35, 700, 64), "Add score")) { Add_Score(); }
@@ -123,7 +123,7 @@ public class HighScoreMenuScript : MonoBehaviour {
         setname = "";
         started = true;
         returned = false;
-        countdown = 1.2f;
+        countdown = 1f;
         if (!mainMenu)
             if (CurrentGameState.currentScore >= CurrentGameState.MinimumHighscoreRequirement())
                 addnewScore = true;
@@ -139,7 +139,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             if (countdown <= 0)
                 started = false;
         }
-        if (returned)
+        else if (returned)
         {
             countdown -= 0.02f;
             if (countdown <= 0)
@@ -161,16 +161,18 @@ public class HighScoreMenuScript : MonoBehaviour {
 
     void Return()
     {
-
-        if (mainMenu)
+        if (!returned && !started)
         {
-            this.enabled = false;
-            GetComponent<MainMenuScript>().enabled = true;
-        }
-        else
-        {
-            returned = false;
-            countdown = 1.2f;
+            if (mainMenu)
+            {
+                this.enabled = false;
+                GetComponent<MainMenuScript>().enabled = true;
+            }
+            else
+            {
+                returned = true;
+                countdown = 1f;
+            }
         }
             
     }
