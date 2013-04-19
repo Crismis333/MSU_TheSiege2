@@ -5,9 +5,12 @@ public class PauseReturnToScript : MonoBehaviour {
 
     public GUISkin gSkin;
     public Texture2D backgroundScroll;
+    public Texture2D black;
     public Vector2 scrollOffset;
     [HideInInspector]
     public bool onMap, quit, restart;
+    private float countdown;
+    private bool ended;
 
     void Return_Accept()
     {
@@ -20,17 +23,23 @@ public class PauseReturnToScript : MonoBehaviour {
         GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 2.5f * 70, 790, 5 * 70));
 
         //GUI.Box(new Rect(0, 0, 790, 5 * 70), "");
+        GUI.color = Color.black;
         if (quit)
             GUI.Label(new Rect(0, 1 * 70, 790, 64), "Do you really wish to quit? All progress will be lost.");
-        else if (restart)
-            GUI.Label(new Rect(0, 1 * 70, 790, 64), "Restart level?");
         else if (onMap)
             GUI.Label(new Rect(0, 1 * 70, 790, 64), "Return to main menu? All progress will be lost.");
         else
-            GUI.Label(new Rect(0, 1 * 70, 790, 64), "Return to the map?");
-        if (GUI.Button(new Rect(0, 3 * 70, 790, 64), "Yes")) { Return_Yes(); }
-        if (GUI.Button(new Rect(0, 4 * 70, 790, 64), "No")) { Return_No();  }
+            GUI.Label(new Rect(0, 1 * 70, 790, 64), "Give up on this level?");
+        GUI.color = Color.white;
+        if (GUI.Button(new Rect(60, 3 * 70, 730, 64), "Yes")) { Return_Yes(); }
+        if (GUI.Button(new Rect(60, 4 * 70, 730, 64), "No")) { Return_No();  }
         GUI.EndGroup();
+        if (ended)
+        {
+            GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+            GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, 1 - countdown));
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+        }
     }
 
     void OnGUI()
@@ -47,37 +56,57 @@ public class PauseReturnToScript : MonoBehaviour {
 
     void Return_No()
     {
-        quit = onMap = restart = false;
-        this.enabled = false;
-        GetComponent<PauseMenuScript>().enabled = true;
+        if (!ended)
+        {
+            quit = onMap = restart = false;
+            this.enabled = false;
+            GetComponent<PauseMenuScript>().enabled = true;
+        }
     }
 
     void Return_Yes()
     {
-        this.enabled = false;
+        //this.enabled = false;
 
-        Time.timeScale = 1;
-        if (restart)
+        
+        ended = true;
+        countdown = 1.0f;
+
+    }
+
+    void Update()
+    {
+        if (ended)
         {
-            Application.LoadLevel(Application.loadedLevel);
-        }
-        else if (quit)
-        {
-            CurrentGameState.Restart();
-            Application.Quit();
-        }
-        else if (onMap)
-        {
-            CurrentGameState.Restart();
-            Application.LoadLevel(0);
-        }
-        else
-        {
-            // Wins, doesn't reset. Change when game is final
-            //CurrentGameState.previousPosition = CurrentGameState.previousPreviousPosition;
-            //CurrentGameState.currentScore = CurrentGameState.previousScore;
-            CurrentGameState.SetWin();
-            Application.LoadLevel(1);
+            countdown -= 0.02f;
+            if (countdown <= 0)
+            {
+                Time.timeScale = 1;
+                //if (restart)
+                //{
+                //    Application.LoadLevel(Application.loadedLevel);
+                //}
+                if (quit)
+                {
+                    CurrentGameState.Restart();
+                    Application.Quit();
+                }
+                else if (onMap)
+                {
+                    CurrentGameState.Restart();
+                    Application.LoadLevel(0);
+                }
+                else
+                {
+                    // Wins, doesn't reset. Change when game is final
+                    //CurrentGameState.previousPosition = CurrentGameState.previousPreviousPosition;
+                    //CurrentGameState.currentScore = CurrentGameState.previousScore;
+                    //CurrentGameState.SetWin();
+                    //Application.LoadLevel(1);
+                    Application.LoadLevel(4);
+                    CurrentGameState.highscorecondition = EndState.GaveUp;
+                }
+            }
         }
     }
 }

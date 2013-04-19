@@ -3,72 +3,81 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public class HeroAttack : MonoBehaviour {
+public class HeroAttack : MonoBehaviour
+{
 
     public List<GameObject> AttackList;
+
+    public float SlowTime = 2;
+    public float SlowAmount = 2;
 
     private int selectedIndex;
 
     private GUIScript GUI;
 
     private bool charging;
-    private float chargePercent, chargeTime;
+    private float chargePercent, lastChargePercent, chargeTime;
     public float MaxCharge = 1.5f; // Time in seconds to fully charge
+    const float MIN_CHARGE = 0.3f;
 
     private List<GameObject> hitableEnemies;
 
     private float a, b, c;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         AttackList = new List<GameObject>();
         GUI = GameObject.Find("GUI").GetComponent<GUIScript>();
         hitableEnemies = new List<GameObject>();
-      //  Time.timeScale = 0.5f;
+        //  Time.timeScale = 0.5f;
         LstSquQuadRegr solvr = new LstSquQuadRegr();
         solvr.AddPoints(0, 0);
-        solvr.AddPoints(MaxCharge, 1);
-        solvr.AddPoints(2 * MaxCharge, 0);
+        solvr.AddPoints(MaxCharge * 0.9, 1);
+        solvr.AddPoints(2 * MaxCharge * 0.9, 0);
         a = (float)solvr.aTerm();
         b = (float)solvr.bTerm();
         c = (float)solvr.cTerm();
 
         print("a: " + a + ", b: " + b + ", c: " + c);
-	}
+    }
 
     void KillEnemy(GameObject enemy)
     {
-        
-        enemy.GetComponent<EnemyAttack>().AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 200, ObstacleController.PLAYER.transform.position + Vector3.up);
+        enemy.GetComponent<EnemyAttack>().AddExplosion((ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4) * (100 + 500 * chargePercent), ObstacleController.PLAYER.transform.position + Vector3.up);
 
-        enemy.GetComponent<EnemyAttack>().KillSelf();
+        enemy.GetComponent<EnemyAttack>().KillSelf(chargePercent);
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name.Equals("ReleaseBox"))
         {
-        //    print("Enter release box");
-           
+            //    print("Enter release box");
+
             GameObject enemy = other.transform.parent.gameObject;
+            enemy.GetComponent<Animator>().SetInteger("State", 1);
+            //enemy.GetComponent<Animator>().enabled = false;
             if (!hitableEnemies.Contains(enemy))
             {
                 hitableEnemies.Add(enemy);
             }
         }
-		if (other.gameObject.name.Equals("EnemyBox")) {
-			other.transform.parent.GetComponent<EnemyAttack>().
-				AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 500, ObstacleController.PLAYER.transform.position + Vector3.up);
-            other.transform.parent.GetComponent<EnemyAttack>().KillSelf();
-		}
+        if (other.gameObject.name.Equals("EnemyBox"))
+        {
+            other.transform.parent.GetComponent<EnemyAttack>().
+                AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 400, ObstacleController.PLAYER.transform.position + Vector3.up);
+            //  other.transform.parent.GetComponent<EnemyAttack>().KillSelf();
+            gameObject.GetComponent<HeroMovement>().SlowHero(SlowTime, SlowAmount);
+        }
     }
 
     void OnTriggerExit(Collider other)
     {
         if (other.gameObject.name.Equals("ReleaseBox"))
         {
-         //   print("Leaving release box");
-          
+            //   print("Leaving release box");
+
             GameObject enemy = other.transform.parent.gameObject;
             if (hitableEnemies.Contains(enemy))
             {
@@ -100,7 +109,7 @@ public class HeroAttack : MonoBehaviour {
 
         if (charging)
         {
-            if (chargeTime > MaxCharge)
+            if (chargeTime > MaxCharge * 1.1f)
             {
                 // Stop attacking - overcharged
                 charging = false;
@@ -118,37 +127,47 @@ public class HeroAttack : MonoBehaviour {
                 //}
                 //else
                 //{
-                    chargePercent = ChargeSmoothing(chargeTime);
+                lastChargePercent = chargePercent;
+                chargePercent = ChargeSmoothing(chargeTime);
                 //}
-
+                print("ChargePercent: " + chargePercent);
                 float percent = chargePercent * 100;
-                print("chargePercent: " + chargePercent + ", percent: " + percent + ", time: " + chargeTime);
+                if (lastChargePercent > chargePercent)
+                {
+                    percent = (1 + (1 - chargePercent)) * 100;
+                }
+
+                //print("chargePercent: " + chargePercent + ", percent: " + percent + ", time: " + chargeTime);
                 GUI.engagePercent = percent;
             }
-        }      
+        }
 
         if (Input.GetButtonUp("Fire1"))
         {
             print("Fire1 up");
             // Release attack - hit if in a collider box
-            
+
             GUI.ResetBar();
             GUI.BarActive = false;
             if (charging)
             {
                 if (hitableEnemies.Count > 0)
                 {
+
                     HitAccuracy ha = new HitAccuracy();
                     ha.Accuracy = chargePercent;
                     ha.NumberOfHits = hitableEnemies.Count;
 
                     print(ha.ToString());
 
-                    GUI.HitList.Add(ha);
+                    GUI.AddHit(ha);
 
-                    foreach (GameObject enemy in hitableEnemies)
+                    if (chargePercent > MIN_CHARGE)
                     {
-                        KillEnemy(enemy);
+                        foreach (GameObject enemy in hitableEnemies)
+                        {
+                            KillEnemy(enemy);
+                        }
                     }
                     hitableEnemies.Clear();
                 }
@@ -156,7 +175,7 @@ public class HeroAttack : MonoBehaviour {
             }
             charging = false;
         }
-    }   
+    }
 }
 
 public class LstSquQuadRegr

@@ -17,9 +17,10 @@ public class PauseMenuScript : MonoBehaviour {
             GUI.DrawTexture(new Rect(0, 0, backgroundScroll.width, backgroundScroll.height), backgroundScroll);
             GUI.EndGroup();
         }
+        GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 3 * 70, 790, 6 * 70));
         if (onMap)
         {
-            GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 3 * 70, 790, 6 * 70));
+
             //GUI.Box(new Rect(0, 0, 790, 6 * 70), "");
             if (GUI.Button(new Rect(60, 0 * 70, 650, 64), "Options")) { Pause_Options(); }
             if (GUI.Button(new Rect(60, 1 * 70, 650, 64), "Controls")) { }
@@ -29,14 +30,13 @@ public class PauseMenuScript : MonoBehaviour {
         }
         else
         {
-            GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 3.5f * 70, 790, 7 * 70));
+            //GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 3.5f * 70, 790, 7 * 70));
             //GUI.Box(new Rect(0, 0, 790, 7 * 70), "");
             if (GUI.Button(new Rect(60, 0 * 70, 650, 64), "Options")) { Pause_Options(); }
             if (GUI.Button(new Rect(60, 1 * 70, 650, 64), "Controls")) { }
-            if (GUI.Button(new Rect(60, 2 * 70, 650, 64), "Map")) { Pause_Map(); }
-            if (GUI.Button(new Rect(60, 3 * 70, 650, 64), "Restart")) { Pause_Restart(); }
-            if (GUI.Button(new Rect(60, 4 * 70, 650, 64), "Quit")) { Pause_Quit(); }
-            if (GUI.Button(new Rect(60, 6 * 70, 650, 64), "Return")) { Pause_Back(); }
+            if (GUI.Button(new Rect(60, 2 * 70, 650, 64), "Give up")) { Pause_GiveUp(); }
+            if (GUI.Button(new Rect(60, 3 * 70, 650, 64), "Quit")) { Pause_Quit(); }
+            if (GUI.Button(new Rect(60, 5 * 70, 650, 64), "Return")) { Pause_Back(); }
         }
         GUI.EndGroup();
     }
@@ -57,7 +57,7 @@ public class PauseMenuScript : MonoBehaviour {
         GetComponent<PauseReturnToScript>().enabled = true;
     }
 
-    void Pause_Map()
+    void Pause_GiveUp()
     {
         this.enabled = false;
         GetComponent<PauseReturnToScript>().enabled = true;

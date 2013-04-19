@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class ObstacleBehaviour : MonoBehaviour {
 	
@@ -41,6 +42,25 @@ public class ObstacleBehaviour : MonoBehaviour {
                 ps.Play();
 			destroyed = true;
 		}
+
+        if (!destroyed && other.tag.Equals("Soldier"))
+        {
+            print("Moving soldier");
+            float x = other.transform.position.x;
+            Bounds bounds = gameObject.GetComponent<BoxCollider>().bounds;
+            float left = bounds.min.x;
+            float right = bounds.max.x;
+            if (Math.Abs(left) > Math.Abs(right))
+            {
+                // Move right
+                other.transform.position = other.transform.position + new Vector3(right + 1, 0, 0);
+            }
+            else
+            {
+                // Move left
+                other.transform.position = other.transform.position + new Vector3(left - 1, 0, 0);
+            }
+        }
 		
 		if (!destroyed && other.tag.Equals("Boulder")) {
 			foreach(Rigidbody rb in this.GetComponentsInChildren<Rigidbody>())

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public enum Modifier { None, Soldier, Obstacle, Pit, Catapult, Jump, MoveSpeed, SlowDown }
+public enum EndState { Won, GaveUp, Lost }
 
 public class CurrentGameState : MonoBehaviour {
 
@@ -22,6 +23,7 @@ public class CurrentGameState : MonoBehaviour {
     public static Vector3 previousPosition, previousPreviousPosition;
     public static long currentScore;
     public static long previousScore;
+    public static EndState highscorecondition;
     private static List<Modifier> wins;
     private static int nextLevel;
     private static LinkedList<HighScoreElement> highscore;

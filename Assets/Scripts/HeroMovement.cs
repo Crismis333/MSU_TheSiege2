@@ -82,7 +82,8 @@ public class HeroMovement : MonoBehaviour {
 		
 		if (transform.position.z >= LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64-32) {
             CurrentGameState.SetWin();
-			Debug.Log("End Score: "+ GUIScript.SCORE);
+            CurrentGameState.currentScore = GUIScript.SCORE;
+			//Debug.Log("End Score: "+ GUIScript.SCORE);
 			Application.LoadLevel(1);
 		}
 	}
@@ -153,10 +154,19 @@ public class HeroMovement : MonoBehaviour {
     }
 	
 	public void SlowHero(float time, float amount) {
-		Slowed = true;
-		slowTimer = time;
-		slowMax = time;
-		slowAmount = amount;
+		if (Slowed) {
+			if (amount > (slowAmount * (slowTimer / slowMax))) {
+				slowTimer = time;
+				slowMax = time;
+				slowAmount = amount * (CurrentSpeed / MoveSpeed);
+			}
+		}
+		else {
+			Slowed = true;
+			slowTimer = time;
+			slowMax = time;
+			slowAmount = amount * (CurrentSpeed / MoveSpeed);
+		}
 	}
 
 
