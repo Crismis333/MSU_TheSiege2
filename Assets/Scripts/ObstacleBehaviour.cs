@@ -44,9 +44,7 @@ public class ObstacleBehaviour : MonoBehaviour {
 		}
 
         if (!destroyed && other.tag.Equals("Soldier"))
-        {
-            print("Moving soldier");
-            float x = other.transform.position.x;
+        {                 
             Bounds bounds = gameObject.GetComponent<BoxCollider>().bounds;
             float left = bounds.min.x;
             float right = bounds.max.x;
