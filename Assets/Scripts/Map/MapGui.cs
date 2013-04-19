@@ -148,6 +148,8 @@ public class MapGui : MonoBehaviour {
 
     void Battle_Pressed()
     {
+        if (!CurrentGameState.hero.completed)
+            return;
         if (current_location.difficulty_soldier - CurrentGameState.soldierModifier < 1)
             ObstacleController.SOLDIER_RATIO = 1;
         else
@@ -240,7 +242,10 @@ public class MapGui : MonoBehaviour {
         {
             startHero = false;
             CurrentGameState.CreateHero();
-            CurrentGameState.hero.transform.position = CurrentGameState.previousPreviousPosition;
+            if (CurrentGameState.failedlast)
+                CurrentGameState.hero.transform.position = CurrentGameState.previousPosition;
+            else
+                CurrentGameState.hero.transform.position = CurrentGameState.previousPreviousPosition;
 
             foreach (Location loc1 in CurrentGameState.loc.locations)
             {
@@ -277,10 +282,14 @@ public class MapGui : MonoBehaviour {
                             mapmove.CenterCamera(CurrentGameState.loc.transform);
 
                         Time.timeScale = 1;
-                        
-                        CurrentGameState.hero.transform.position = CurrentGameState.previousPreviousPosition;
-                        CurrentGameState.hero.targetLoc = CurrentGameState.loc;
-                        CurrentGameState.hero.MoveToLoc(CurrentGameState.loc,0.5f);
+                        if (!CurrentGameState.failedlast)
+                        {
+                            CurrentGameState.hero.transform.position = CurrentGameState.previousPreviousPosition;
+                            CurrentGameState.hero.targetLoc = CurrentGameState.loc;
+                            CurrentGameState.hero.MoveToLoc(CurrentGameState.loc, 0.5f);
+                        }
+                        else
+                            CurrentGameState.hero.completed = true;
                         if (CurrentGameState.locID != 0)
                             CurrentGameState.hero.LookAtLoc(CurrentGameState.loc);
                         GameObject o = GameObject.Find("PreviousLineCreator");
@@ -301,6 +310,7 @@ public class MapGui : MonoBehaviour {
             {
                 CurrentGameState.SetWinModifiers(current_location.modifiers, current_location.levelID);
                 CurrentGameState.hero = null;
+                CurrentGameState.failedlast = false;
                 Application.LoadLevel(2);
             }
         }
@@ -316,7 +326,7 @@ public class MapGui : MonoBehaviour {
 
     int fromFloatToInt(float val)
     {
-        return ((int)((val - 1.0f) * 5));
+        return ((int)((val - 1.0f) * 20));
     }
 
     string toNumerals(int val)

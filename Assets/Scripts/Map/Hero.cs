@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Hero : MonoBehaviour {
 
-    public bool endmove = false;
+    public bool endmove, completed;
     public Location targetLoc;
     public Vector3 startLocation;
     Vector3 endLocation;
@@ -35,6 +35,7 @@ public class Hero : MonoBehaviour {
         startLocation = this.transform.position;
         move = 0f;
         endmove = false;
+        completed = false;
         //this.transform.Rotate(new Vector3(-90, 0, 0));
         startrot = this.transform.rotation;
     }
@@ -54,6 +55,12 @@ public class Hero : MonoBehaviour {
                 move += Time.deltaTime / 2;
                 if (move > 0.5 && targetLoc != null)
                     targetLoc.ActivateRigidBody();
+                if (move >= 1)
+                {
+                    canmove = false;
+                    completed = true;
+                    move = 0f;
+                }
             }
         }
     }

@@ -84,7 +84,14 @@ public class HeroMovement : MonoBehaviour {
             CurrentGameState.SetWin();
             CurrentGameState.currentScore = GUIScript.SCORE;
 			//Debug.Log("End Score: "+ GUIScript.SCORE);
-			Application.LoadLevel(1);
+            if (CurrentGameState.locID == 38)
+            {
+
+                CurrentGameState.highscorecondition = EndState.Won;
+                Application.LoadLevel(3);
+            }
+            else
+                Application.LoadLevel(1);
 		}
 	}
 	
