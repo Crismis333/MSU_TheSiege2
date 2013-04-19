@@ -43,7 +43,7 @@ public class HeroAttack : MonoBehaviour {
     {
         enemy.GetComponent<EnemyAttack>().AddExplosion((ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4) * (100 + 500 * chargePercent), ObstacleController.PLAYER.transform.position + Vector3.up);
 
-        enemy.GetComponent<EnemyAttack>().KillSelf();
+        enemy.GetComponent<EnemyAttack>().KillSelf(chargePercent);
     }
 
     void OnTriggerEnter(Collider other)
@@ -63,7 +63,7 @@ public class HeroAttack : MonoBehaviour {
 		if (other.gameObject.name.Equals("EnemyBox")) {
 			other.transform.parent.GetComponent<EnemyAttack>().
 				AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 400, ObstacleController.PLAYER.transform.position + Vector3.up);
-            other.transform.parent.GetComponent<EnemyAttack>().KillSelf();
+          //  other.transform.parent.GetComponent<EnemyAttack>().KillSelf();
             gameObject.GetComponent<HeroMovement>().SlowHero(SlowTime, SlowAmount);
 		}
     }

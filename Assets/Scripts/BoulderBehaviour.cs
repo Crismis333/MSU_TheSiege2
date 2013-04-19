@@ -42,7 +42,7 @@ public class BoulderBehaviour : MonoBehaviour {
 		
 		if (other.tag.Equals("Soldier"))
 		{
-			other.GetComponent<EnemyAttack>().KillSelf();
+			other.GetComponent<EnemyAttack>().KillSelf(0.7f);
 			other.GetComponent<EnemyAttack>().AddExplosion(600,this.transform.position);
 		}
 		
