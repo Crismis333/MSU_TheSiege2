@@ -25,6 +25,7 @@ public class LevelCreator : MonoBehaviour {
 	private Queue<GameObject> sidesA;
 	private Queue<GameObject> sidesB;
 	private Queue<GameObject> roads;
+    private Queue<GameObject> specials;
 	
 	private int specialModuleIndex = -1;
 	
@@ -47,10 +48,12 @@ public class LevelCreator : MonoBehaviour {
 		roads = new Queue<GameObject>();
 		sidesA = new Queue<GameObject>();
 		sidesB = new Queue<GameObject>();
+        specials = new Queue<GameObject>();
 		
 		CreateRoads();
 		CreateSides(sidesA, true);
 		CreateSides(sidesB, false);
+        CreateSpecials();
 	}
 	
 	// Update is called once per frame
@@ -69,6 +72,15 @@ public class LevelCreator : MonoBehaviour {
 		if (tmpSideB.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64) {
 			Destroy(sidesB.Dequeue());
 		}
+
+        if (specials.Count != 0)
+        {
+            GameObject tmpSpecial = specials.Peek();
+            if (tmpSpecial.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64)
+            {
+                Destroy(specials.Dequeue());
+            }
+        }
 	}
 	
 	private void CreateRoads() {
@@ -120,6 +132,11 @@ public class LevelCreator : MonoBehaviour {
 					}
 				}
 			}
+            if (i + 3 == specialModuleIndex)
+            {
+                randomSide = 0;
+                variationCounter += 2;
+            }
 			
 			if (prevSide != -1)
 			{
@@ -183,6 +200,29 @@ public class LevelCreator : MonoBehaviour {
 			}
 		}
 	}
+
+    private void CreateSpecials()
+    {
+        while (specialModuleIndex + SPECIAL_PART_COUNT >= moduleCount)
+        {
+            specialModuleIndex--;
+        }
+
+        for (int i = specialModuleIndex; i < specialModuleIndex + SPECIAL_PART_COUNT; i++)
+        {
+            GameObject tmp;
+            Vector3 pos = transform.position;
+            pos.z = 64 * i;
+
+            string sName = Regex.Replace(specialModule.name, @"[\d-]", string.Empty);
+
+            specialModule = Resources.Load("SpecialModules/" + sName + (i - specialModuleIndex + 1), typeof(GameObject)) as GameObject;
+
+            tmp = Instantiate(specialModule, pos, specialModule.transform.rotation) as GameObject;
+
+            specials.Enqueue(tmp);
+        }
+    }
 	
 	public static float LengthConverter(int length)	{
 		return Mathf.Round(2.8333f*length + 8.5f);

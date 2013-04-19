@@ -59,6 +59,7 @@ public class EnemyAttack : MonoBehaviour {
 
     public void AddExplosion(float power, Vector3 pos)
     {
+		gameObject.GetComponent<Animator>().enabled = false;
 		if (!destroyed) {
         	foreach (Rigidbody rs in this.gameObject.GetComponentsInChildren<Rigidbody>())
         	{

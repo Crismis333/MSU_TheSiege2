@@ -7,6 +7,9 @@ public class HeroAttack : MonoBehaviour {
 
     public List<GameObject> AttackList;
 
+    public float SlowTime = 2;
+    public float SlowAmount = 2;
+
     private int selectedIndex;
 
     private GUIScript GUI;
@@ -38,8 +41,7 @@ public class HeroAttack : MonoBehaviour {
 
     void KillEnemy(GameObject enemy)
     {
-        
-        enemy.GetComponent<EnemyAttack>().AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 200, ObstacleController.PLAYER.transform.position + Vector3.up);
+        enemy.GetComponent<EnemyAttack>().AddExplosion((ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4) * (100 + 500 * chargePercent), ObstacleController.PLAYER.transform.position + Vector3.up);
 
         enemy.GetComponent<EnemyAttack>().KillSelf();
     }
@@ -51,6 +53,8 @@ public class HeroAttack : MonoBehaviour {
         //    print("Enter release box");
            
             GameObject enemy = other.transform.parent.gameObject;
+			enemy.GetComponent<Animator>().SetInteger("State",1);
+			//enemy.GetComponent<Animator>().enabled = false;
             if (!hitableEnemies.Contains(enemy))
             {
                 hitableEnemies.Add(enemy);
@@ -58,8 +62,9 @@ public class HeroAttack : MonoBehaviour {
         }
 		if (other.gameObject.name.Equals("EnemyBox")) {
 			other.transform.parent.GetComponent<EnemyAttack>().
-				AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 500, ObstacleController.PLAYER.transform.position + Vector3.up);
+				AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 400, ObstacleController.PLAYER.transform.position + Vector3.up);
             other.transform.parent.GetComponent<EnemyAttack>().KillSelf();
+            gameObject.GetComponent<HeroMovement>().SlowHero(SlowTime, SlowAmount);
 		}
     }
 
@@ -122,7 +127,7 @@ public class HeroAttack : MonoBehaviour {
                 //}
 
                 float percent = chargePercent * 100;
-                print("chargePercent: " + chargePercent + ", percent: " + percent + ", time: " + chargeTime);
+                //print("chargePercent: " + chargePercent + ", percent: " + percent + ", time: " + chargeTime);
                 GUI.engagePercent = percent;
             }
         }      
