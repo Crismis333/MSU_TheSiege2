@@ -14,10 +14,14 @@ public class EnemyAttack : MonoBehaviour {
 	
 	private bool destroyed = false;
 
+    private ParticleSystem ps;
+
     // Use this for initialization
     void Start()
     {
         player = ObstacleController.PLAYER;
+        ps = gameObject.GetComponentInChildren<ParticleSystem>();
+        ps.Stop();
     }
 
     //void enterInRange()
@@ -49,18 +53,27 @@ public class EnemyAttack : MonoBehaviour {
         //	player.GetComponent<HeroAttack>().RemoveFromList(gameObject, isChosen);
     }
 
-    public void KillSelf()
+    /// <summary>
+    /// Initiates particle system
+    /// </summary>
+    /// <param name="power">The power that the enemy is hit with [0, 1]</param>
+    public void KillSelf(float power)
     {
         //inRange = false;
         //isDone = true;
      //   player.GetComponent<HeroAttack>().RemoveFromList(gameObject, isChosen);
-        Destroy(selectedIndicator);
+      //  Destroy(selectedIndicator);
+        float basePower = 1f;
+        float interval = 4f;
+        ps.startSpeed = basePower + power * interval;
+        ps.Play();
     }
 
     public void AddExplosion(float power, Vector3 pos)
     {
 		gameObject.GetComponent<Animator>().enabled = false;
 		if (!destroyed) {
+           
         	foreach (Rigidbody rs in this.gameObject.GetComponentsInChildren<Rigidbody>())
         	{
             	rs.isKinematic = false;
@@ -81,7 +94,10 @@ public class EnemyAttack : MonoBehaviour {
 	// Update is called once per frame
     void Update()
     {
-
+        if (destroyed)
+        {
+            ps.transform.position = gameObject.transform.FindChild("Bip001 Spine002").transform.position;
+        }
         //if (!inRange)
         //{
         //    if (gameObject.transform.position.z < player.transform.position.z + AwareRange)

@@ -11,6 +11,8 @@ public class CameraLock : MonoBehaviour {
 
     private float y_bump;
 
+    public bool UseBump = true;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -21,7 +23,7 @@ public class CameraLock : MonoBehaviour {
         Vector3 newPos = Target.transform.position;
 
         newPos.x += OffsetX;
-        newPos.y += OffsetY + Mathf.Sin(y_bump) * 0.1f;
+        newPos.y += OffsetY + (UseBump ? Mathf.Sin(y_bump) * 10f * Time.deltaTime : 0);
         newPos.z += OffsetZ;
 
         y_bump += 0.15f;
