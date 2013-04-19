@@ -17,6 +17,7 @@ public class HeroAttack : MonoBehaviour {
     private bool charging;
     private float chargePercent, chargeTime;
     public float MaxCharge = 1.5f; // Time in seconds to fully charge
+    const float MIN_CHARGE = 0.3f;
 
     private List<GameObject> hitableEnemies;
 
@@ -143,17 +144,21 @@ public class HeroAttack : MonoBehaviour {
             {
                 if (hitableEnemies.Count > 0)
                 {
+                    
                     HitAccuracy ha = new HitAccuracy();
                     ha.Accuracy = chargePercent;
                     ha.NumberOfHits = hitableEnemies.Count;
 
                     print(ha.ToString());
 
-                    GUI.HitList.Add(ha);
+                    GUI.AddHit(ha);
 
-                    foreach (GameObject enemy in hitableEnemies)
+                    if (chargePercent > MIN_CHARGE)
                     {
-                        KillEnemy(enemy);
+                        foreach (GameObject enemy in hitableEnemies)
+                        {
+                            KillEnemy(enemy);
+                        }
                     }
                     hitableEnemies.Clear();
                 }

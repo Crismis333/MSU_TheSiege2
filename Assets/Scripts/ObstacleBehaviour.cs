@@ -41,6 +41,22 @@ public class ObstacleBehaviour : MonoBehaviour {
                 ps.Play();
 			destroyed = true;
 		}
+
+        if (!destroyed && other.tag.Equals("Soldier"))
+        {
+            print("Moving soldier");
+            float x = other.transform.position.x;
+            if (x < 0)
+            {
+                // Move right
+                other.transform.position = other.transform.position + new Vector3(1, 0, 0);
+            }
+            else
+            {
+                // Move left
+                other.transform.position = other.transform.position + new Vector3(-1, 0, 0);
+            }
+        }
 		
 		if (!destroyed && other.tag.Equals("Boulder")) {
 			foreach(Rigidbody rb in this.GetComponentsInChildren<Rigidbody>())

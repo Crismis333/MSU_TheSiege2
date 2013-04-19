@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class GUIScript : MonoBehaviour {
 	
@@ -104,6 +105,70 @@ public class GUIScript : MonoBehaviour {
         //GUI.DrawTexture(new Rect(Screen.width - 30 - scrollMidOffset.x * 2 + 1 - 128, 0, 128, 64), runningSoldiers1);
 
         GUI.EndGroup();
+    }
+
+    private int ConvertHitRate(float hitRate)
+    {
+        if (hitRate > 0.98)
+        {
+            return 10;
+        }
+        if (hitRate > 0.95)
+        {
+            return 9;
+        }
+        if (hitRate > 0.90)
+        {
+            return 8;
+        }
+        if (hitRate > 0.80)
+        {
+            return 7;
+        }
+        if (hitRate > 0.70)
+        {
+            return 6;
+        }
+        if (hitRate > 0.60)
+        {
+            return 5;
+        }
+        if (hitRate > 0.50)
+        {
+            return 4;
+        }
+        if (hitRate > 0.40)
+        {
+            return 3;
+        }
+        if (hitRate > 0.30)
+        {
+            return 2;
+        }
+        return 1;
+    }
+
+    public void AddHit(HitAccuracy hit)
+    {
+        HitList.Add(hit);
+        float eff = CalculateEfficiency();
+        print("Efficiency: " + eff);
+    }
+
+    float CalculateEfficiency()
+    {
+        int size = 5;
+        size = Math.Min(size, HitList.Count);
+
+        int total = 0;
+
+        for (int i = 0; i < size; i++)
+        {
+            int rate = ConvertHitRate(HitList[HitList.Count - 1 - i].Accuracy);
+            total += rate;
+        }
+
+        return (float)total / size;
     }
 
     void OnGUI()

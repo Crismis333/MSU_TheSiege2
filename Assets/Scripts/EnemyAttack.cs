@@ -96,7 +96,7 @@ public class EnemyAttack : MonoBehaviour {
     {
         if (destroyed)
         {
-            ps.transform.position = gameObject.transform.FindChild("Bip001 Spine002").transform.position;
+     //       ps.transform.position = gameObject.transform.FindChild("Bip001 Spine002").transform.position;
         }
         //if (!inRange)
         //{
