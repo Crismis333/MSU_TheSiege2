@@ -46,16 +46,20 @@ public class MapGui : MonoBehaviour {
             GUI.Label(new Rect(15 + 255, 25, 128, 128), "Length: " + toNumerals(current_location.difficulty_length));
             GUI.color = Color.white;
             Vector2 sizeOfLabel = GUI.skin.label.CalcSize(new GUIContent(current_location.description));
+
             if (sizeOfLabel.y > 150)
             {
-                scrollPos = GUI.BeginScrollView(new Rect(10, 70+20, 330, 140), scrollPos, new Rect(0, 0, 0, sizeOfLabel.y), false, true);
+                scrollPos = GUI.BeginScrollView(new Rect(10, 70 + 20, 330, 140), scrollPos, new Rect(0, 0, 0, sizeOfLabel.y), false, true);
                 GUI.color = Color.black;
                 GUI.Label(new Rect(15, 0, 335, sizeOfLabel.y), current_location.description);
-                GUI.color = Color.white;
                 GUI.EndScrollView();
             }
             else
+            {
+                GUI.color = Color.black;
                 GUI.Label(new Rect(15, 50 + 20, 335, sizeOfLabel.y), current_location.description);
+            }
+            GUI.color = Color.white;
         }
         //GUI.Box(new Rect(0, 200, 350, 250), "");
         GUI.color = Color.black;
@@ -100,12 +104,12 @@ public class MapGui : MonoBehaviour {
             GUI.color = Color.red;
             if ((current_location.modifiers.Contains(Modifier.Soldier)))
                 GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 1 * 20, 128, 128), "+");
-            if ((current_location.modifiers.Contains(Modifier.Pit)))
-                GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 2 * 20, 128, 128), "+");
+            //if ((current_location.modifiers.Contains(Modifier.Pit)))
+            //    GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 2 * 20, 128, 128), "+");
             if ((current_location.modifiers.Contains(Modifier.Obstacle)))
-                GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 3 * 20, 128, 128), "+");
+                GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 2 * 20, 128, 128), "+");
             if ((current_location.modifiers.Contains(Modifier.Catapult)))
-                GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 4 * 20, 128, 128), "+");
+                GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 3 * 20, 128, 128), "+");
             if ((current_location.modifiers.Contains(Modifier.Jump)))
                 GUI.Label(new Rect(15 + 40 + 100 + 40, 215 + 20 + 6 * 20, 128, 128), "+");
             if ((current_location.modifiers.Contains(Modifier.MoveSpeed)))
@@ -163,11 +167,12 @@ public class MapGui : MonoBehaviour {
 
         CurrentGameState.previousPreviousPosition = CurrentGameState.previousPosition;
         CurrentGameState.previousPosition = current_location.transform.position;
-        CurrentGameState.hero.MoveToLoc(current_location);
+        CurrentGameState.hero.endmove = true;
+        CurrentGameState.hero.MoveToLoc(current_location,0);
         CurrentGameState.loc = null;
 
         //CurrentGameState.locID = current_location.levelID;
-        current_location.ActivateRigidBody();
+        //current_location.ActivateRigidBody();
         //CurrentGameState.completedlevels.Add(current_location.levelID);
         Screen.lockCursor = true;
 		
@@ -185,7 +190,7 @@ public class MapGui : MonoBehaviour {
         started = false;
         stopped = true;
         countdown = 1f;
-        startcountdown = 3f;
+        startcountdown = 1.5f;
         //Application.LoadLevel(2);
 
     }
@@ -229,8 +234,7 @@ public class MapGui : MonoBehaviour {
         {
             startHero = false;
             CurrentGameState.CreateHero();
-            CurrentGameState.hero.transform.position = CurrentGameState.previousPosition;
-            CurrentGameState.hero.MoveToLoc(CurrentGameState.loc);
+            CurrentGameState.hero.transform.position = CurrentGameState.previousPreviousPosition;
 
             foreach (Location loc1 in CurrentGameState.loc.locations)
             {
@@ -251,7 +255,11 @@ public class MapGui : MonoBehaviour {
         {
             startcountdown -= Time.deltaTime;
             if (startcountdown < 0)
-                countdown -= 0.02f;
+                if (started)
+                    countdown -= 0.02f;
+                else
+                    countdown -= 0.01f;
+            
 
             if (started)
             {
@@ -263,6 +271,12 @@ public class MapGui : MonoBehaviour {
                             mapmove.CenterCamera(CurrentGameState.loc.transform);
 
                         Time.timeScale = 1;
+                        
+                        CurrentGameState.hero.transform.position = CurrentGameState.previousPreviousPosition;
+                        CurrentGameState.hero.targetLoc = CurrentGameState.loc;
+                        CurrentGameState.hero.MoveToLoc(CurrentGameState.loc,0.5f);
+                        if (CurrentGameState.locID != 0)
+                            CurrentGameState.hero.LookAtLoc(CurrentGameState.loc);
                         GameObject o = GameObject.Find("PreviousLineCreator");
                         o.GetComponent<PreviousLines>().Init(CurrentGameState.hero);
                         startReset = false;

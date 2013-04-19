@@ -74,6 +74,7 @@ public class Location : MonoBehaviour {
             CurrentGameState.JustStarted = false;
             CurrentGameState.locID = this.levelID;
             CurrentGameState.previousPosition = this.transform.position;
+            CurrentGameState.previousPreviousPosition = this.transform.position;
             CurrentGameState.completedLevelLocations.Add(this.transform.position);
         }
         if (CurrentGameState.locID == this.levelID)
@@ -105,13 +106,30 @@ public class Location : MonoBehaviour {
             }*/
         }
         if (CurrentGameState.completedlevels.Contains(this.levelID))
-            ActivateRigidBody();
+        {
+            if (CurrentGameState.loc != this)
+                ActivateRigidBody();
+        }
         else
         {
             this.GetComponent<CapsuleCollider>().enabled = false;
             foreach (MeshRenderer mr in this.GetComponentsInChildren<MeshRenderer>())
                 mr.enabled = false;
         }
+        description += "\nTaking this route will lead to:";
+        if ((modifiers.Contains(Modifier.Soldier)))
+            description += "\n- fewer soldiers";
+        if ((modifiers.Contains(Modifier.Obstacle)))
+            description += "\n- less obstacles";
+        if ((modifiers.Contains(Modifier.Catapult)))
+            description += "\n- less catapults";
+        if ((modifiers.Contains(Modifier.Jump)))
+            description += "\n- increase in jumping speed";
+        if ((modifiers.Contains(Modifier.MoveSpeed)))
+            description += "\n- faster running speed";
+        //if ((modifiers.Contains(Modifier.SlowDown)))
+            //description += "\nTaking this route will allow you to charge more frequently.";
+
     }
 
     private void SetupLineRenderer(LineRenderer lr, Location lo)
