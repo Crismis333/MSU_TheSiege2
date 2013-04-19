@@ -138,10 +138,11 @@ public class GUIScript : MonoBehaviour {
        
         if (BarActive)
         {
-            if (engagePercent > 0 && engagePercent < 97)
+            if (engagePercent > 0 && engagePercent < 100.1)
             {
-                float pos = engagePercent / 100 * width;
+                float pos = engagePercent / 95 * width / 2;
                 GUI.DrawTexture(new Rect(Screen.width / 2 - 250 - swordLeft.width / 2 + pos, Screen.height - 90 - swordLeft.height / 2 + 6, swordLeft.width, swordLeft.height), swordLeft);
+                GUI.DrawTexture(new Rect(Screen.width / 2 + 250 - swordLeft.width / 2 - pos, Screen.height - 90 - swordLeft.height / 2 + 6, swordLeft.width, swordLeft.height), swordRight);
                 //  print("Engagepercent: " + engagePercent);
             //    GUI.Box(new Rect(left + pos, top, 2, height), new GUIContent(""));
             }
