@@ -17,8 +17,8 @@ public class HeroAttack : MonoBehaviour
 
     private bool charging;
     private float chargePercent, lastChargePercent, chargeTime;
-    public float MaxCharge = 1.5f; // Time in seconds to fully charge
-    public const float MIN_CHARGE = 0.3f;
+    public float MaxCharge = 1.2f; // Time in seconds to fully charge
+    public const float MIN_CHARGE = 0.1f;
     private HeroMovement hm;
 
     private List<GameObject> hitableEnemies;
@@ -190,6 +190,7 @@ public class HeroAttack : MonoBehaviour
                     //print(ha.ToString());
 
                     GUI.AddHit(ha);
+                    GUI.AttackFeedback(chargePercent);
 
                     if (chargePercent > MIN_CHARGE)
                     {

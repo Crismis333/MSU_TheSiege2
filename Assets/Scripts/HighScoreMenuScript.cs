@@ -47,7 +47,7 @@ public class HighScoreMenuScript : MonoBehaviour {
                         GUI.Label(new Rect(0, 2 * 35, 790, 64), "But you still made the high score.");
                         break;
                     }
-        }
+            }
 
             GUI.Label(new Rect(0, 4 * 35, 790, 64), "Final score      ");
             GUI.Label(new Rect(0, 6 * 35, 790, 64), "Name: ");
@@ -109,12 +109,14 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
             GUI.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, 1 - countdown));
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+            GUI.EndGroup();
         }
         else if (returned)
         {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
             GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, 1 - countdown));
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+            GUI.EndGroup();
         }
     }
 

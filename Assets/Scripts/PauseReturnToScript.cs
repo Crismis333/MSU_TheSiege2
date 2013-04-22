@@ -39,6 +39,7 @@ public class PauseReturnToScript : MonoBehaviour {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
             GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, 1 - countdown));
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+            GUI.EndGroup();
         }
     }
 

@@ -44,14 +44,15 @@ public class DeathScreenScript : MonoBehaviour {
                 GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
                 GUI.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, 1 - countdown));
                 GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+                GUI.EndGroup();
             }
             else if (gaveup || returned)
             {
                 GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
                 GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, 1 - countdown));
                 GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+                GUI.EndGroup();
             }
-            GUI.EndGroup();
     }
 
     void Start()

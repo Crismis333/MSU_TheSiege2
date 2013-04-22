@@ -190,6 +190,7 @@ public class MapGui : MonoBehaviour {
             LevelCreator.SIDE_MODULE_LIST.Add(go.name);
         }
 
+        LevelCreator.SPECIAL_MODULE = "";
         if (current_location.SpecialModule != null)
             LevelCreator.SPECIAL_MODULE = current_location.SpecialModule.name;
         LevelCreator.SPECIAL_PART_COUNT = current_location.SpecialPartCount;

@@ -127,12 +127,16 @@ public class LevelCreator : MonoBehaviour {
             if (i >= specialModuleIndex && i < specialModuleIndex + SPECIAL_PART_COUNT)
             {
                 forceSide = false;
+                transitionState = -1;
                 continue;
             }
 			
 
 			if (transitionState == -1 && !forceSide) {
-				randomSide = Random.Range(0,sideModules.Count);
+                if (i < specialModuleIndex)
+                    randomSide = Random.Range(1, sideModules.Count);
+                else
+				    randomSide = Random.Range(0,sideModules.Count);
 				if (variationCounter >= variationCap) {
 					int q = randomSide;
 					while(q == randomSide) {
@@ -140,10 +144,8 @@ public class LevelCreator : MonoBehaviour {
 					}
 				}
 			}
-            if (((i + 4 + Mathf.Max(transitionState, 0) == specialModuleIndex) || 
-                (i + 3 + Mathf.Max(transitionState, 0) == specialModuleIndex) || 
-                (prevSide == 0 && i + 6 == specialModuleIndex)) && 
-                !forceSide)
+            if ((i + 2 <= specialModuleIndex && i + 5 >= specialModuleIndex && transitionState == 1) ||
+                (i + 3 == specialModuleIndex && transitionState == -1))
             {
                 randomSide = 0;
                 variationCounter += SPECIAL_PART_COUNT - 1;
@@ -159,17 +161,11 @@ public class LevelCreator : MonoBehaviour {
                 if (!tmpName.Equals(prevName) && transitionState == -1)
                 {
                     transitionState = 0;
-                    if (!forceSide)
-                        variationCounter = 0;
+                    variationCounter = 0;
 				}
                 else
                 {
                     variationCounter++;
-                }
-
-                if (tmpName.Equals(prevName) && forceSide)
-                {
-                    transitionState = -1;
                 }
 
                 string realName = sideModules[randomSide].name;

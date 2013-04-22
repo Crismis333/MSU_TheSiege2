@@ -29,6 +29,9 @@ public class GUIScript : MonoBehaviour {
     private float soldierAnim;
     private float countdown;
 
+    private float hitFeedbackTimer = 0;
+    private string hitFeedback = "";
+
     public static float Multiplier = 1;
 
 	// Use this for initialization
@@ -64,6 +67,8 @@ public class GUIScript : MonoBehaviour {
                 lingerTimer += Time.deltaTime;
             }
         }
+
+        hitFeedbackTimer = Mathf.Max(hitFeedbackTimer - Time.deltaTime, 0);
 	}
 
     string TrimFloat(float f)
@@ -74,6 +79,7 @@ public class GUIScript : MonoBehaviour {
     void Level_Interface()
     {
         GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+
         if (backgroundScrollScore != null)
         {
             GUI.DrawTexture(new Rect(Screen.width - 225 + scrollScoreOffset.x, 25 + scrollScoreOffset.y, backgroundScrollScore.width, backgroundScrollScore.height), backgroundScrollScore);
@@ -82,6 +88,7 @@ public class GUIScript : MonoBehaviour {
         GUI.color = Color.black;
         GUI.Label(new Rect(Screen.width - 225 + 15, 25 + 15-5, 200, 75), "Score:   "+ SCORE);
         GUI.Label(new Rect(Screen.width - 225 + 15, 25 + 15*2, 200, 75), "Multiplier:   x" + Multiplier);
+
         GUI.color = Color.white;
         if (backgroundScrollLeft != null)
         {
@@ -102,17 +109,21 @@ public class GUIScript : MonoBehaviour {
         //GUI.DrawTexture(new Rect(Screen.width / 2 - bloodsplatter.width / 2, Screen.height - 90 - bloodsplatter.height / 2 + 6, bloodsplatter.width, bloodsplatter.height), bloodsplatter);
         GUI.EndGroup();
 
-        GUI.BeginGroup(new Rect(15 + scrollMidOffset.x, Screen.height - 64 - 6, Screen.width - 30 - scrollMidOffset.x * 2 + 1, Screen.height));
-        //GUI.Box(new Rect(15, Screen.height - 65, Screen.width - 30, 50), "");
-        GUI.DrawTexture(new Rect(currentZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2), 0, 128, 64), runningSoldiers1);
-       
-        if (soldierAnim > 0.5)
-            GUI.DrawTexture(new Rect(armyZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2), 0, 128, 64), runningSoldiers1);
-        else
-            GUI.DrawTexture(new Rect(armyZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2), 0, 128, 64), runningSoldiers2);
-        //GUI.DrawTexture(new Rect(Screen.width - 30 - scrollMidOffset.x * 2 + 1 - 128, 0, 128, 64), runningSoldiers1);
 
-        GUI.EndGroup();
+        if (runningSoldiers1 != null && runningSoldiers2 != null)
+        {
+            GUI.BeginGroup(new Rect(15 + scrollMidOffset.x, Screen.height - 64 - 6, Screen.width - 30 - scrollMidOffset.x * 2 + 1, Screen.height));
+            //GUI.Box(new Rect(15, Screen.height - 65, Screen.width - 30, 50), "");
+            GUI.DrawTexture(new Rect(currentZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2), 0, 128, 64), runningSoldiers1);
+
+            if (soldierAnim > 0.5)
+                GUI.DrawTexture(new Rect(armyZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2), 0, 128, 64), runningSoldiers1);
+            else
+                GUI.DrawTexture(new Rect(armyZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2), 0, 128, 64), runningSoldiers2);
+            //GUI.DrawTexture(new Rect(Screen.width - 30 - scrollMidOffset.x * 2 + 1 - 128, 0, 128, 64), runningSoldiers1);
+
+            GUI.EndGroup();
+        }
     }
 
     private int ConvertHitRate(float hitRate)
@@ -208,6 +219,15 @@ public class GUIScript : MonoBehaviour {
             GUI.skin = gSkin;
             Level_Interface();
 
+            gSkin.label.alignment = TextAnchor.MiddleCenter;
+            gSkin.label.fontSize = 20;
+            if (hitFeedbackTimer > 0)
+                GUI.Label(new Rect(Screen.width / 2 - 60, 30 , 120, 30), hitFeedback);
+            else
+                hitFeedback = "";
+            gSkin.label.fontSize = 0;
+            gSkin.label.alignment = TextAnchor.UpperLeft;
+
             EngageReleaseBar();
         }
     }
@@ -254,6 +274,26 @@ public class GUIScript : MonoBehaviour {
     {
         showLinger = true;
         lingerTimer = 0;
+    }
+
+    public void AttackFeedback(float chargePercent)
+    {
+        int accuracy = ConvertHitRate(chargePercent);
+
+        switch (accuracy)
+        {
+            case 1: 
+            case 2: 
+            case 3: hitFeedback = "Bad!"; break;
+            case 4: 
+            case 5: hitFeedback = "Average!"; break;
+            case 6: 
+            case 7: hitFeedback = "Good!"; break;
+            case 8: 
+            case 9: hitFeedback = "Excellent!"; break;
+            case 10: hitFeedback = "Perfect!"; break;
+        }
+        hitFeedbackTimer = 2.0f;
     }
 }
 
