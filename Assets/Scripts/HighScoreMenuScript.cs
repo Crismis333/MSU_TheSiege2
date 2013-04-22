@@ -123,7 +123,10 @@ public class HighScoreMenuScript : MonoBehaviour {
     void Start()
     {
         setname = "";
-        started = true;
+        if (!mainMenu)
+            started = true;
+        else
+            started = false;
         returned = false;
         countdown = 1f;
         if (!mainMenu)
