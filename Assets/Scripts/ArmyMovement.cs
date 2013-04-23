@@ -14,11 +14,14 @@ public class ArmyMovement : MonoBehaviour {
 	private HeroMovement hm;
 	
 	void Start () {
-		hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
+        if (ObstacleController.PLAYER != null)
+		    hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (hm == null && ObstacleController.PLAYER != null)
+            hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
 		
 		pZ = ObstacleController.PLAYER.transform.position.z;
 		aZ = transform.position.z;

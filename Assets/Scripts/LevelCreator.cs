@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 public class LevelCreator : MonoBehaviour {
-	
+
+    public static bool INF_MODE = false;
 	public static int LEVEL_LENGTH = 1;
 	public static int PIT_RATIO = 1;
 
