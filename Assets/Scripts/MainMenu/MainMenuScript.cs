@@ -9,12 +9,24 @@ public class MainMenuScript : MonoBehaviour {
     public MusicVolumeSetter music;
 
     private float countdown;
+<<<<<<< HEAD
     private bool stopped, started, usingMouse, movedUp, movedDown, firstGUI, activated;
     private int keySelect;
     private Texture2D background;
     private Color activeColor, inactiveColor;
     private string mouseover;
 
+=======
+    private bool stopped, firstGUI;
+    private Texture2D background;
+    private Color activeColor, inactiveColor;
+
+    private bool started, usingMouse, movedUp, movedDown, activated;
+    private int keySelect;
+    private string mouseover;
+
+
+>>>>>>> Syncing scenes with navigation script
 
 	void Menu_Main() {
         if (!usingMouse)
@@ -158,15 +170,28 @@ public class MainMenuScript : MonoBehaviour {
     void Start()
     {
         activated = false;
+<<<<<<< HEAD
         firstGUI = true;
+=======
+>>>>>>> Syncing scenes with navigation script
         usingMouse = false;
         movedUp = false;
         movedDown = false;
         Screen.showCursor = false;
+<<<<<<< HEAD
         music.useGlobal = false;
         started = true;
         countdown = 1f;
         keySelect = -1;
+=======
+        keySelect = -1;
+        firstGUI = true;
+
+        music.useGlobal = false;
+        started = true;
+        countdown = 1f;
+
+>>>>>>> Syncing scenes with navigation script
     }
 
     void Update()
