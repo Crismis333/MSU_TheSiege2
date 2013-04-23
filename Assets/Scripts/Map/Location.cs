@@ -118,6 +118,7 @@ public class Location : MonoBehaviour {
                 mr.enabled = false;
         }
 
+        /*
         float advantage = Random.value;
 
         if (advantage > 0.9)
@@ -141,7 +142,7 @@ public class Location : MonoBehaviour {
         else
         {
             modifiers.Add(getRandomModifier());   
-        }
+        }*/
 
         description += "\nTaking this route will lead to:";
         if ((modifiers.Contains(Modifier.Soldier)))

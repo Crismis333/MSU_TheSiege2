@@ -32,6 +32,7 @@ public class GUIScript : MonoBehaviour {
     private float hitFeedbackTimer = 0;
     private string hitFeedback = "";
 
+    public static bool PERFECT_RUN = true;
     public static float Multiplier = 1;
 
 	// Use this for initialization
@@ -264,6 +265,11 @@ public class GUIScript : MonoBehaviour {
                 GUI.Label(new Rect(Screen.width / 2 - 60, 30 , 120, 30), hitFeedback);
             else
                 hitFeedback = "";
+
+            gSkin.label.fontSize = 40;
+            if (ObstacleController.PLAYER.GetComponent<HeroMovement>().Rage >= 1)
+                GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200), "CHARGE!!");
+
             gSkin.label.fontSize = 0;
             gSkin.label.alignment = TextAnchor.UpperLeft;
 

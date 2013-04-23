@@ -97,6 +97,8 @@ public class EnemyCreator : MonoBehaviour
     }
 	
 	public float RatioToSeconds(int ratio) {
+        if (ratio > 6)
+            ratio = 6;
 		return (5.333f * Mathf.Pow(10, -0.125076810788137f * ratio));
 	}
 }

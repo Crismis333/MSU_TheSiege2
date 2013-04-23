@@ -35,12 +35,13 @@ public class BoulderBehaviour : MonoBehaviour {
     {
         if (other.tag.Equals("Player"))
         {
+            HeroMovement hm = other.GetComponent<HeroMovement>();
             Vector3 exppos = ObstacleController.PLAYER.transform.position;
             exppos.y = 1;
             exppos.z -= 1;
-            gameObject.GetComponent<Rigidbody>().AddExplosionForce((other.GetComponent<HeroMovement>().CurrentSpeed / 4)*10, exppos, 0);
+            gameObject.GetComponent<Rigidbody>().AddExplosionForce((hm.CurrentSpeed / 4)*10, exppos, 0);
             Physics.IgnoreCollision(gameObject.collider, other);
-            other.GetComponent<HeroMovement>().SlowHero(SlowTime, SlowAmount);
+            hm.SlowHero(SlowTime, SlowAmount);
         }
 		
 		if (other.tag.Equals("Soldier"))

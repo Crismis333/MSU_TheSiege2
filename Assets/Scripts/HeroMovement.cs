@@ -8,11 +8,8 @@ public class HeroMovement : MonoBehaviour {
 	
 	private float currentSpeed;
 	
-	public float CurrentSpeed {
-		get { return currentSpeed; }
-	}
+	public float CurrentSpeed { get { return currentSpeed; } }
 
-    public float SpeedUp = 2.0f;
     public float SpeedDown = 2.0f;
 
     private CollisionFlags collisionFlag;
@@ -21,7 +18,7 @@ public class HeroMovement : MonoBehaviour {
 	
 	public bool Slowed = false;
 	private float slowTimer = 0.0f;
-	private float slowMax = 0.0f;
+	private float slowMax = 1.0f;
 	private float slowAmount = 0.0f;
 
     private bool isControllable = true;
@@ -40,6 +37,24 @@ public class HeroMovement : MonoBehaviour {
     private float jumpRepeatTime = 0.05f;
     private float jumpTimeout = 0.15f;
 
+    private float speedUp = 0;
+
+    public float SpeedUp
+    {
+        get { return speedUp; }
+        set { speedUp = Mathf.Min(4.0f, value); }
+    }
+
+    private bool charging = false;
+
+    public bool Charging { get { return charging; } }
+
+    private float chargeSpeed = 5;
+    private float chargeTimeMax = 5;
+    private float chargeTime = 0;
+    [HideInInspector]
+    public float Rage = 0;
+
 	// Use this for initialization
 	void Start () {
         currentSpeed = MoveSpeed;
@@ -51,6 +66,13 @@ public class HeroMovement : MonoBehaviour {
         if (Input.GetButtonDown("Jump"))
         {
             lastJumpButtonTime = Time.time;
+        }
+
+        if (Input.GetButtonDown("Fire2") && Rage >= 1) {
+
+            charging = true;
+            chargeTime = chargeTimeMax;
+            Rage = 0;
         }
 
 		Run();
@@ -79,6 +101,19 @@ public class HeroMovement : MonoBehaviour {
 				slowTimer = 0.0f;
 			}
 		}
+
+        if (Charging)
+        {
+            chargeTime -= Time.deltaTime;
+            if (chargeTime <= 0.0f) {
+                charging = false;
+                chargeTime = 0.0f;
+            }
+        }
+
+        if (Rage >= 0 && Rage < 1) {
+            Rage = Mathf.Max(Rage - (0.05f * Time.deltaTime), 0);
+        }
 		
 		if (transform.position.z >= LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64-32 && !LevelCreator.INF_MODE) {
             CurrentGameState.SetWin();
@@ -100,22 +135,19 @@ public class HeroMovement : MonoBehaviour {
 
         float v = Input.GetAxisRaw("Vertical");
         float h = Input.GetAxisRaw("Horizontal");
-		
-		if(!Slowed) {
-	        if (v > 0.1)
-	            moveDirection.z = MoveSpeed + SpeedUp * v;
-	        else if (v < -0.1)
-	            moveDirection.z = MoveSpeed + SpeedDown * v;
-	        else
-	            moveDirection.z = MoveSpeed;
-		}
-		else {
-			if (v < -0.1)
-				moveDirection.z = MoveSpeed - Mathf.Max(slowAmount * (slowTimer / slowMax), SpeedDown * -v);
-			else
-				moveDirection.z = MoveSpeed - slowAmount * (slowTimer / slowMax);
-			
-		}
+
+        if (v < -0.1 && !charging)
+            moveDirection.z = MoveSpeed - Mathf.Max(slowAmount * (slowTimer / slowMax), SpeedDown * -v) + SpeedUp;
+        else if (charging)
+            moveDirection.z = MoveSpeed + SpeedUp + chargeSpeed;
+        else
+            moveDirection.z = MoveSpeed - slowAmount * (slowTimer / slowMax) + SpeedUp;
+
+        if (SpeedUp <= 0)
+            SpeedUp = 0;
+        else
+            SpeedUp -= 0.2f * Time.deltaTime;
+
 		currentSpeed = moveDirection.z;
         
         moveDirection.x = StrafeSpeed * h;
@@ -174,8 +206,11 @@ public class HeroMovement : MonoBehaviour {
 			slowMax = time;
 			slowAmount = amount * (CurrentSpeed / MoveSpeed);
 		}
-	}
 
+        SpeedUp = 0;
+        Rage = 0;
+        GUIScript.PERFECT_RUN = false;
+    }
 
     private bool IsGrounded()
     {
