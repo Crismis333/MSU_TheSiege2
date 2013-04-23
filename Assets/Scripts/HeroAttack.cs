@@ -44,8 +44,8 @@ public class HeroAttack : MonoBehaviour
         //  Time.timeScale = 0.5f;
         LstSquQuadRegr solvr = new LstSquQuadRegr();
         solvr.AddPoints(0, 0);
-        solvr.AddPoints(MaxCharge * 0.9, 1);
-        solvr.AddPoints(2 * MaxCharge * 0.9, 0);
+        solvr.AddPoints(MaxCharge / 2, 1);
+        solvr.AddPoints(MaxCharge, 0);
         a = (float)solvr.aTerm();
         b = (float)solvr.bTerm();
         c = (float)solvr.cTerm();
