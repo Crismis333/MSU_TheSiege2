@@ -35,7 +35,7 @@ public class MainMenuScript : MonoBehaviour {
         GUI.SetNextControlName("Highscores");
         if (GUI.Button(new Rect(0, 2 * 70, Screen.width - 30, 64), "Highscores")) { Menu_Main_Highscores(); }
         GUI.SetNextControlName("Quit");
-        if (GUI.Button(new Rect(0, 3 * 70, Screen.width - 30, 64), "Quit")) { Menu_Main_Quit(); }
+        if (GUI.Button(new Rect(0, 3 * 70, Screen.width - 30, 64), "Quit")) { Menu_Main_Quit();  }
 
         GUI.Box(new Rect(0, 0 * 70, Screen.width - 30, 64), new GUIContent("", "0"));
         GUI.Box(new Rect(0, 1 * 70, Screen.width - 30, 64), new GUIContent("", "1"));
@@ -161,6 +161,7 @@ public class MainMenuScript : MonoBehaviour {
 
     void Update()
     {
+        //print("skin is null: " + (gSkin.button.hover.background == null) + ", mouseactivated: " + Camera.mainCamera.GetComponent<GUINavigation>().usingMouse);
         if (stopped || started)
         {
             

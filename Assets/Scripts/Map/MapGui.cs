@@ -13,10 +13,16 @@ public class MapGui : MonoBehaviour {
     [HideInInspector]
     public bool stopped,started;
 
+    [HideInInspector]
+    public int keyLocation;
+
     private float countdown,startcountdown;
     private bool startHero, startReset, firstGUI;
 
+    private bool backDown, nextDown;
     Vector2 scrollPos;
+
+
 
     void Map_Main()
     {
@@ -231,6 +237,9 @@ public class MapGui : MonoBehaviour {
 
     void Start()
     {
+        backDown = false;
+        nextDown = false;
+        keyLocation = -1;
         firstGUI = true;
         CurrentGameState.previousScore = CurrentGameState.currentScore;
         ResetScroll();
@@ -258,9 +267,10 @@ public class MapGui : MonoBehaviour {
             }
             else
                 CurrentGameState.hero.transform.position = CurrentGameState.previousPreviousPosition;
-
+            int i = 0;
             foreach (Location loc1 in CurrentGameState.loc.locations)
             {
+                loc1.positionInParent = i;
                 loc1.GetComponent<CapsuleCollider>().enabled = true;
                 foreach (MeshRenderer mr in loc1.GetComponentsInChildren<MeshRenderer>())
                     mr.enabled = true;
@@ -271,7 +281,7 @@ public class MapGui : MonoBehaviour {
                         mr.enabled = true;
                 }
 
-
+                i++;
             }
         }
         if (stopped || started)
@@ -282,7 +292,7 @@ public class MapGui : MonoBehaviour {
                     countdown -= 0.02f;
                 else
                     countdown -= 0.01f;
-            
+
 
             if (started)
             {
@@ -330,6 +340,42 @@ public class MapGui : MonoBehaviour {
                 Application.LoadLevel(2);
             }
         }
+        else
+        {
+            if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+            {
+                if (!backDown && Input.GetKeyDown(KeyCode.Z))
+                {
+                    backDown = true;
+                    if (keyLocation == -1 || keyLocation == 0)
+                        keyLocation = CurrentGameState.loc.locations.Length - 1;
+                    else
+                        keyLocation--;
+                    current_location = CurrentGameState.loc.locations[keyLocation];
+                    ResetScroll();
+                    CurrentGameState.hero.LookAtLoc(current_location);
+                }
+                else if (!nextDown && Input.GetKeyDown(KeyCode.X))
+                {
+                    nextDown = true;
+                    if (keyLocation == -1 || keyLocation == CurrentGameState.loc.locations.Length - 1)
+                        keyLocation = 0;
+                    else
+                        keyLocation++;
+                    current_location = CurrentGameState.loc.locations[keyLocation];
+                    ResetScroll();
+                    CurrentGameState.hero.LookAtLoc(current_location);
+                }
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    Battle_Pressed();
+                }
+            }
+        }
+        if (backDown && Input.GetKeyUp(KeyCode.Z))
+            backDown = false;
+        if (nextDown && Input.GetKeyUp(KeyCode.X))
+            nextDown = false;
     }
 
     void SetColor(int modifier)

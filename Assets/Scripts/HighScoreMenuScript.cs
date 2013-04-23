@@ -188,6 +188,15 @@ public class HighScoreMenuScript : MonoBehaviour {
             background = GUI.skin.button.hover.background;
             activeColor = GUI.skin.button.active.textColor;
             inactiveColor = GUI.skin.button.focused.textColor;
+            if (addnewScore)
+            {
+            }
+            else
+            {
+                Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
+                Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 1;
+                Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, Accept);
+            }
             firstGUI = false;
         }
         if (Input.GetKeyDown(KeyCode.Escape))

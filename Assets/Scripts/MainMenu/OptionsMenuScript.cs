@@ -70,7 +70,7 @@ public class OptionsMenuScript : MonoBehaviour {
         quality = GUI.HorizontalSlider(new Rect(250, 4 * 70, 512, 64), quality, 0.0f, 5.0f);
         quality = ((int)quality + 0.5f);
         GUI.SetNextControlName("Accept");
-        if (GUI.Button(new Rect(60, 5 * 70, 730, 64), "Accept")) { Menu_Options_Back(); }
+        if (GUI.Button(new Rect(60, 5 * 70, 730, 64), "Accept")) { Menu_Options_Back();  }
         GUI.color = Color.red;
         GUI.Label(new Rect(450, 3 * 70, 340, 64), mres.width + "x" + mres.height);
         GUI.Label(new Rect(450, 4 * 70, 340, 64), QualitySettings.names[(int)quality]);
@@ -150,6 +150,11 @@ public class OptionsMenuScript : MonoBehaviour {
     }
 
     public void Menu_Options_Back() {
+        gSkin.button.hover.background = background;
+        gSkin.horizontalSlider.hover.background = backgroundSlider;
+        gSkin.toggle.hover.background = backgroundToggle;
+        gSkin.toggle.onHover.background = backgroundToggleOn;
+        gSkin.button.focused.textColor = inactiveColor;
         if (mres.width != Screen.width || mres.height != Screen.height || fullscreen != Screen.fullScreen)
             Screen.SetResolution(mres.width, mres.height, fullscreen);
         OptionsValues.musicVolume = musicvol;

@@ -251,6 +251,13 @@ public class GUIScript : MonoBehaviour {
             this.enabled = false;
             Time.timeScale = 0;
             GetComponent<PauseMenuScript>().enabled = true;
+            Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
+            Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 5;
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
         }
         else
         {

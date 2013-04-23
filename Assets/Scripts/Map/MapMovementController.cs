@@ -11,6 +11,7 @@ public class MapMovementController : MonoBehaviour {
     bool onguidown;
     int mdowncool;
 
+
     void Start() {
         zoomedIn = true;
         mdown = false;
@@ -122,19 +123,42 @@ public class MapMovementController : MonoBehaviour {
 
         if (mdowncool > 0)
             mdowncool--;
-        float xm = Input.GetAxis("Mouse X");
-        float ym = Input.GetAxis("Mouse Y");
+        float xm, ym;
+        if (Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+        {
+            xm = Input.GetAxis("Mouse X");
+            ym = Input.GetAxis("Mouse Y");
+            if (xm > 3)
+                xm = 3;
+            else if (xm < -3)
+                xm = -3;
+            if (ym > 3)
+                ym = 3;
+            else if (ym < -3)
+                ym = -3;
+        }
+        else
+        {
+            xm = -Input.GetAxis("Horizontal");
+            ym = -Input.GetAxis("Vertical");
+        }
 
-        if (xm > 3)
-            xm = 3;
-        else if (xm < -3)
-            xm = -3;
-        if (ym > 3)
-            ym = 3;
-        else if (ym < -3)
-            ym = -3;
         if (!GetComponentInChildren<MapGui>().started && !GetComponentInChildren<MapGui>().stopped)
-            if (Input.GetMouseButton(0) && !onguidown)
+            if (Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+            {
+                if (Input.GetMouseButton(0) && !onguidown)
+                {
+                    if (xm < -0.02f && !right)
+                        pos.x += xm / multiplier;
+                    else if (xm > 0.02f && !left)
+                        pos.x += xm / multiplier;
+                    if (ym < -0.02f && !up)
+                        pos.z += ym / multiplier;
+                    else if (ym > 0.02f && !down)
+                        pos.z += ym / multiplier;
+                }
+            }
+            else
             {
                 if (xm < -0.02f && !right)
                     pos.x += xm / multiplier;
@@ -145,7 +169,6 @@ public class MapMovementController : MonoBehaviour {
                 else if (ym > 0.02f && !down)
                     pos.z += ym / multiplier;
             }
-
         pos = ClampToMap(pos);
         
 

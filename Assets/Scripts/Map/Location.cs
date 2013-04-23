@@ -16,7 +16,10 @@ public class Location : MonoBehaviour {
     public List<Modifier> modifiers;
     [HideInInspector]
     public Vector3 startLocation;
-	
+
+    [HideInInspector]
+    public int positionInParent;
+
 	public List<GameObject> SideModules;
 	public GameObject SpecialModule;
     public int SpecialPartCount;
@@ -29,6 +32,7 @@ public class Location : MonoBehaviour {
     private int offset;
     
     private bool pushed;
+
 
     void Update()
     {

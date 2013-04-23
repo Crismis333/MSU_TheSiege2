@@ -7,6 +7,12 @@ public delegate void MenuActivation();
 
 public class GUINavigation : MonoBehaviour {
 
+    public static KeyCode AButton = KeyCode.JoystickButton16;
+    public static KeyCode BButton = KeyCode.JoystickButton17;
+    public static KeyCode XButton = KeyCode.JoystickButton18;
+    public static KeyCode YButton = KeyCode.JoystickButton19;
+    public static KeyCode StartButton = KeyCode.JoystickButton9;
+    public static KeyCode BackButton = KeyCode.JoystickButton10; 
     [HideInInspector]
     public int maxKeys;
     [HideInInspector]
@@ -43,39 +49,13 @@ public class GUINavigation : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!activated)
-        {
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                activated = true;
-            }
-        }
-        else
-        {
-            if (Input.GetKeyUp(KeyCode.Return))
-            {
-                activated = false;
-                if (menuelements.ContainsKey(keySelect)) {
-                    mouseover = "";
-                    usingMouse = false;
-                    movedUp = false;
-                    movedDown = false;
-                    Screen.showCursor = false;
-
-                    //print("selecting key " + keySelect + ", elements: " + menuelements.Count);
-                    menuelements[keySelect]();
-                    keySelect = -1;
-                    return;
-                }
-            }
-        }
-        if (!usingMouse && KeyOrMouse.MouseUsed())
+        if (!usingMouse && MouseUsed())
         {
             usingMouse = true;
             Screen.showCursor = true;
             //print("mouse used!");
         }
-        if (usingMouse && KeyOrMouse.KeyUsed())
+        if (usingMouse && KeyUsed())
         {
             usingMouse = false;
             Screen.showCursor = false;
@@ -83,6 +63,33 @@ public class GUINavigation : MonoBehaviour {
         }
         if (!usingMouse)
         {
+            if (!activated)
+            {
+                if (Input.GetKeyDown(KeyCode.Return) || Input.GetButtonDown("Fire1"))
+                {
+                    activated = true;
+                }
+            }
+            else
+            {
+                if (Input.GetKeyUp(KeyCode.Return) || Input.GetButtonDown("Fire1"))
+                {
+                    activated = false;
+                    if (menuelements.ContainsKey(keySelect))
+                    {
+                        mouseover = "";
+                        usingMouse = false;
+                        movedUp = false;
+                        movedDown = false;
+                        Screen.showCursor = false;
+
+                        //print("selecting key " + keySelect + ", elements: " + menuelements.Count);
+                        menuelements[keySelect]();
+                        keySelect = -1;
+                        return;
+                    }
+                }
+            }
             if (keySelect == -1)
             {
                 if (Input.GetAxisRaw("Vertical") > 0.01)
@@ -165,14 +172,17 @@ public class GUINavigation : MonoBehaviour {
 
     public static bool MouseUsed()
     {
-
         float mv = Input.GetAxis("Mouse Y");
         float mh = Input.GetAxis("Mouse X");
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+            return true;
         return mv >= 0.01 || mv <= -0.01 || mh >= 0.01 || mh <= -0.01;
     }
 
     public static bool KeyUsed()
     {
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+            return false;
         float kv = Input.GetAxisRaw("Vertical");
         float kh = Input.GetAxisRaw("Horizontal");
         return kv >= 0.01 || kv <= -0.01 || kh >= 0.01 || kh <= -0.01;
