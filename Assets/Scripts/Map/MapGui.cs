@@ -14,7 +14,7 @@ public class MapGui : MonoBehaviour {
     public bool stopped,started;
 
     private float countdown,startcountdown;
-    private bool startHero, startReset;
+    private bool startHero, startReset, firstGUI;
 
     Vector2 scrollPos;
 
@@ -212,6 +212,13 @@ public class MapGui : MonoBehaviour {
             this.enabled = false;
             transform.parent.gameObject.GetComponent<MapMovementController>().enabled = false;
             GetComponent<PauseMenuScript>().enabled = true;
+            Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
+            Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 5;
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
         }
         else
             Map_Main();
@@ -224,6 +231,7 @@ public class MapGui : MonoBehaviour {
 
     void Start()
     {
+        firstGUI = true;
         CurrentGameState.previousScore = CurrentGameState.currentScore;
         ResetScroll();
         stopped = false;
@@ -244,7 +252,10 @@ public class MapGui : MonoBehaviour {
             startHero = false;
             CurrentGameState.CreateHero();
             if (CurrentGameState.failedlast)
+            {
                 CurrentGameState.hero.transform.position = CurrentGameState.previousPosition;
+                CurrentGameState.loc.ActivateRigidBody();
+            }
             else
                 CurrentGameState.hero.transform.position = CurrentGameState.previousPreviousPosition;
 
@@ -288,11 +299,15 @@ public class MapGui : MonoBehaviour {
                             CurrentGameState.hero.transform.position = CurrentGameState.previousPreviousPosition;
                             CurrentGameState.hero.targetLoc = CurrentGameState.loc;
                             CurrentGameState.hero.MoveToLoc(CurrentGameState.loc, 0.5f);
+                            if (CurrentGameState.locID != 0)
+                                CurrentGameState.hero.LookAtLoc(CurrentGameState.loc);
                         }
                         else
+                        {
                             CurrentGameState.hero.completed = true;
-                        if (CurrentGameState.locID != 0)
-                            CurrentGameState.hero.LookAtLoc(CurrentGameState.loc);
+                            CurrentGameState.hero.LookAtLoc(CurrentGameState.loc.locations[0]);
+                        }
+
                         GameObject o = GameObject.Find("PreviousLineCreator");
                         o.GetComponent<PreviousLines>().Init(CurrentGameState.hero);
                         startReset = false;

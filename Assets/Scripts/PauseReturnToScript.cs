@@ -12,8 +12,21 @@ public class PauseReturnToScript : MonoBehaviour {
     private float countdown;
     private bool ended;
 
+    private Texture2D background;
+    private Color activeColor, inactiveColor;
+    private bool firstGUI;
+
     void Return_Accept()
     {
+        if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+            GUI.skin.button.hover.background = null;
+        else
+            GUI.skin.button.hover.background = background;
+        if (Camera.mainCamera.GetComponent<GUINavigation>().activated)
+            GUI.skin.button.focused.textColor = activeColor;
+        else
+            GUI.skin.button.focused.textColor = inactiveColor;
+
         if (backgroundScroll != null)
         {
             GUI.BeginGroup(new Rect(Screen.width / 2 - backgroundScroll.width / 2 + scrollOffset.x, Screen.height / 2 - backgroundScroll.height / 2 + scrollOffset.y, backgroundScroll.width, backgroundScroll.height));
@@ -24,15 +37,23 @@ public class PauseReturnToScript : MonoBehaviour {
 
         //GUI.Box(new Rect(0, 0, 790, 5 * 70), "");
         GUI.color = Color.black;
+        GUI.SetNextControlName("title");
         if (quit)
             GUI.Label(new Rect(0, 1 * 70, 790, 64), "Do you really wish to quit? All progress will be lost.");
         else if (onMap)
-            GUI.Label(new Rect(0, 1 * 70, 790, 64), "Return to main menu? All progress will be lost.");
+            GUI.Label(new Rect(0, 1 * 70, 790, 64), "Give up? All progress will be lost.");
         else
             GUI.Label(new Rect(0, 1 * 70, 790, 64), "Give up on this level?");
         GUI.color = Color.white;
+        GUI.SetNextControlName("Yes");
         if (GUI.Button(new Rect(60, 3 * 70, 730, 64), "Yes")) { Return_Yes(); }
+        GUI.SetNextControlName("No");
         if (GUI.Button(new Rect(60, 4 * 70, 730, 64), "No")) { Return_No();  }
+
+        GUI.Box(new Rect(60, 3 * 70, 730, 64), new GUIContent("", "0"));
+        GUI.Box(new Rect(60, 4 * 70, 730, 64), new GUIContent("", "1"));
+        Camera.mainCamera.GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+
         GUI.EndGroup();
         if (ended)
         {
@@ -41,12 +62,32 @@ public class PauseReturnToScript : MonoBehaviour {
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
             GUI.EndGroup();
         }
+
+        GUI.skin.button.hover.background = background;
+        GUI.skin.button.focused.textColor = inactiveColor;
+
+        if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+        {
+            switch (Camera.mainCamera.GetComponent<GUINavigation>().keySelect)
+            {
+                case 0: GUI.FocusControl("Yes"); break;
+                case 1: GUI.FocusControl("No"); break;
+            }
+        }
+        else
+            GUI.FocusControl("title");
     }
 
     void OnGUI()
     {
         GUI.skin = gSkin;
-        
+        if (firstGUI)
+        {
+            background = GUI.skin.button.hover.background;
+            activeColor = GUI.skin.button.active.textColor;
+            inactiveColor = GUI.skin.button.focused.textColor;
+            firstGUI = false;
+        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Return_No();
@@ -55,17 +96,24 @@ public class PauseReturnToScript : MonoBehaviour {
             Return_Accept();
     }
 
-    void Return_No()
+    public void Return_No()
     {
         if (!ended)
         {
             quit = onMap = restart = false;
             this.enabled = false;
             GetComponent<PauseMenuScript>().enabled = true;
+            Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
+            Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 5;
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
         }
     }
 
-    void Return_Yes()
+    public void Return_Yes()
     {
         //this.enabled = false;
 
@@ -94,8 +142,8 @@ public class PauseReturnToScript : MonoBehaviour {
                 }
                 else if (onMap)
                 {
-                    CurrentGameState.Restart();
-                    Application.LoadLevel(0);
+                    CurrentGameState.highscorecondition = EndState.GaveUp;
+                    Application.LoadLevel(3);
                 }
                 else
                 {
@@ -109,5 +157,10 @@ public class PauseReturnToScript : MonoBehaviour {
                 }
             }
         }
+    }
+
+    void Start()
+    {
+        firstGUI = true;
     }
 }

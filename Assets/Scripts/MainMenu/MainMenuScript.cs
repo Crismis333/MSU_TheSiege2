@@ -8,9 +8,6 @@ public class MainMenuScript : MonoBehaviour {
     public Texture2D black;
     public MusicVolumeSetter music;
 
-    [HideInInspector]
-    public bool activated;
-
     private float countdown;
     private bool started, stopped, firstGUI;
     private Texture2D background;
@@ -101,6 +98,9 @@ public class MainMenuScript : MonoBehaviour {
         {
             this.enabled = false;
             GetComponent<OptionsMenuScript>().Menu_Options_Startup();
+            Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
+            Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 6;
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(5, GetComponent<OptionsMenuScript>().Menu_Options_Back);
         }
     }
 
@@ -110,6 +110,9 @@ public class MainMenuScript : MonoBehaviour {
         {
             this.enabled = false;
             GetComponent<HighScoreMenuScript>().enabled = true;
+            Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
+            Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 1;
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<HighScoreMenuScript>().Accept);
         }
     }
 
@@ -130,6 +133,11 @@ public class MainMenuScript : MonoBehaviour {
 		GUI.skin = gSkin;
         if (firstGUI)
         {
+            Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 4;
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, Menu_Main_Start_Game);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, Menu_Main_Options);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, Menu_Main_Highscores);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(3, Menu_Main_Quit);
             background = GUI.skin.button.hover.background;
             activeColor = GUI.skin.button.active.textColor;
             inactiveColor = GUI.skin.button.focused.textColor;
@@ -149,12 +157,6 @@ public class MainMenuScript : MonoBehaviour {
         music.useGlobal = false;
         started = true;
         countdown = 1f;
-        activated = true;
-        Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 4;
-        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, Menu_Main_Start_Game);
-        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, Menu_Main_Options);
-        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, Menu_Main_Highscores);
-        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(3, Menu_Main_Quit);
     }
 
     void Update()

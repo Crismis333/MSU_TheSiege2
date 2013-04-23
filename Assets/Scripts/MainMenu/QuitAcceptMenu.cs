@@ -76,7 +76,6 @@ public class QuitAcceptMenu : MonoBehaviour {
     {
         this.enabled = false;
         GetComponent<MainMenuScript>().enabled = true;
-        GetComponent<MainMenuScript>().activated = true;
         Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
         Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 4;
         Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<MainMenuScript>().Menu_Main_Start_Game);

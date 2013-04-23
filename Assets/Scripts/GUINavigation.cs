@@ -7,8 +7,8 @@ public delegate void MenuActivation();
 
 public class GUINavigation : MonoBehaviour {
 
+    [HideInInspector]
     public int maxKeys;
-
     [HideInInspector]
     public int keySelect;
     [HideInInspector]
@@ -55,41 +55,43 @@ public class GUINavigation : MonoBehaviour {
             if (Input.GetKeyUp(KeyCode.Return))
             {
                 activated = false;
-                mouseover = "";
-                activated = false;
-                usingMouse = false;
-                movedUp = false;
-                movedDown = false;
-                Screen.showCursor = false;
+                if (menuelements.ContainsKey(keySelect)) {
+                    mouseover = "";
+                    usingMouse = false;
+                    movedUp = false;
+                    movedDown = false;
+                    Screen.showCursor = false;
 
-                if (keySelect != -1)
+                    //print("selecting key " + keySelect + ", elements: " + menuelements.Count);
                     menuelements[keySelect]();
-                keySelect = -1;
+                    keySelect = -1;
+                    return;
+                }
             }
         }
         if (!usingMouse && KeyOrMouse.MouseUsed())
         {
             usingMouse = true;
             Screen.showCursor = true;
-            print("mouse used!");
+            //print("mouse used!");
         }
         if (usingMouse && KeyOrMouse.KeyUsed())
         {
             usingMouse = false;
             Screen.showCursor = false;
-            print("key used!");
+            //print("key used!");
         }
         if (!usingMouse)
         {
             if (keySelect == -1)
             {
-                if (Input.GetAxisRaw("Vertical") > 0)
+                if (Input.GetAxisRaw("Vertical") > 0.01)
                 {
                     keySelect = maxKeys-1;
                     movedDown = true;
                     movedUp = false;
                 }
-                else if (Input.GetAxisRaw("Vertical") < 0)
+                else if (Input.GetAxisRaw("Vertical") < -0.01)
                 {
                     keySelect = 0;
                     movedUp = true;
@@ -103,7 +105,7 @@ public class GUINavigation : MonoBehaviour {
             }
             else
             {
-                if (Input.GetAxisRaw("Vertical") > 0)
+                if (Input.GetAxisRaw("Vertical") > 0.01)
                     if (keySelect == 0)
                     {
                         if (!movedDown)
@@ -122,7 +124,7 @@ public class GUINavigation : MonoBehaviour {
                             movedUp = false;
                         }
                     }
-                else if (Input.GetAxisRaw("Vertical") < 0)
+                else if (Input.GetAxisRaw("Vertical") < -0.01)
                     if (keySelect == maxKeys - 1)
                     {
                         if (!movedUp)
@@ -158,7 +160,7 @@ public class GUINavigation : MonoBehaviour {
                 }
                 catch (Exception) {  }
             }
-        }	
+        }
 	}
 
     public static bool MouseUsed()

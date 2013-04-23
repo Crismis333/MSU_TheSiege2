@@ -14,8 +14,21 @@ public class HighScoreMenuScript : MonoBehaviour {
     private string setname;
     private float countdown;
 
+    private Texture2D background;
+    private Color activeColor, inactiveColor;
+    private bool firstGUI;
+
     void Menu_HighScore()
     {
+        if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+            GUI.skin.button.hover.background = null;
+        else
+            GUI.skin.button.hover.background = background;
+        if (Camera.mainCamera.GetComponent<GUINavigation>().activated)
+            GUI.skin.button.focused.textColor = activeColor;
+        else
+            GUI.skin.button.focused.textColor = inactiveColor;
+
         if (addnewScore)
         {
 
@@ -80,6 +93,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.Label(new Rect(0, 10 * 35, 790, 64), "X");
             GUI.color = Color.red;
 
+            GUI.SetNextControlName("title");
             GUI.Label(new Rect(50, 1 * 35, 790, 64), "  " + PlayerPrefs.GetString("Highscore1Name"));
             GUI.Label(new Rect(400, 1 * 35, 790, 64), PlayerPrefs.GetString("Highscore1Score"));
             GUI.Label(new Rect(50, 2 * 35, 790, 64), "  " + PlayerPrefs.GetString("Highscore2Name"));
@@ -101,8 +115,19 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.Label(new Rect(50, 10 * 35, 790, 64), "  " + PlayerPrefs.GetString("Highscore10Name"));
             GUI.Label(new Rect(400, 10 * 35, 790, 64), PlayerPrefs.GetString("Highscore10Score"));
             GUI.color = Color.white;
+            GUI.SetNextControlName("Return");
             if (GUI.Button(new Rect(60, 12 * 35, 640, 64), "Return")) { Return(); }
+            GUI.Box(new Rect(60, 12 * 35, 640, 64), new GUIContent("", "0"));
+            Camera.mainCamera.GetComponent<GUINavigation>().mouseover = GUI.tooltip;
             GUI.EndGroup();
+
+            if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+            {
+                if (Camera.mainCamera.GetComponent<GUINavigation>().keySelect == 0)
+                    GUI.FocusControl("Return");
+            }
+            else
+                GUI.FocusControl("title");
         }
         if (started)
         {
@@ -118,10 +143,13 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
             GUI.EndGroup();
         }
+        GUI.skin.button.hover.background = background;
+        GUI.skin.button.focused.textColor = inactiveColor;
     }
 
     void Start()
     {
+        firstGUI = true; 
         setname = "";
         if (!mainMenu)
             started = true;
@@ -155,10 +183,16 @@ public class HighScoreMenuScript : MonoBehaviour {
     void OnGUI()
     {
         GUI.skin = gSkin;
-
+        if (firstGUI)
+        {
+            background = GUI.skin.button.hover.background;
+            activeColor = GUI.skin.button.active.textColor;
+            inactiveColor = GUI.skin.button.focused.textColor;
+            firstGUI = false;
+        }
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Return();
+            Accept();
         }
         else
             Menu_HighScore();
@@ -172,6 +206,12 @@ public class HighScoreMenuScript : MonoBehaviour {
             {
                 this.enabled = false;
                 GetComponent<MainMenuScript>().enabled = true;
+                Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
+                Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 4;
+                Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<MainMenuScript>().Menu_Main_Start_Game);
+                Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<MainMenuScript>().Menu_Main_Options);
+                Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, GetComponent<MainMenuScript>().Menu_Main_Highscores);
+                Camera.mainCamera.GetComponent<GUINavigation>().AddElement(3, GetComponent<MainMenuScript>().Menu_Main_Quit);
             }
             else
             {
@@ -191,5 +231,13 @@ public class HighScoreMenuScript : MonoBehaviour {
         ob.GetComponent<HighScoreElement>().score = CurrentGameState.currentScore;
         CurrentGameState.AddHighscoreElement(ob);
         CurrentGameState.UpdateHighscore();
+    }
+
+    public void Accept()
+    {
+        if (addnewScore)
+            Add_Score();
+        else
+            Return();
     }
 }
