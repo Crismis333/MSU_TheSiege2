@@ -17,6 +17,8 @@ public class HighScoreMenuScript : MonoBehaviour {
     private Texture2D background;
     private Color activeColor, inactiveColor;
     private bool firstGUI;
+    private int finalchar;
+    private bool movedUp, movedDown, keyDownA, keyDownB;
 
     void Menu_HighScore()
     {
@@ -149,6 +151,12 @@ public class HighScoreMenuScript : MonoBehaviour {
 
     void Start()
     {
+        finalchar = -1;
+        keyDownA = false;
+        keyDownB = false;
+        CurrentGameState.Restart();
+        PlayerPrefs.SetString("Highscore10Score", "1");
+        CurrentGameState.currentScore = 5;
         firstGUI = true; 
         setname = "";
         if (!mainMenu)
@@ -166,6 +174,8 @@ public class HighScoreMenuScript : MonoBehaviour {
 
     void Update()
     {
+        //print("last character: " + GetLastCharacter());
+        //SetLastCharacter('5');
         if (started)
         {
             countdown -= 0.02f;
@@ -177,6 +187,87 @@ public class HighScoreMenuScript : MonoBehaviour {
             countdown -= 0.02f;
             if (countdown <= 0)
                 Application.LoadLevel(0);
+        }
+        else if (addnewScore)
+        {
+            float kv = Input.GetAxisRaw("Vertical");
+
+
+            if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+            {
+
+                if (!keyDownA && (Input.GetButton("Fire1") || Input.GetKey(KeyCode.Z)))
+                {
+                    keyDownA = true;
+                    setname += 'a';
+                    finalchar = 1;
+                }
+                else if (keyDownA && (!Input.GetButton("Fire1") && !Input.GetKey(KeyCode.Z)))
+                {
+                    keyDownA = false;
+                }
+
+                if (!keyDownB && (Input.GetButton("Fire2") || Input.GetKey(KeyCode.X)))
+                {
+                    keyDownB = true;
+                    if (setname.Length > 0)
+                    {
+                        setname = setname.Substring(0, setname.Length - 1);
+                        finalchar = IndexFinder(GetLastCharacter());
+                    }
+                }
+                else if (keyDownB && (!Input.GetButton("Fire2") && !Input.GetKey(KeyCode.X)))
+                {
+                    keyDownB = false;
+                }
+
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    Add_Score();
+                    return;
+                }
+
+                int finalcharstart = finalchar;
+
+                if (finalchar == -1)
+                {
+                    if (kv < -0.01 && !movedUp)
+                        finalchar = 1;
+                    else if (kv > 0.01 && !movedDown)
+                        finalchar = 0;
+                }
+                else
+                {
+                    if (kv < -0.01 && !movedUp)
+                        finalchar++;
+                    else if (kv > 0.01 && !movedDown)
+                        finalchar--;
+                    if (finalchar < 0) finalchar = 69;
+                    else if (finalchar > 69) finalchar = 0;
+                }
+
+                if (finalcharstart != finalchar)
+                    SetLastCharacter(CharIndexFinder(finalchar));
+            }
+
+
+
+            if (kv > 0.01)
+            {
+                movedDown = true;
+                movedUp = false;
+            }
+            else if (kv < -0.01)
+            {
+                movedDown = false;
+                movedUp = true;
+            }
+            else
+            {
+                movedDown = false;
+                movedUp = false;
+            }
+
         }
     }
 
@@ -240,6 +331,9 @@ public class HighScoreMenuScript : MonoBehaviour {
         ob.GetComponent<HighScoreElement>().score = CurrentGameState.currentScore;
         CurrentGameState.AddHighscoreElement(ob);
         CurrentGameState.UpdateHighscore();
+        Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
+        Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 1;
+        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, Accept);
     }
 
     public void Accept()
@@ -248,5 +342,177 @@ public class HighScoreMenuScript : MonoBehaviour {
             Add_Score();
         else
             Return();
+    }
+  
+    private char GetLastCharacter()
+    {
+        if (setname.Length == 0)
+            return '\0';
+        else
+           return setname.ToCharArray()[setname.Length - 1];
+    }
+
+    private void SetLastCharacter(char c)
+    {
+        if (setname.Length == 0)
+            setname = ""+c;
+        else
+            setname = setname.Substring(0, setname.Length - 1) + c;
+    }
+
+    private char CharIndexFinder(int index)
+    {
+        switch (index)
+        {
+            case 0: return ' ';
+            case 1: return 'a';
+            case 2: return 'b';
+            case 3: return 'c';
+            case 4: return 'd';
+            case 5: return 'e';
+            case 6: return 'f';
+            case 7: return 'g';
+            case 8: return 'h';
+            case 9: return 'i';
+            case 10: return 'j';
+            case 11: return 'k';
+            case 12: return 'l';
+            case 13: return 'm';
+            case 14: return 'n';
+            case 15: return 'o';
+            case 16: return 'p';
+            case 17: return 'q';
+            case 18: return 'r';
+            case 19: return 's';
+            case 20: return 't';
+            case 21: return 'u';
+            case 22: return 'v';
+            case 23: return 'w';
+            case 24: return 'x';
+            case 25: return 'y';
+            case 26: return 'z';
+            case 27: return 'A';
+            case 28: return 'B';
+            case 29: return 'C';
+            case 30: return 'D';
+            case 31: return 'E';
+            case 32: return 'F';
+            case 33: return 'G';
+            case 34: return 'H';
+            case 35: return 'I';
+            case 36: return 'J';
+            case 37: return 'K';
+            case 38: return 'L';
+            case 39: return 'M';
+            case 40: return 'N';
+            case 41: return 'O';
+            case 42: return 'P';
+            case 43: return 'Q';
+            case 44: return 'R';
+            case 45: return 'S';
+            case 46: return 'T';
+            case 47: return 'U';
+            case 48: return 'V';
+            case 49: return 'W';
+            case 50: return 'X';
+            case 51: return 'Y';
+            case 52: return 'Z';
+            case 53: return '1';
+            case 54: return '2';
+            case 55: return '3';
+            case 56: return '4';
+            case 57: return '5';
+            case 58: return '6';
+            case 59: return '7';
+            case 60: return '8';
+            case 61: return '9';
+            case 62: return '0';
+            case 63: return '-';
+            case 64: return '_';
+            case 65: return '?';
+            case 66: return '!';
+            case 67: return '+';
+            case 68: return '.';
+            case 69: return ',';
+            default: return 'a';
+        }
+    }
+
+    private int IndexFinder(char ch)
+    {
+        switch (ch)
+        {
+            case ' ': return 0;
+            case 'a': return 1;
+            case 'b': return 2;
+            case 'c': return 3;
+            case 'd': return 4;
+            case 'e': return 5;
+            case 'f': return 6;
+            case 'g': return 7;
+            case 'h': return 8;
+            case 'i': return 9;
+            case 'j': return 10;
+            case 'k': return 11;
+            case 'l': return 12;
+            case 'm': return 13;
+            case 'n': return 14;
+            case 'o': return 15;
+            case 'p': return 16;
+            case 'q': return 17;
+            case 'r': return 18;
+            case 's': return 19;
+            case 't': return 20;
+            case 'u': return 21;
+            case 'v': return 22;
+            case 'w': return 23;
+            case 'x': return 24;
+            case 'y': return 25;
+            case 'z': return 26;
+            case 'A': return 27;
+            case 'B': return 28;
+            case 'C': return 29;
+            case 'D': return 30;
+            case 'E': return 31;
+            case 'F': return 32;
+            case 'G': return 33;
+            case 'H': return 34;
+            case 'I': return 35;
+            case 'J': return 36;
+            case 'K': return 37;
+            case 'L': return 38;
+            case 'M': return 39;
+            case 'N': return 40;
+            case 'O': return 41;
+            case 'P': return 42;
+            case 'Q': return 43;
+            case 'R': return 44;
+            case 'S': return 45;
+            case 'T': return 46;
+            case 'U': return 47;
+            case 'V': return 48;
+            case 'W': return 49;
+            case 'X': return 50;
+            case 'Y': return 51;
+            case 'Z': return 52;
+            case '1': return 53;
+            case '2': return 54;
+            case '3': return 55;
+            case '4': return 56;
+            case '5': return 57;
+            case '6': return 58;
+            case '7': return 59;
+            case '8': return 60;
+            case '9': return 61;
+            case '0': return 62;
+            case '-': return 63;
+            case '_': return 64;
+            case '?': return 65;
+            case '!': return 66;
+            case '+': return 67;
+            case '.': return 68;
+            case ',': return 69;
+            default: return 1;
+        }
     }
 }
