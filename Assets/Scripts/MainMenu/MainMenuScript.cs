@@ -8,33 +8,23 @@ public class MainMenuScript : MonoBehaviour {
     public Texture2D black;
     public MusicVolumeSetter music;
 
-    private float countdown;
+    [HideInInspector]
+    public bool activated;
 
-    private bool stopped, firstGUI;
+    private float countdown;
+    private bool started, stopped, firstGUI;
     private Texture2D background;
     private Color activeColor, inactiveColor;
 
-    private bool started, usingMouse, movedUp, movedDown, activated;
-    private int keySelect;
-    private string mouseover;
-
 	void Menu_Main() {
-        if (!usingMouse)
-        {
+        if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
             GUI.skin.button.hover.background = null;
-        }
         else
-        {
             GUI.skin.button.hover.background = background;
-        }
-        if (activated)
-        {
+        if (Camera.mainCamera.GetComponent<GUINavigation>().activated)
             GUI.skin.button.focused.textColor = activeColor;
-        }
         else
-        {
             GUI.skin.button.focused.textColor = inactiveColor;
-        }
 
         GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
         GUI.SetNextControlName("title");
@@ -54,7 +44,7 @@ public class MainMenuScript : MonoBehaviour {
         GUI.Box(new Rect(0, 1 * 70, Screen.width - 30, 64), new GUIContent("", "1"));
         GUI.Box(new Rect(0, 2 * 70, Screen.width - 30, 64), new GUIContent("", "2"));
         GUI.Box(new Rect(0, 3 * 70, Screen.width - 30, 64), new GUIContent("", "3"));
-        mouseover = GUI.tooltip;
+        Camera.mainCamera.GetComponent<GUINavigation>().mouseover = GUI.tooltip;
 		GUI.EndGroup();
         if (stopped)
         {
@@ -75,9 +65,9 @@ public class MainMenuScript : MonoBehaviour {
         else
         {
             music.volume = OptionsValues.musicVolume;
-            if (!usingMouse)
+            if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
             {
-                switch (keySelect)
+                switch (Camera.mainCamera.GetComponent<GUINavigation>().keySelect)
                 {
                     case 0: GUI.FocusControl("Start"); break;
                     case 1: GUI.FocusControl("Options"); break;
@@ -91,20 +81,10 @@ public class MainMenuScript : MonoBehaviour {
 
         GUI.skin.button.hover.background = background;
         GUI.skin.button.focused.textColor = inactiveColor;
-        //if (!usingMouse)
-        //{
-        //    GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
-        //    GUI.Box(new Rect(0, 0, Screen.width, Screen.height), "");
-        //    GUI.EndGroup();
-        //}
-        //if (!usingMouse)
-        //{
-        //    GUI.skin.button.hover = st;
-        //    GUI.skin.button.onHover = st2;
-        //}
 	}
 
-    void Menu_Main_Start_Game() {
+    public void Menu_Main_Start_Game()
+    {
         if (!started && !stopped)
         {
             //Application.LoadLevel(1);
@@ -115,7 +95,8 @@ public class MainMenuScript : MonoBehaviour {
         }
     }
 
-    void Menu_Main_Options() {
+    public void Menu_Main_Options()
+    {
         if (!started && !stopped)
         {
             this.enabled = false;
@@ -123,7 +104,7 @@ public class MainMenuScript : MonoBehaviour {
         }
     }
 
-    void Menu_Main_Highscores()
+    public void Menu_Main_Highscores()
     {
         if (!started && !stopped)
         {
@@ -132,11 +113,16 @@ public class MainMenuScript : MonoBehaviour {
         }
     }
 
-    void Menu_Main_Quit() {
+    public void Menu_Main_Quit()
+    {
         if (!started && !stopped)
         {
             this.enabled = false;
             GetComponent<QuitAcceptMenu>().enabled = true;
+            Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
+            Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 2;
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<QuitAcceptMenu>().Menu_Quit_Yes);
+            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<QuitAcceptMenu>().Menu_Quit_No);
         }
     }
 
@@ -163,128 +149,16 @@ public class MainMenuScript : MonoBehaviour {
         music.useGlobal = false;
         started = true;
         countdown = 1f;
-        keySelect = -1;
-        firstGUI = true;
+        activated = true;
+        Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 4;
+        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, Menu_Main_Start_Game);
+        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, Menu_Main_Options);
+        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, Menu_Main_Highscores);
+        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(3, Menu_Main_Quit);
     }
 
     void Update()
     {
-        print(mouseover);
-        if (!activated)
-        {
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                activated = true;
-            }
-        }
-        else
-        {
-            if (Input.GetKeyUp(KeyCode.Return))
-            {
-                activated = false;
-                switch (keySelect) {
-                    case 0: Menu_Main_Start_Game(); break;
-                    case 1: Menu_Main_Options(); break;
-                    case 2: Menu_Main_Highscores(); break;
-                    case 3: Menu_Main_Quit(); break;
-                }
-            }
-        }
-        if (!usingMouse && KeyOrMouse.MouseUsed())
-        {
-            usingMouse = true;
-            Screen.showCursor = true;
-            print("mouse used!");
-        }
-        if (usingMouse && KeyOrMouse.KeyUsed())
-        {
-            usingMouse = false;
-            Screen.showCursor = false;
-            print("key used!");
-        }
-        if (!usingMouse)
-        {
-            if (keySelect == -1)
-            {
-                if (Input.GetAxisRaw("Vertical") > 0)
-                {
-                    keySelect = 3;
-                    movedDown = true;
-                    movedUp = false;
-                }
-                else if (Input.GetAxisRaw("Vertical") < 0)
-                {
-                    keySelect = 0;
-                    movedUp = true;
-                    movedDown = false;
-                }
-                else
-                {
-                    movedDown = false;
-                    movedUp = false;
-                }
-            }
-            else
-            {
-                if (Input.GetAxisRaw("Vertical") > 0)
-                    if (keySelect == 0)
-                    {
-                        if (!movedDown)
-                        {
-                            keySelect = 3;
-                            movedDown = true;
-                            movedUp = false;
-                        }
-                    }
-                    else
-                    {
-                        if (!movedDown)
-                        {
-                            keySelect--;
-                            movedDown = true;
-                            movedUp = false;
-                        }
-                    }
-                else if (Input.GetAxisRaw("Vertical") < 0)
-                    if (keySelect == 3)
-                    {
-                        if (!movedUp)
-                        {
-                            keySelect = 0;
-                            movedUp = true;
-                            movedDown = false;
-                        }
-                    }
-                    else
-                    {
-                        if (!movedUp)
-                        {
-                            keySelect++;
-                            movedUp = true;
-                            movedDown = false;
-                        }
-                    }
-                else
-                {
-                    movedDown = false;
-                    movedUp = false;
-                }
-            }
-        }
-        else
-        {
-            if (mouseover != null) {
-                if (mouseover.Equals("0"))
-                    keySelect = 0;
-                else if (mouseover.Equals("1"))
-                    keySelect = 1;
-                else if (mouseover.Equals("2"))
-                    keySelect = 2;
-                else if (mouseover.Equals("3"))
-                    keySelect = 3;
-            }
-        }
-
         if (stopped || started)
         {
             

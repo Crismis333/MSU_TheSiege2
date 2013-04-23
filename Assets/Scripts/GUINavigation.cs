@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public delegate void MenuActivation();
 
@@ -8,14 +9,22 @@ public class GUINavigation : MonoBehaviour {
 
     public int maxKeys;
 
-    private bool started, usingMouse, movedUp, movedDown, firstGUI, activated;
-    private int keySelect;
-    private string mouseover;
+    [HideInInspector]
+    public int keySelect;
+    [HideInInspector]
+    public bool usingMouse, movedUp, movedDown, activated;
+    [HideInInspector]
+    public string mouseover;
 
 
     private Dictionary<int, MenuActivation> menuelements;
 
-    void Addelement(int key, MenuActivation action)
+    public void ClearElements()
+    {
+        menuelements = new Dictionary<int, MenuActivation>();
+    }
+
+    public void AddElement(int key, MenuActivation action)
     {
         menuelements.Add(key, action);
     }
@@ -29,6 +38,7 @@ public class GUINavigation : MonoBehaviour {
         movedDown = false;
         Screen.showCursor = false;
         keySelect = -1;
+        mouseover = "";
 	}
 	
 	// Update is called once per frame
@@ -45,7 +55,16 @@ public class GUINavigation : MonoBehaviour {
             if (Input.GetKeyUp(KeyCode.Return))
             {
                 activated = false;
-                menuelements[keySelect]();
+                mouseover = "";
+                activated = false;
+                usingMouse = false;
+                movedUp = false;
+                movedDown = false;
+                Screen.showCursor = false;
+
+                if (keySelect != -1)
+                    menuelements[keySelect]();
+                keySelect = -1;
             }
         }
         if (!usingMouse && KeyOrMouse.MouseUsed())
@@ -133,14 +152,11 @@ public class GUINavigation : MonoBehaviour {
         {
             if (mouseover != null)
             {
-                if (mouseover.Equals("0"))
-                    keySelect = 0;
-                else if (mouseover.Equals("1"))
-                    keySelect = 1;
-                else if (mouseover.Equals("2"))
-                    keySelect = 2;
-                else if (mouseover.Equals("3"))
-                    keySelect = 3;
+                try
+                {
+                    keySelect = int.Parse(mouseover);
+                }
+                catch (Exception) {  }
             }
         }	
 	}
