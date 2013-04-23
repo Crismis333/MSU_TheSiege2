@@ -26,26 +26,74 @@ public class EnemyCreator : MonoBehaviour
 
             HeroMovement hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
             if (hm.CurrentSpeed > 0)
+            {
                 countDown = CountDownTime * (hm.MoveSpeed / hm.CurrentSpeed);
-
+            }
             // Enemy.transform.RotateAround(new Vector3(0, 1, 0), 180);
             //    Vector3 rot = new Vector3(Enemy.transform.eulerAngles.x, Enemy.transform.eulerAngles.y + 180, Enemy.transform.eulerAngles.z);
-            float x_val = Random.Range(-6, 6);
 
+            int num_soldiers = numberOfSoldiers(ObstacleController.SOLDIER_RATIO);
+            float[] used_values = new float[num_soldiers];
+            for (int i = 0; i < num_soldiers; i++)
+            {
+                float x_val = Random.Range(-6, 6);
+                if (i > 0)
+                {                    
+                    while (true)
+                    {
+                        bool temp = false;
+                        for (int j = 0; j < i; j++)
+                        {
+                            temp = temp || almostEqual(used_values[j], x_val, 1f);
+                        }
+                        if (!temp)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            x_val = Random.Range(-6, 6);
+                        }
+                    }
+                }
+               
 
-            bool EnemyOK = false;
-            if (z + 70 < moduleCount * 64 - 32 || LevelCreator.INF_MODE)
-            {
-             //   Instantiate(SpaceChecker, new Vector3(x_val, 0.1f, z + 70), Quaternion.AngleAxis(180, Vector3.up));
-                EnemyOK = true;
-            }
-            if (EnemyOK)
-            {
-                //Destroy(SpaceChecker);
-                Instantiate(Enemy, new Vector3(x_val, 0.1f, z + 70), Quaternion.AngleAxis(180, Vector3.up));
+                bool EnemyOK = false;
+                if (z + 70 < moduleCount * 64 - 32 || LevelCreator.INF_MODE)
+                {
+                    //   Instantiate(SpaceChecker, new Vector3(x_val, 0.1f, z + 70), Quaternion.AngleAxis(180, Vector3.up));
+                    EnemyOK = true;
+                }
+                if (EnemyOK)
+                {
+                    //Destroy(SpaceChecker);
+                    Instantiate(Enemy, new Vector3(x_val, 0.1f, z + 70), Quaternion.AngleAxis(180, Vector3.up));
+                }
             }
         }
         countDown -= Time.deltaTime;
+    }
+
+    bool almostEqual(float f1, float f2, float epsilon)
+    {
+        if ((f2 > (f1 - epsilon)) && (f2 < (f1 + epsilon)))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    int numberOfSoldiers(int ratio)
+    {
+        if (ratio < 6)
+        {
+            return 1;
+        }
+        if (ratio < 9)
+        {
+            return 2;
+        }
+        return 3;
     }
 	
 	public float RatioToSeconds(int ratio) {

@@ -47,6 +47,20 @@ public class EnemyAttack : MonoBehaviour {
     //    }
     //}
 
+    void OnTriggerEnter(Collider other)
+    {
+        if (!destroyed)
+        {
+            if (other.tag.Equals("Soldier"))
+            {
+                if (!other.GetComponent<EnemyAttack>().GetDestroyed())
+                {
+                 //   other.transform.position = other.transform.position + Vector3.left * Random.Range(-1, 1);
+                }
+            }
+        }
+    }
+
     void OnDestroy()
     {
 	//	if (player != null && gameObject != null)
@@ -90,7 +104,12 @@ public class EnemyAttack : MonoBehaviour {
 		
 		destroyed = true;
     }
-	
+
+    public bool GetDestroyed()
+    {
+        return destroyed;
+    }
+
 	// Update is called once per frame
     void Update()
     {

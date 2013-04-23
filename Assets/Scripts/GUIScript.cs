@@ -185,7 +185,46 @@ public class GUIScript : MonoBehaviour {
             SCORE += (long)score;
             //print("Score increase: " + (long)score);
         }
+        AttackFeedback(hit);
      //   print("Efficiency: " + eff);
+    }
+
+    public void AttackFeedback(HitAccuracy ha)
+    {
+        int accuracy = ConvertHitRate(ha.Accuracy);
+        
+
+
+        switch (accuracy)
+        {
+            case 1:
+            case 2:
+            case 3: hitFeedback = "Bad!"; break;
+            case 4:
+            case 5: hitFeedback = "Average!"; break;
+            case 6:
+            case 7: hitFeedback = "Good!"; break;
+            case 8:
+            case 9: hitFeedback = "Excellent!"; break;
+            case 10: hitFeedback = "Perfect!"; break;
+        }
+        if (ha.NumberOfHits == 2)
+        {
+            hitFeedback = "Double kill!    " + hitFeedback;
+        }
+        else if (ha.NumberOfHits == 3)
+        {
+            hitFeedback = "Triple kill!    " + hitFeedback;
+        }
+        else if (ha.NumberOfHits == 4)
+        {
+            hitFeedback = "Quadruple kill!    " + hitFeedback;
+        }
+        else if (ha.NumberOfHits == 5)
+        {
+            hitFeedback = "Quintuple kill!    " + hitFeedback;
+        }
+        hitFeedbackTimer = 2.0f;
     }
 
     float CalculateEfficiency()
@@ -276,25 +315,7 @@ public class GUIScript : MonoBehaviour {
         lingerTimer = 0;
     }
 
-    public void AttackFeedback(float chargePercent)
-    {
-        int accuracy = ConvertHitRate(chargePercent);
-
-        switch (accuracy)
-        {
-            case 1: 
-            case 2: 
-            case 3: hitFeedback = "Bad!"; break;
-            case 4: 
-            case 5: hitFeedback = "Average!"; break;
-            case 6: 
-            case 7: hitFeedback = "Good!"; break;
-            case 8: 
-            case 9: hitFeedback = "Excellent!"; break;
-            case 10: hitFeedback = "Perfect!"; break;
-        }
-        hitFeedbackTimer = 2.0f;
-    }
+   
 }
 
 public class HitAccuracy

@@ -39,7 +39,7 @@ public class HeroAttack : MonoBehaviour
             anim.SetBool("Attacking", false);
         }
         AttackList = new List<GameObject>();
-        GUI = GameObject.Find("GUI").GetComponent<GUIScript>();
+        GUI = Camera.mainCamera.GetComponent<GUIScript>();
         hitableEnemies = new List<GameObject>();
         //  Time.timeScale = 0.5f;
         LstSquQuadRegr solvr = new LstSquQuadRegr();
@@ -190,7 +190,7 @@ public class HeroAttack : MonoBehaviour
                     //print(ha.ToString());
 
                     GUI.AddHit(ha);
-                    GUI.AttackFeedback(chargePercent);
+                 //   GUI.AttackFeedback(chargePercent);
 
                     if (chargePercent > MIN_CHARGE)
                     {

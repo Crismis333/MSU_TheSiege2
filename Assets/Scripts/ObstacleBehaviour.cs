@@ -10,6 +10,8 @@ public class ObstacleBehaviour : MonoBehaviour {
 	bool destroyed = false;
 
     private ParticleSystem ps;
+
+    private float moveOffset = 1.0f;
 	
 	// Update is called once per frame
 	void Update () {
@@ -46,19 +48,43 @@ public class ObstacleBehaviour : MonoBehaviour {
 		}
 
         if (!destroyed && other.tag.Equals("Soldier"))
-        {                 
+        {
+         //   Instantiate(new GameObject(), other.transform.position + Vector3.up * 2, Quaternion.identity);
+
             Bounds bounds = gameObject.GetComponent<BoxCollider>().bounds;
             float left = bounds.min.x;
             float right = bounds.max.x;
-            if (Math.Abs(left) > Math.Abs(right))
+         //   print("left: " + left + " right: " + right);
+            if (!other.GetComponent<EnemyAttack>().GetDestroyed())
             {
-                // Move right
-                other.transform.position = other.transform.position + new Vector3(right + 1, 0, 0);
-            }
-            else
-            {
-                // Move left
-                other.transform.position = other.transform.position + new Vector3(left - 1, 0, 0);
+                if (Math.Abs(left) > Math.Abs(right))
+                {
+                    // Move right
+                    if (other.transform.position.x < 5)
+                    {
+                        other.transform.position = new Vector3(right + moveOffset, other.transform.position.y, other.transform.position.z);
+                        moveOffset += 0.8f;
+                    }
+                    else
+                    {
+                        // Should never be called
+                        other.transform.position = other.transform.position + new Vector3(other.transform.position.x - 8, 0, 0);
+                    }
+                }
+                else
+                {
+                    // Move left
+                    if (other.transform.position.x > -5)
+                    {
+                        other.transform.position = new Vector3(left - moveOffset, other.transform.position.y, other.transform.position.z);
+                        moveOffset += 0.8f;
+                    }
+                    else
+                    {
+                        // Should never be called
+                        other.transform.position = other.transform.position + new Vector3(other.transform.position.x + 8, 0, 0);
+                    }
+                }
             }
         }
 		
