@@ -25,8 +25,8 @@ public class ObstacleCreator : MonoBehaviour {
                 countDown = CountDownTime * (hm.MoveSpeed / hm.CurrentSpeed);
 
             int rIndex = Random.Range(0, ObstacleList.Count);
-			
-			if (z+70 < LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64-32)
+
+            if (z + 70 < LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH) * 64 - 32 || LevelCreator.INF_MODE)
     	    	Instantiate(ObstacleList[rIndex], new Vector3(Random.Range(-6, 7), 0.1f, z + 70), Quaternion.AngleAxis(180, Vector3.up));
         }
         countDown -= Time.deltaTime;

@@ -80,7 +80,7 @@ public class HeroMovement : MonoBehaviour {
 			}
 		}
 		
-		if (transform.position.z >= LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64-32) {
+		if (transform.position.z >= LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64-32 && !LevelCreator.INF_MODE) {
             CurrentGameState.SetWin();
             CurrentGameState.currentScore = GUIScript.SCORE;
 			//Debug.Log("End Score: "+ GUIScript.SCORE);

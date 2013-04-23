@@ -34,7 +34,7 @@ public class EnemyCreator : MonoBehaviour
 
 
             bool EnemyOK = false;
-            if (z + 70 < moduleCount * 64 - 32)
+            if (z + 70 < moduleCount * 64 - 32 || LevelCreator.INF_MODE)
             {
              //   Instantiate(SpaceChecker, new Vector3(x_val, 0.1f, z + 70), Quaternion.AngleAxis(180, Vector3.up));
                 EnemyOK = true;
