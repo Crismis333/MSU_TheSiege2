@@ -148,7 +148,7 @@ public class Location : MonoBehaviour {
             modifiers.Add(getRandomModifier());   
         }*/
 
-        description += "\nTaking this route will lead to:";
+        /*description += "\nTaking this route will lead to:";
         if ((modifiers.Contains(Modifier.Soldier)))
             description += "\n- fewer soldiers";
         if ((modifiers.Contains(Modifier.Obstacle)))
@@ -158,7 +158,7 @@ public class Location : MonoBehaviour {
         if ((modifiers.Contains(Modifier.Jump)))
             description += "\n- increase in jumping speed";
         if ((modifiers.Contains(Modifier.MoveSpeed)))
-            description += "\n- faster running speed";
+            description += "\n- faster running speed";*/
         //if ((modifiers.Contains(Modifier.SlowDown)))
             //description += "\nTaking this route will allow you to charge more frequently.";
 

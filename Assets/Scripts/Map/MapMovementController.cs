@@ -92,6 +92,7 @@ public class MapMovementController : MonoBehaviour {
         {
             if (!GUI_Area.Contains(Input.mousePosition))
             {
+                LocationClick.currentActive = null;
                 Camera.mainCamera.GetComponent<MapGui>().current_location = null;
                 Camera.mainCamera.GetComponent<MapGui>().ResetScroll();
             }
