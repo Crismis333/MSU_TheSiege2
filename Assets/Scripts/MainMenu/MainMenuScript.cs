@@ -85,6 +85,7 @@ public class MainMenuScript : MonoBehaviour {
         if (!started && !stopped)
         {
             //Application.LoadLevel(1);
+            CurrentGameState.InfiniteMode = false;
             started = false;
             stopped = true;
             countdown = 1f;

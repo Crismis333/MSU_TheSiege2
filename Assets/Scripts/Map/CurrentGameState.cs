@@ -25,9 +25,11 @@ public class CurrentGameState : MonoBehaviour {
     public static long previousScore;
     public static EndState highscorecondition;
     public static bool failedlast;
+    public static bool InfiniteMode;
     private static List<Modifier> wins;
     private static int nextLevel;
-    private static LinkedList<HighScoreElement> highscore;
+    private static LinkedList<HighScoreElement> highscoreCampaign;
+    private static LinkedList<HighScoreElement> highscoreInfinite;
     
 
     public static void CreateHero()
@@ -66,7 +68,8 @@ public class CurrentGameState : MonoBehaviour {
         jumpLengthModifier = moveSpeedModifier = slowDownModifier = 1.0f;
         completedlevels = new List<int>();
         completedLevelLocations = new List<Vector3>();
-        highscore = new LinkedList<HighScoreElement>();
+        highscoreCampaign = new LinkedList<HighScoreElement>();
+        highscoreInfinite = new LinkedList<HighScoreElement>();
         hero = null;
         wins = null;
         nextLevel = 0;
@@ -76,28 +79,58 @@ public class CurrentGameState : MonoBehaviour {
     public static void AddHighscoreElement(GameObject go)
     {
         HighScoreElement hse = go.GetComponent<HighScoreElement>();
-        LinkedListNode<HighScoreElement> node = highscore.First;
+        LinkedListNode<HighScoreElement> node = highscoreCampaign.First;
         while (node != null)
             if (node.Value.score < hse.score)
             {
-                highscore.AddBefore(node,hse);
+                highscoreCampaign.AddBefore(node,hse);
                 return;
             }
             else
                 node = node.Next;
-        if (highscore.Count < 10)
-            highscore.AddLast(hse);
+        if (highscoreCampaign.Count < 10)
+            highscoreCampaign.AddLast(hse);
+    }
+
+    public static void AddHighscoreElementInfinite(GameObject go)
+    {
+        HighScoreElement hse = go.GetComponent<HighScoreElement>();
+        LinkedListNode<HighScoreElement> node = highscoreInfinite.First;
+        while (node != null)
+            if (node.Value.score < hse.score)
+            {
+                highscoreInfinite.AddBefore(node, hse);
+                return;
+            }
+            else
+                node = node.Next;
+        if (highscoreInfinite.Count < 10)
+            highscoreInfinite.AddLast(hse);
     }
 
     public static void UpdateHighscore()
     {
-        LinkedListNode<HighScoreElement> node = highscore.First;
+        LinkedListNode<HighScoreElement> node = highscoreCampaign.First;
         int i = 0;
         while (node != null)
         {
             i++;
-            PlayerPrefs.SetString("Highscore" + i + "Name", node.Value.user);
-            PlayerPrefs.SetString("Highscore" + i + "Score", node.Value.score.ToString());
+            PlayerPrefs.SetString("Highscore" + i + "CampaignName", node.Value.user);
+            PlayerPrefs.SetString("Highscore" + i + "CampaignScore", node.Value.score.ToString());
+            node = node.Next;
+        }
+        PlayerPrefs.Save();
+    }
+
+    public static void UpdateHighscoreInfinite()
+    {
+        LinkedListNode<HighScoreElement> node = highscoreInfinite.First;
+        int i = 0;
+        while (node != null)
+        {
+            i++;
+            PlayerPrefs.SetString("Highscore" + i + "InfiniteName", node.Value.user);
+            PlayerPrefs.SetString("Highscore" + i + "InfiniteScore", node.Value.score.ToString());
             node = node.Next;
         }
         PlayerPrefs.Save();
@@ -105,10 +138,18 @@ public class CurrentGameState : MonoBehaviour {
 
     public static long MinimumHighscoreRequirement()
     {
-        if (highscore.Count < 10)
+        if (highscoreCampaign.Count < 10)
             return 0;
         else
-            return highscore.Last.Value.score+1;
+            return highscoreCampaign.Last.Value.score + 1;
+    }
+
+    public static long MinimumHighscoreRequirementInfinite()
+    {
+        if (highscoreInfinite.Count < 10)
+            return 0;
+        else
+            return highscoreInfinite.Last.Value.score + 1;
     }
 
 

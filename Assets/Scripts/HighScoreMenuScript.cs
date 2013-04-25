@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class HighScoreMenuScript : MonoBehaviour {
@@ -18,7 +18,8 @@ public class HighScoreMenuScript : MonoBehaviour {
     private Color activeColor, inactiveColor;
     private bool firstGUI;
     private int finalchar;
-    private bool movedUp, movedDown, keyDownA, keyDownB;
+    private bool movedUp, movedDown, movedLeft, movedRight, keyDownA, keyDownB;
+    private int highscoreNr;
 
     void Menu_HighScore()
     {
@@ -83,46 +84,67 @@ public class HighScoreMenuScript : MonoBehaviour {
             }
             GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 7.5f * 35, 790, 15 * 35));
             GUI.color = Color.black;
-            GUI.Label(new Rect(0, 1 * 35, 790, 64), "I");
-            GUI.Label(new Rect(0, 2 * 35, 790, 64), "II");
-            GUI.Label(new Rect(0, 3 * 35, 790, 64), "III");
-            GUI.Label(new Rect(0, 4 * 35, 790, 64), "IV");
-            GUI.Label(new Rect(0, 5 * 35, 790, 64), "V");
-            GUI.Label(new Rect(0, 6 * 35, 790, 64), "VI");
-            GUI.Label(new Rect(0, 7 * 35, 790, 64), "VII");
-            GUI.Label(new Rect(0, 8 * 35, 790, 64), "VIII");
-            GUI.Label(new Rect(0, 9 * 35, 790, 64), "IX");
-            GUI.Label(new Rect(0, 10 * 35, 790, 64), "X");
-            GUI.color = Color.red;
 
             GUI.SetNextControlName("title");
-            GUI.Label(new Rect(50, 1 * 35, 790, 64), "  " + PlayerPrefs.GetString("Highscore1Name"));
-            GUI.Label(new Rect(400, 1 * 35, 790, 64), PlayerPrefs.GetString("Highscore1Score"));
-            GUI.Label(new Rect(50, 2 * 35, 790, 64), "  " + PlayerPrefs.GetString("Highscore2Name"));
-            GUI.Label(new Rect(400, 2 * 35, 790, 64), PlayerPrefs.GetString("Highscore2Score"));
-            GUI.Label(new Rect(50, 3 * 35, 790, 64), "  " + PlayerPrefs.GetString("Highscore3Name"));
-            GUI.Label(new Rect(400, 3 * 35, 790, 64), PlayerPrefs.GetString("Highscore3Score"));
-            GUI.Label(new Rect(50, 4 * 35, 790, 64), "  " + PlayerPrefs.GetString("Highscore4Name"));
-            GUI.Label(new Rect(400, 4 * 35, 790, 64), PlayerPrefs.GetString("Highscore4Score"));
-            GUI.Label(new Rect(50, 5 * 35, 790, 64), "  " + PlayerPrefs.GetString("Highscore5Name"));
-            GUI.Label(new Rect(400, 5 * 35, 790, 64), PlayerPrefs.GetString("Highscore5Score"));
-            GUI.Label(new Rect(50, 6 * 35, 790, 64), "  " + PlayerPrefs.GetString("Highscore6Name"));
-            GUI.Label(new Rect(400, 6 * 35, 790, 64), PlayerPrefs.GetString("Highscore6Score"));
-            GUI.Label(new Rect(50, 7 * 35, 790, 64), "  " + PlayerPrefs.GetString("Highscore7Name"));
-            GUI.Label(new Rect(400, 7 * 35, 790, 64), PlayerPrefs.GetString("Highscore7Score"));
-            GUI.Label(new Rect(50, 8 * 35, 790, 64), "  " + PlayerPrefs.GetString("Highscore8Name"));
-            GUI.Label(new Rect(400, 8 * 35, 790, 64), PlayerPrefs.GetString("Highscore8Score"));
-            GUI.Label(new Rect(50, 9 * 35, 790, 64), "  " + PlayerPrefs.GetString("Highscore9Name"));
-            GUI.Label(new Rect(400, 9 * 35, 790, 64), PlayerPrefs.GetString("Highscore9Score"));
-            GUI.Label(new Rect(50, 10 * 35, 790, 64), "  " + PlayerPrefs.GetString("Highscore10Name"));
-            GUI.Label(new Rect(400, 10 * 35, 790, 64), PlayerPrefs.GetString("Highscore10Score"));
-            GUI.color = Color.white;
+            if (highscoreNr == 0)
+                GUI.Label(new Rect(60, 1 * 30+10, 790, 64), "Campaign Mode");
+            else if (highscoreNr == 1)
+                GUI.Label(new Rect(60, 1 * 30 + 10, 790, 64), "Eternal Rush Mode");
+            GUI.skin.label.fontSize = 14;
+            GUI.Label(new Rect(0, 1 * 30 + 70, 790, 64), "I");
+            GUI.Label(new Rect(0, 2 * 30 + 70, 790, 64), "II");
+            GUI.Label(new Rect(0, 3 * 30 + 70, 790, 64), "III");
+            GUI.Label(new Rect(0, 4 * 30 + 70, 790, 64), "IV");
+            GUI.Label(new Rect(0, 5 * 30 + 70, 790, 64), "V");
+            GUI.Label(new Rect(0, 6 * 30 + 70, 790, 64), "VI");
+            GUI.Label(new Rect(0, 7 * 30 + 70, 790, 64), "VII");
+            GUI.Label(new Rect(0, 8 * 30 + 70, 790, 64), "VIII");
+            GUI.Label(new Rect(0, 9 * 30 + 70, 790, 64), "IX");
+            GUI.Label(new Rect(0, 10 * 30 + 70, 790, 64), "X");
+            GUI.color = Color.red;
+
+            string s = "";
+            if (highscoreNr == 0)
+                s = "Campaign";
+            else if (highscoreNr == 1)
+                s = "Infinite";
+            for (int i = 1; i <= 10; i++) {
+                GUI.Label(new Rect(50, i * 30 + 70, 790, 64), "  " + PlayerPrefs.GetString("Highscore"+i+s+"Name"));
+                GUI.Label(new Rect(400, i * 30 + 70, 790, 64), PlayerPrefs.GetString("Highscore"+i+s+"Score"));
+            }
+            
+            //GUI.color = Color.white;
+            GUI.skin.button.fontSize = 20;
+
             GUI.SetNextControlName("Return");
             if (GUI.Button(new Rect(60, 12 * 35, 640, 64), "Return")) { Return(); }
             GUI.Box(new Rect(60, 12 * 35, 640, 64), new GUIContent("", "0"));
             Camera.mainCamera.GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+
+            GUI.EndGroup();
+            //GUI.color = Color.black;
+
+
+            GUI.skin.button.fontSize = 40;
+            //GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 5 * 35, 790, 10 * 35));
+            GUI.BeginGroup(new Rect(Screen.width / 2 - 495, Screen.height / 2 - 7.5f * 35, 155, 15 * 35));
+            if (GUI.Button(new Rect(0, 6 * 30, 155, 100), "<"))
+            {
+                highscoreNr--;
+                if (highscoreNr < 0) highscoreNr = 1;
+            }
             GUI.EndGroup();
 
+            GUI.BeginGroup(new Rect(Screen.width / 2 + 280, Screen.height / 2 - 7.5f * 35, 155, 15 * 35));
+            if (GUI.Button(new Rect(0, 6*30, 155, 100), ">"))
+            {
+                highscoreNr--;
+                if (highscoreNr < 0) highscoreNr = 1;
+            }
+            GUI.EndGroup();
+
+            GUI.skin.label.fontSize = 20;
+            GUI.color = Color.white;
             if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
             {
                 if (Camera.mainCamera.GetComponent<GUINavigation>().keySelect == 0)
@@ -151,9 +173,14 @@ public class HighScoreMenuScript : MonoBehaviour {
 
     void Start()
     {
+        highscoreNr = 0;
         finalchar = -1;
         keyDownA = false;
         keyDownB = false;
+        movedLeft = false;
+        movedRight = false;
+        movedUp = false;
+        movedRight = false;
         CurrentGameState.Restart();
         PlayerPrefs.SetString("Highscore10Score", "1");
         CurrentGameState.currentScore = 5;
@@ -269,6 +296,33 @@ public class HighScoreMenuScript : MonoBehaviour {
             }
 
         }
+        else
+        {
+            float kh = Input.GetAxisRaw("Horizontal");
+
+            if (kh < -0.01 && !movedLeft)
+                highscoreNr++;
+            else if (kh > 0.01 && !movedRight)
+                highscoreNr--;
+            if (highscoreNr < 0) highscoreNr = 1;
+            else if (highscoreNr > 1) highscoreNr = 0;
+
+            if (kh > 0.01)
+            {
+                movedRight = true;
+                movedLeft = false;
+            }
+            else if (kh < -0.01)
+            {
+                movedRight = false;
+                movedLeft = true;
+            }
+            else
+            {
+                movedRight = false;
+                movedLeft = false;
+            }
+        }
     }
 
     void OnGUI()
@@ -329,8 +383,16 @@ public class HighScoreMenuScript : MonoBehaviour {
         ob.AddComponent<HighScoreElement>();
         ob.GetComponent<HighScoreElement>().user = setname;
         ob.GetComponent<HighScoreElement>().score = CurrentGameState.currentScore;
-        CurrentGameState.AddHighscoreElement(ob);
-        CurrentGameState.UpdateHighscore();
+        if (!CurrentGameState.InfiniteMode)
+        {
+            CurrentGameState.AddHighscoreElement(ob);
+            CurrentGameState.UpdateHighscore();
+        }
+        else
+        {
+            CurrentGameState.AddHighscoreElementInfinite(ob);
+            CurrentGameState.UpdateHighscoreInfinite();
+        }
         Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
         Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 1;
         Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, Accept);
