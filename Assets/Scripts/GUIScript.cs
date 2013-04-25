@@ -284,6 +284,16 @@ public class GUIScript : MonoBehaviour {
         }
     }
 
+    public void CompleteLevel()
+    {
+        this.enabled = false;
+        GetComponent<LevelCompleteScript>().enabled = true;
+        Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
+        Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 1;
+        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<LevelCompleteScript>().Accept);
+
+    }
+
     void EngageReleaseBar()
     {
 

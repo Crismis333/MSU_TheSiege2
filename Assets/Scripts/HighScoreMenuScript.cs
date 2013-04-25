@@ -143,7 +143,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             }
             GUI.EndGroup();
 
-            GUI.skin.label.fontSize = 20;
+            GUI.skin.button.fontSize = 20;
             GUI.color = Color.white;
             if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
             {
@@ -182,8 +182,6 @@ public class HighScoreMenuScript : MonoBehaviour {
         movedUp = false;
         movedRight = false;
         CurrentGameState.Restart();
-        PlayerPrefs.SetString("Highscore10Score", "1");
-        CurrentGameState.currentScore = 5;
         firstGUI = true; 
         setname = "";
         if (!mainMenu)
@@ -372,8 +370,7 @@ public class HighScoreMenuScript : MonoBehaviour {
                 returned = true;
                 countdown = 1f;
             }
-        }
-            
+        } 
     }
 
     void Add_Score()
