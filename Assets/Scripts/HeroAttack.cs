@@ -26,7 +26,8 @@ public class HeroAttack : MonoBehaviour
     private float a, b, c;
 
     private Animator anim;
-    private float attackAnimLength = 0.07f;
+
+    public float attackAnimLength = 0.07f;
     private float attackAnimCountdown;
 
     // Use this for initialization
