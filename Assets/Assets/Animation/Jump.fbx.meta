@@ -144,23 +144,23 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    animationCompression: 1
+    animationCompression: 0
     animationRotationError: .5
-    animationPositionError: .5
+    animationPositionError: 0
     animationScaleError: .5
     animationWrapMode: 0
     clipAnimations:
     - name: Jump
       takeName: iPi Default take
-      firstFrame: 45
-      lastFrame: 95
+      firstFrame: 44
+      lastFrame: 104
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       loopBlend: 1
-      loopBlendOrientation: 0
+      loopBlendOrientation: 1
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
@@ -168,21 +168,20 @@ ModelImporter:
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0
+      keepAdditionalBonesAnimation: 1
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      transformMask: []
+      skeletonMaskElements: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: .00999999978
     meshCompression: 0
     addColliders: 0
-    importBlendShapes: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
-    weldVertices: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
@@ -543,7 +542,7 @@ ModelImporter:
         max: {x: 0, y: 20, z: 50}
         value: {x: .0240465607, y: 0, z: .0120232804}
         preQ: {x: -.115725696, y: .0155006675, z: .949456811, w: -.291374326}
-        postQ: {x: -.132726029, y: .00454777526, z: .986154318, w: -.0993113145}
+        postQ: {x: -.132726014, y: .00454777572, z: .986154318, w: -.0993113071}
         length: .0300582089
         modified: 1
     - boneName: iPiMocap:LeftHandPinky2
@@ -552,8 +551,8 @@ ModelImporter:
         min: {x: 0, y: 0, z: -45}
         max: {x: 0, y: 0, z: 45}
         value: {x: .0176336262, y: 0, z: .00881681312}
-        preQ: {x: -.124521166, y: .0441211127, z: .905413151, w: -.403453737}
-        postQ: {x: -.132808045, y: .00452182349, z: .986157298, w: -.0991737321}
+        preQ: {x: -.124521099, y: .0441211239, z: .905413032, w: -.403453678}
+        postQ: {x: -.132807985, y: .00452182721, z: .986157238, w: -.0991737172}
         length: .0220420416
         modified: 1
     - boneName: iPiMocap:LeftHandPinky3
@@ -562,8 +561,8 @@ ModelImporter:
         min: {x: 0, y: 0, z: -45}
         max: {x: 0, y: 0, z: 45}
         value: {x: .0132252211, y: 0, z: .00661261054}
-        preQ: {x: -.124521151, y: .0441211089, z: .905413091, w: -.403453678}
-        postQ: {x: -.13280803, y: .00452182302, z: .986157238, w: -.0991737247}
+        preQ: {x: -.124521099, y: .0441211239, z: .905413091, w: -.403453678}
+        postQ: {x: -.132807985, y: .00452182768, z: .986157298, w: -.0991737247}
         length: .0165315308
         modified: 1
     - boneName: iPiMocap:RightHandThumb1
@@ -571,10 +570,10 @@ ModelImporter:
       limit:
         min: {x: 0, y: -25, z: -20}
         max: {x: 0, y: 25, z: 20}
-        value: {x: .0439001247, y: 0, z: .0219500624}
-        preQ: {x: .625577629, y: .238991916, z: .433133692, w: -.603266597}
-        postQ: {x: -.618887544, y: -.144481599, z: -.304874778, w: .709333718}
-        length: .0548751727
+        value: {x: .0439001285, y: 0, z: .0219500642}
+        preQ: {x: .625577629, y: .238991976, z: .433133751, w: -.603266597}
+        postQ: {x: -.618887663, y: -.144481659, z: -.304874837, w: .709333718}
+        length: .0548751801
         modified: 1
     - boneName: iPiMocap:RightHandThumb2
       humanName: Right Thumb Intermediate
@@ -582,7 +581,7 @@ ModelImporter:
         min: {x: 0, y: 0, z: -40}
         max: {x: 0, y: 0, z: 35}
         value: {x: .0286537763, y: 0, z: .0143268881}
-        preQ: {x: .648719609, y: -.00202782475, z: .165235609, w: -.742870092}
+        preQ: {x: .648719549, y: -.0020278208, z: .165235579, w: -.742870092}
         postQ: {x: -.6169312, y: -.12843737, z: -.306446701, w: .713435352}
         length: .0358172283
         modified: 1
@@ -592,8 +591,8 @@ ModelImporter:
         min: {x: 0, y: 0, z: -40}
         max: {x: 0, y: 0, z: 35}
         value: {x: .0214903299, y: 0, z: .0107451649}
-        preQ: {x: .648719549, y: -.00202781707, z: .165235579, w: -.742870092}
-        postQ: {x: -.61693114, y: -.12843737, z: -.306446701, w: .713435352}
+        preQ: {x: .648719549, y: -.00202781335, z: .165235594, w: -.742870092}
+        postQ: {x: -.61693114, y: -.1284374, z: -.306446701, w: .713435352}
         length: .0268629212
         modified: 1
     - boneName: iPiMocap:RightHandIndex1
@@ -602,8 +601,8 @@ ModelImporter:
         min: {x: 0, y: -20, z: -50}
         max: {x: 0, y: 20, z: 50}
         value: {x: .034387894, y: 0, z: .017193947}
-        preQ: {x: .0327646621, y: .117646575, z: .305882454, w: -.944204211}
-        postQ: {x: -.000319735118, y: -.0852361992, z: -.118038096, w: .989344001}
+        preQ: {x: .0327646732, y: .117646597, z: .305882454, w: -.944204211}
+        postQ: {x: -.000319741637, y: -.0852362439, z: -.118038096, w: .98934406}
         length: .0429848842
         modified: 1
     - boneName: iPiMocap:RightHandIndex2
@@ -612,8 +611,8 @@ ModelImporter:
         min: {x: 0, y: 0, z: -45}
         max: {x: 0, y: 0, z: 45}
         value: {x: .0234762058, y: 0, z: .0117381029}
-        preQ: {x: .0248164497, y: .0750001967, z: .422363073, w: -.902977526}
-        postQ: {x: -.000327697955, y: -.0852652118, z: -.118093468, w: .989334941}
+        preQ: {x: .0248164237, y: .0750001296, z: .422363043, w: -.902977467}
+        postQ: {x: -.000327691436, y: -.0852651522, z: -.118093468, w: .989334941}
         length: .0293452665
         modified: 1
     - boneName: iPiMocap:RightHandIndex3
@@ -622,8 +621,8 @@ ModelImporter:
         min: {x: 0, y: 0, z: -45}
         max: {x: 0, y: 0, z: 45}
         value: {x: .0176071525, y: 0, z: .00880357623}
-        preQ: {x: .0248164479, y: .0750001967, z: .422363102, w: -.902977526}
-        postQ: {x: -.000327697955, y: -.0852652118, z: -.118093468, w: .989334941}
+        preQ: {x: .0248164218, y: .0750001371, z: .422363073, w: -.902977526}
+        postQ: {x: -.000327691436, y: -.0852651522, z: -.118093461, w: .989334941}
         length: .0220089499
         modified: 1
     - boneName: iPiMocap:RightHandMiddle1
@@ -692,8 +691,8 @@ ModelImporter:
         min: {x: 0, y: -20, z: -50}
         max: {x: 0, y: 20, z: 50}
         value: {x: .0240465831, y: 0, z: .0120232916}
-        preQ: {x: .0154913869, y: -.115725465, z: .291370481, w: -.949458182}
-        postQ: {x: -.00454644859, y: .13272652, z: -.0993066505, w: .986154675}
+        preQ: {x: .0154913943, y: -.11572542, z: .291370451, w: -.949458063}
+        postQ: {x: -.00454645185, y: .13272649, z: -.0993066505, w: .986154675}
         length: .0300582368
         modified: 1
     - boneName: iPiMocap:RightHandPinky2
@@ -702,8 +701,8 @@ ModelImporter:
         min: {x: 0, y: 0, z: -45}
         max: {x: 0, y: 0, z: 45}
         value: {x: .0176328607, y: 0, z: .00881643035}
-        preQ: {x: .0441083834, y: -.12452811, z: .403436214, w: -.905420542}
-        postQ: {x: -.00451782392, y: .132815167, z: -.0991534591, w: .986158311}
+        preQ: {x: .044108402, y: -.12452808, z: .403436214, w: -.905420542}
+        postQ: {x: -.00451782858, y: .132815138, z: -.0991534591, w: .986158311}
         length: .0220410842
         modified: 1
     - boneName: iPiMocap:RightHandPinky3
@@ -712,8 +711,8 @@ ModelImporter:
         min: {x: 0, y: 0, z: -45}
         max: {x: 0, y: 0, z: 45}
         value: {x: .0132246474, y: 0, z: .00661232369}
-        preQ: {x: .0441083759, y: -.124528088, z: .403436154, w: -.905420423}
-        postQ: {x: -.00451782346, y: .132815152, z: -.0991534516, w: .986158311}
+        preQ: {x: .0441083945, y: -.124528058, z: .403436154, w: -.905420423}
+        postQ: {x: -.00451782811, y: .132815123, z: -.0991534516, w: .986158311}
         length: .0165308136
         modified: 1
     skeleton:

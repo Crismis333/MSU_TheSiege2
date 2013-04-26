@@ -55,14 +55,17 @@ public class HeroMovement : MonoBehaviour {
     [HideInInspector]
     public float Rage = 0;
 
+    private Animator anim;
+
 	// Use this for initialization
 	void Start () {
         currentSpeed = MoveSpeed;
+
+        anim = gameObject.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
         if (Input.GetButtonDown("Jump"))
         {
             lastJumpButtonTime = Time.time;
@@ -83,14 +86,20 @@ public class HeroMovement : MonoBehaviour {
 
         moveDirection.y = verticalSpeed;
 
+        if (jumping) {
+            moveDirection.x += 0.289f;
+            moveDirection.z -= 1.031f; //animation error fix
+        }
+
         moveDirection *= Time.deltaTime;
 
         CharacterController cc = GetComponent<CharacterController>();
-        collisionFlag = cc.Move(moveDirection);
+        collisionFlag = cc.Move(moveDirection); 
 
         if (IsGrounded() && jumping)
         {
             jumping = false;
+            anim.SetBool("Jump", false);
             SendMessage("DidLand", SendMessageOptions.DontRequireReceiver);
         }
 		
@@ -209,7 +218,9 @@ public class HeroMovement : MonoBehaviour {
 
     private void DidJump()
     {
+
         jumping = true;
+        anim.SetBool("Jump", true);
         jumpingReachedApex = false;
         lastJumpTime = Time.time;
         //lastJumpStartHeight = transform.position.y;

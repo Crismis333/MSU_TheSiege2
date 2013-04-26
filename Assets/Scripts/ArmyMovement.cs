@@ -33,7 +33,7 @@ public class ArmyMovement : MonoBehaviour {
 			speedMod = Mathf.Min(((Mathf.Max(hm.CurrentSpeed,hm.MoveSpeed) - 0.1f)/hm.MoveSpeed),speedMod);
 		}
 		else {
-			speedMod = 1.05f;
+			speedMod = 1.01f;
 			
 			if (dZ <= 0)
 			{

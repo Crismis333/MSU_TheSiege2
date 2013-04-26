@@ -65,20 +65,33 @@ public class LevelCreator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		GameObject tmpRoad = roads.Peek();
-		if (tmpRoad.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64) {
-			Destroy(roads.Dequeue());
-		}
-		
-		GameObject tmpSideA = sidesA.Peek();
-		if (tmpSideA.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64) {
-			Destroy(sidesA.Dequeue());
-		}
-		
-		GameObject tmpSideB = sidesB.Peek();
-		if (tmpSideB.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64) {
-			Destroy(sidesB.Dequeue());
-		}
+        if (roads.Count != 0)
+        {
+
+            GameObject tmpRoad = roads.Peek();
+            if (tmpRoad.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64)
+            {
+                Destroy(roads.Dequeue());
+            }
+        }
+
+        if (sidesA.Count != 0)
+        {
+            GameObject tmpSideA = sidesA.Peek();
+            if (tmpSideA.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64)
+            {
+                Destroy(sidesA.Dequeue());
+            }
+        }
+
+        if (sidesB.Count != 0)
+        {
+            GameObject tmpSideB = sidesB.Peek();
+            if (tmpSideB.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64)
+            {
+                Destroy(sidesB.Dequeue());
+            }
+        }
 
         if (specials.Count != 0)
         {

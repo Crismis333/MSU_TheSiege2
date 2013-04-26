@@ -36,7 +36,7 @@ public class HeroAttack : MonoBehaviour
             anim = ObstacleController.PLAYER.GetComponent<Animator>();
             anim.SetInteger("AttackingState", 0);
             anim.SetLayerWeight(1, 1);
-            anim.SetBool("Attacking", false);
+            anim.SetLayerWeight(2, 1);
         }
         AttackList = new List<GameObject>();
         GUI = Camera.mainCamera.GetComponent<GUIScript>();
@@ -117,6 +117,7 @@ public class HeroAttack : MonoBehaviour
             hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
             anim = ObstacleController.PLAYER.GetComponent<Animator>();
             anim.SetLayerWeight(1, 1);
+            anim.SetLayerWeight(2, 1);
         }
 
         if (Input.GetButtonDown("Fire1"))
@@ -128,7 +129,6 @@ public class HeroAttack : MonoBehaviour
             chargeTime = 0;
             GUI.BarActive = true;
 
-            anim.SetBool("Attacking", true);
             anim.SetInteger("AttackState", 1);
         }
 
@@ -140,6 +140,7 @@ public class HeroAttack : MonoBehaviour
                 charging = false;
                 GUI.ResetBar();
                 GUI.BarActive = false;
+                anim.SetInteger("AttackState", 0);
             }
             else
             {
@@ -172,8 +173,7 @@ public class HeroAttack : MonoBehaviour
             //print("Fire1 up");
             // Release attack - hit if in a collider box
 
-            anim.SetBool("Attacking", false);
-            anim.SetInteger("AttackState", 0);
+            anim.SetInteger("AttackState", 2);
 
             GUI.ResetBar();
             GUI.BarActive = false;
