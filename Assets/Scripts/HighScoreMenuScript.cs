@@ -149,6 +149,8 @@ public class HighScoreMenuScript : MonoBehaviour {
             {
                 if (Camera.mainCamera.GetComponent<GUINavigation>().keySelect == 0)
                     GUI.FocusControl("Return");
+                else
+                    GUI.FocusControl("title");
             }
             else
                 GUI.FocusControl("title");
@@ -221,18 +223,18 @@ public class HighScoreMenuScript : MonoBehaviour {
             if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
             {
 
-                if (!keyDownA && (Input.GetButton("Fire1") || Input.GetKey(KeyCode.Z)))
+                if (!keyDownA && (Input.GetButton("Fire1") || Input.GetKey(KeyCode.Z) || GUINavigation.AButtonState()))
                 {
                     keyDownA = true;
                     setname += 'a';
                     finalchar = 1;
                 }
-                else if (keyDownA && (!Input.GetButton("Fire1") && !Input.GetKey(KeyCode.Z)))
+                else if (keyDownA && (!Input.GetButton("Fire1") && !Input.GetKey(KeyCode.Z) && !GUINavigation.AButtonState()))
                 {
                     keyDownA = false;
                 }
 
-                if (!keyDownB && (Input.GetButton("Fire2") || Input.GetKey(KeyCode.X)))
+                if (!keyDownB && (Input.GetButton("Fire2") || Input.GetKey(KeyCode.X) || GUINavigation.BButtonState()))
                 {
                     keyDownB = true;
                     if (setname.Length > 0)
@@ -241,12 +243,12 @@ public class HighScoreMenuScript : MonoBehaviour {
                         finalchar = IndexFinder(GetLastCharacter());
                     }
                 }
-                else if (keyDownB && (!Input.GetButton("Fire2") && !Input.GetKey(KeyCode.X)))
+                else if (keyDownB && (!Input.GetButton("Fire2") && !Input.GetKey(KeyCode.X) && !GUINavigation.BButtonState()))
                 {
                     keyDownB = false;
                 }
 
-                if (Input.GetKeyDown(KeyCode.Return))
+                if (Input.GetKeyDown(KeyCode.Return) || GetComponent<GUINavigation>().usedMenu)
                 {
                     Add_Score();
                     return;
@@ -338,6 +340,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             {
                 Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
                 Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 1;
+                Camera.mainCamera.GetComponent<GUINavigation>().menuKey = 0;
                 Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, Accept);
             }
             firstGUI = false;
@@ -392,6 +395,7 @@ public class HighScoreMenuScript : MonoBehaviour {
         }
         Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
         Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 1;
+        Camera.mainCamera.GetComponent<GUINavigation>().menuKey = 0;
         Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, Accept);
     }
 

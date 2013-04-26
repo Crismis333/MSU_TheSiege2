@@ -43,6 +43,7 @@ public class QuitAcceptMenu : MonoBehaviour {
             {
                 case 0: GUI.FocusControl("Yes"); break;
                 case 1: GUI.FocusControl("No"); break;
+                default: GUI.FocusControl("title"); break;
             }
         }
         else

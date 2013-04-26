@@ -84,6 +84,7 @@ public class DeathScreenScript : MonoBehaviour {
             {
                 case 0: GUI.FocusControl("Return"); break;
                 case 1: GUI.FocusControl("GiveUp"); break;
+                default: GUI.FocusControl("title"); break;
             }
         }
         else
@@ -130,7 +131,7 @@ public class DeathScreenScript : MonoBehaviour {
 
     public void GiveUp()
     {
-        if (!started && !gaveup)
+        if (!started && !gaveup && !returned)
         {
             gaveup = true;
             countdown = 1.2f;
@@ -139,7 +140,7 @@ public class DeathScreenScript : MonoBehaviour {
 
     public void ReturnToCamp()
     {
-        if (!started && !gaveup)
+        if (!started && !gaveup && !returned)
         {
             returned = true;
             countdown = 2f;
