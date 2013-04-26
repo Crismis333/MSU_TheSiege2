@@ -162,7 +162,7 @@ ModelImporter:
       loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
+      loopBlendPositionXZ: 1
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
@@ -342,8 +342,8 @@ ModelImporter:
         min: {x: -90, y: -100, z: -60.0000038}
         max: {x: 90, y: 100, z: 100}
         value: {x: .251776218, y: 0, z: .125888109}
-        preQ: {x: -.013152943, y: -.24026686, z: -.333070308, w: .911681354}
-        postQ: {x: -.00106744503, y: .00433455594, z: -.00176744338, w: .999988437}
+        preQ: {x: -.0131529421, y: -.24026686, z: -.333070308, w: .911681354}
+        postQ: {x: -.00106744503, y: .00433455594, z: -.00176744151, w: .999988437}
         length: .314720422
         modified: 1
     - boneName: iPiMocap:LeftForeArm
@@ -363,7 +363,7 @@ ModelImporter:
         max: {x: 90, y: 0, z: 80}
         value: {x: .210030422, y: 0, z: .105015211}
         preQ: {x: -.521436095, y: -.452730358, z: -.452007711, w: .564649045}
-        postQ: {x: -.706539214, y: .00109455164, z: .00314263999, w: .707666039}
+        postQ: {x: -.706539214, y: .00109454978, z: .00314263999, w: .707666039}
         length: .262538105
         modified: 1
     - boneName: iPiMocap:LeftHand
@@ -382,8 +382,8 @@ ModelImporter:
         min: {x: 0, y: -40, z: -80}
         max: {x: 0, y: 40, z: 80}
         value: {x: .105015211, y: 0, z: .0525076054}
-        preQ: {x: -.000828571618, y: .0029937923, z: .00145309046, w: .999994099}
-        postQ: {x: -.000828571559, y: .00299379253, z: .00145309046, w: .999994099}
+        preQ: {x: -.000828571559, y: .0029937923, z: .00145309232, w: .999994099}
+        postQ: {x: -.000828571501, y: .00299379253, z: .00145309232, w: .999994099}
         length: .131269053
         modified: 1
     - boneName: iPiMocap:LeftToeBase
@@ -423,7 +423,7 @@ ModelImporter:
         max: {x: 0, y: 25, z: 20}
         value: {x: .040590357, y: 0, z: .0202951785}
         preQ: {x: .238988832, y: .625579834, z: .603271008, w: -.433126003}
-        postQ: {x: .144484937, y: .618895352, z: .709335387, w: -.304853946}
+        postQ: {x: .144484937, y: .618895352, z: .709335387, w: -.304853976}
         length: .0507379621
         modified: 1
     - boneName: iPiMocap:LeftHandThumb2
@@ -432,8 +432,8 @@ ModelImporter:
         min: {x: 0, y: 0, z: -40}
         max: {x: 0, y: 0, z: 35}
         value: {x: .0264946241, y: 0, z: .013247312}
-        preQ: {x: -.0020429038, y: .648721337, z: .742865205, w: -.165250003}
-        postQ: {x: .128424481, y: .616924763, z: .713438153, w: -.306458801}
+        preQ: {x: -.00204289635, y: .648721337, z: .742865205, w: -.165250003}
+        postQ: {x: .128424481, y: .616924703, z: .713438094, w: -.306458801}
         length: .033118289
         modified: 1
     - boneName: iPiMocap:LeftHandThumb3
@@ -442,8 +442,8 @@ ModelImporter:
         min: {x: 0, y: 0, z: -40}
         max: {x: 0, y: 0, z: 35}
         value: {x: .0198709648, y: 0, z: .00993548241}
-        preQ: {x: -.00204287656, y: .648721397, z: .742865264, w: -.165250078}
-        postQ: {x: .12842451, y: .616924703, z: .713438094, w: -.306458861}
+        preQ: {x: -.00204286934, y: .648721397, z: .742865264, w: -.165250093}
+        postQ: {x: .128424525, y: .616924703, z: .713438094, w: -.306458861}
         length: .0248387158
         modified: 1
     - boneName: iPiMocap:LeftHandIndex1
@@ -543,7 +543,7 @@ ModelImporter:
         max: {x: 0, y: 20, z: 50}
         value: {x: .0222339854, y: 0, z: .0111169927}
         preQ: {x: -.115725994, y: .0155006237, z: .949456394, w: -.291375488}
-        postQ: {x: -.132725984, y: .00454786094, z: .986154258, w: -.0993115753}
+        postQ: {x: -.132725984, y: .00454786094, z: .986154258, w: -.0993115902}
         length: .027792491
         modified: 1
     - boneName: iPiMocap:LeftHandPinky2
@@ -553,7 +553,7 @@ ModelImporter:
         max: {x: 0, y: 0, z: 45}
         value: {x: .0163044762, y: 0, z: .00815223809}
         preQ: {x: -.124521039, y: .0441209115, z: .905413151, w: -.403453827}
-        postQ: {x: -.132807925, y: .00452189008, z: .986157238, w: -.0991737917}
+        postQ: {x: -.132807925, y: .00452188961, z: .986157238, w: -.0991737992}
         length: .020380605
         modified: 1
     - boneName: iPiMocap:LeftHandPinky3
@@ -563,7 +563,7 @@ ModelImporter:
         max: {x: 0, y: 0, z: 45}
         value: {x: .0122283595, y: 0, z: .00611417973}
         preQ: {x: -.124521025, y: .0441209078, z: .905413091, w: -.403453797}
-        postQ: {x: -.132807925, y: .00452189008, z: .986157238, w: -.0991737917}
+        postQ: {x: -.132807925, y: .00452188961, z: .986157238, w: -.0991737992}
         length: .0152854538
         modified: 1
     - boneName: iPiMocap:RightHandThumb1
@@ -581,20 +581,20 @@ ModelImporter:
       limit:
         min: {x: 0, y: 0, z: -40}
         max: {x: 0, y: 0, z: 35}
-        value: {x: .02649392, y: 0, z: .01324696}
-        preQ: {x: .64871943, y: -.00202736934, z: .165235296, w: -.742870212}
-        postQ: {x: -.6169312, y: -.128437757, z: -.306446522, w: .713435411}
-        length: .0331174098
+        value: {x: .0264939182, y: 0, z: .0132469591}
+        preQ: {x: .64871949, y: -.0020274173, z: .165235266, w: -.742870212}
+        postQ: {x: -.6169312, y: -.128437683, z: -.306446463, w: .713435352}
+        length: .0331174061
         modified: 1
     - boneName: iPiMocap:RightHandThumb3
       humanName: Right Thumb Distal
       limit:
         min: {x: 0, y: 0, z: -40}
         max: {x: 0, y: 0, z: 35}
-        value: {x: .0198704377, y: 0, z: .00993521884}
-        preQ: {x: .64871943, y: -.00202736072, z: .165235326, w: -.742870212}
-        postQ: {x: -.61693126, y: -.128437757, z: -.306446493, w: .713435352}
-        length: .0248380564
+        value: {x: .0198704358, y: 0, z: .00993521791}
+        preQ: {x: .64871943, y: -.00202740636, z: .165235251, w: -.742870271}
+        postQ: {x: -.6169312, y: -.128437713, z: -.306446433, w: .713435411}
+        length: .0248380546
         modified: 1
     - boneName: iPiMocap:RightHandIndex1
       humanName: Right Index Proximal
@@ -603,7 +603,7 @@ ModelImporter:
         max: {x: 0, y: 20, z: 50}
         value: {x: .0317957848, y: 0, z: .0158978924}
         preQ: {x: .0327646993, y: .117646731, z: .305881083, w: -.944204628}
-        postQ: {x: -.000319669925, y: -.0852363482, z: -.118036307, w: .98934412}
+        postQ: {x: -.000319668994, y: -.0852363482, z: -.118036322, w: .98934412}
         length: .0397447497
         modified: 1
     - boneName: iPiMocap:RightHandIndex2
@@ -613,7 +613,7 @@ ModelImporter:
         max: {x: 0, y: 0, z: 45}
         value: {x: .0217066295, y: 0, z: .0108533148}
         preQ: {x: .0248165876, y: .0750002563, z: .422362894, w: -.902977586}
-        postQ: {x: -.000327745453, y: -.0852652714, z: -.118093237, w: .989334941}
+        postQ: {x: -.000327744521, y: -.0852652714, z: -.118093237, w: .989334941}
         length: .0271332953
         modified: 1
     - boneName: iPiMocap:RightHandIndex3
@@ -622,7 +622,7 @@ ModelImporter:
         min: {x: 0, y: 0, z: -45}
         max: {x: 0, y: 0, z: 45}
         value: {x: .0162799712, y: 0, z: .00813998561}
-        preQ: {x: .0248165838, y: .0750002563, z: .422362894, w: -.902977645}
+        preQ: {x: .0248165876, y: .0750002563, z: .422362894, w: -.902977645}
         postQ: {x: -.00032774359, y: -.0852652565, z: -.11809323, w: .989334941}
         length: .020349972
         modified: 1
@@ -633,7 +633,7 @@ ModelImporter:
         max: {x: 0, y: 7.50000048, z: 50}
         value: {x: .0376477726, y: 0, z: .0188238863}
         preQ: {x: .0204819888, y: .0356840417, z: .285090894, w: -.957616925}
-        postQ: {x: -.00083248486, y: .00295286137, z: .00140014093, w: .999994278}
+        postQ: {x: -.000832484802, y: .00295286137, z: .00140014279, w: .999994278}
         length: .0470597334
         modified: 1
     - boneName: iPiMocap:RightHandMiddle2
@@ -643,7 +643,7 @@ ModelImporter:
         max: {x: 0, y: 0, z: 45}
         value: {x: .0208681524, y: 0, z: .0104340762}
         preQ: {x: .024181338, y: -.00261213654, z: .311045289, w: -.950083733}
-        postQ: {x: -.000822595612, y: .00305770757, z: .00153407827, w: .999993682}
+        postQ: {x: -.000822595553, y: .00305770757, z: .00153408013, w: .999993682}
         length: .0260851998
         modified: 1
     - boneName: iPiMocap:RightHandMiddle3
@@ -653,7 +653,7 @@ ModelImporter:
         max: {x: 0, y: 0, z: 45}
         value: {x: .0156511124, y: 0, z: .00782555621}
         preQ: {x: .0241813399, y: -.00261213304, z: .311045319, w: -.950083733}
-        postQ: {x: -.000822595845, y: .00305770384, z: .00153407827, w: .999993801}
+        postQ: {x: -.000822595786, y: .00305770384, z: .00153408013, w: .999993801}
         length: .0195639003
         modified: 1
     - boneName: iPiMocap:RightHandRing1
@@ -663,7 +663,7 @@ ModelImporter:
         max: {x: 0, y: 7.50000048, z: 50}
         value: {x: .0342711173, y: 0, z: .0171355586}
         preQ: {x: .0181482621, y: -.0676083788, z: .310746998, w: -.947911382}
-        postQ: {x: -.00210691011, y: .0312816203, z: -.0251855832, w: .999190986}
+        postQ: {x: -.00210691011, y: .0312816203, z: -.0251855813, w: .999190986}
         length: .0428389162
         modified: 1
     - boneName: iPiMocap:RightHandRing2
@@ -673,7 +673,7 @@ ModelImporter:
         max: {x: 0, y: 0, z: 45}
         value: {x: .0195295122, y: 0, z: .00976475608}
         preQ: {x: .0165072829, y: -.02926098, z: .33670789, w: -.941009581}
-        postQ: {x: -.00209700293, y: .0313814953, z: -.02502634, w: .99919188}
+        postQ: {x: -.00209700293, y: .0313814953, z: -.0250263382, w: .99919188}
         length: .0244119
         modified: 1
     - boneName: iPiMocap:RightHandRing3
@@ -683,7 +683,7 @@ ModelImporter:
         max: {x: 0, y: 0, z: 45}
         value: {x: .0146471364, y: 0, z: .00732356822}
         preQ: {x: .016507281, y: -.02926098, z: .33670786, w: -.941009581}
-        postQ: {x: -.00209700293, y: .0313814953, z: -.02502634, w: .99919188}
+        postQ: {x: -.00209700293, y: .0313814953, z: -.0250263382, w: .99919188}
         length: .0183089245
         modified: 1
     - boneName: iPiMocap:RightHandPinky1
@@ -854,7 +854,7 @@ ModelImporter:
       transformModified: 1
     - name: iPiMocap:LeftHandPinky1
       position: {x: -.0908180401, y: -.00690114498, z: -.039986901}
-      rotation: {x: .00685730809, y: .0913900733, z: -.0938823596, w: .991356075}
+      rotation: {x: .00685730763, y: .0913900658, z: -.0938823521, w: .991356015}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
     - name: iPiMocap:LeftHandPinky2
@@ -894,7 +894,7 @@ ModelImporter:
       transformModified: 1
     - name: iPiMocap:LeftHandThumb1
       position: {x: -.0210487843, y: -.0159314871, z: .0159570668}
-      rotation: {x: -.0643098503, y: .0460265428, z: -.0652509108, w: .994730175}
+      rotation: {x: -.0643098429, y: .0460265391, z: -.0652509034, w: .994730115}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
     - name: iPiMocap:LeftHandThumb2
@@ -949,7 +949,7 @@ ModelImporter:
       transformModified: 1
     - name: iPiMocap:RightHandIndex1
       position: {x: .101750612, y: .00889968872, z: .0282610003}
-      rotation: {x: -.00651891204, y: .0425484963, z: .0958790407, w: .994461834}
+      rotation: {x: -.00651891157, y: .0425484926, z: .0958790332, w: .994461775}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
     - name: iPiMocap:RightHandIndex2
@@ -1029,7 +1029,7 @@ ModelImporter:
       transformModified: 1
     - name: iPiMocap:RightHandThumb1
       position: {x: .0210488439, y: -.015930295, z: .0159555916}
-      rotation: {x: -.0643222854, y: -.0460220687, z: .0652621388, w: .994728863}
+      rotation: {x: -.0643222779, y: -.046022065, z: .0652621314, w: .994728804}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
     - name: iPiMocap:RightHandThumb2
