@@ -26,6 +26,8 @@ public class HeroAttack : MonoBehaviour
     private float a, b, c;
 
     private Animator anim;
+    private float attackAnimLength = 0.07f;
+    private float attackAnimCountdown;
 
     // Use this for initialization
     void Start()
@@ -38,6 +40,7 @@ public class HeroAttack : MonoBehaviour
             anim.SetLayerWeight(1, 1);
             anim.SetLayerWeight(2, 1);
         }
+        attackAnimCountdown = 0f;
         AttackList = new List<GameObject>();
         GUI = Camera.mainCamera.GetComponent<GUIScript>();
         hitableEnemies = new List<GameObject>();
@@ -112,6 +115,8 @@ public class HeroAttack : MonoBehaviour
 
     void Update()
     {
+        //if (anim != null)
+        //    print(anim.GetInteger("AttackState") + ", charging: " + charging);
         if (hm == null)
         {
             hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
@@ -141,6 +146,7 @@ public class HeroAttack : MonoBehaviour
                 GUI.ResetBar();
                 GUI.BarActive = false;
                 anim.SetInteger("AttackState", 0);
+                return;
             }
             else
             {
@@ -167,6 +173,16 @@ public class HeroAttack : MonoBehaviour
                 GUI.engagePercent = percent;
             }
         }
+        else if (anim != null && anim.GetInteger("AttackState") == 2)
+        {
+            if (attackAnimCountdown > 0)
+                attackAnimCountdown -= Time.deltaTime;
+            else
+            {
+                attackAnimCountdown = 0;
+                anim.SetInteger("AttackState", 0);
+            }
+        }
 
         if (Input.GetButtonUp("Fire1"))
         {
@@ -174,7 +190,7 @@ public class HeroAttack : MonoBehaviour
             // Release attack - hit if in a collider box
 
             anim.SetInteger("AttackState", 2);
-
+            attackAnimCountdown = attackAnimLength;
             GUI.ResetBar();
             GUI.BarActive = false;
             if (charging)
