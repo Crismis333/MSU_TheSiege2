@@ -1,0 +1,115 @@
+fileFormatVersion: 2
+guid: f35fb336fe74d4b4a8e6031cf91c47a5
+ModelImporter:
+  serializedVersion: 15
+  fileIDToRecycleName:
+    100000: bridge_middle
+    100002: bridge_middle001
+    100004: bridge_middle002
+    100006: bridge_middle003
+    100008: bridge_middle004
+    100010: bridge_middle005
+    100012: bridge_middle006
+    100014: bridge_middle007
+    100016: bridge_middle008
+    100018: bridge_start
+    100020: bridge_start001
+    100022: //RootNode
+    400000: bridge_middle
+    400002: bridge_middle001
+    400004: bridge_middle002
+    400006: bridge_middle003
+    400008: bridge_middle004
+    400010: bridge_middle005
+    400012: bridge_middle006
+    400014: bridge_middle007
+    400016: bridge_middle008
+    400018: bridge_start
+    400020: bridge_start001
+    400022: //RootNode
+    2300000: bridge_middle
+    2300002: bridge_middle001
+    2300004: bridge_middle002
+    2300006: bridge_middle003
+    2300008: bridge_middle004
+    2300010: bridge_middle005
+    2300012: bridge_middle006
+    2300014: bridge_middle007
+    2300016: bridge_middle008
+    2300018: bridge_start
+    2300020: bridge_start001
+    3300000: bridge_middle
+    3300002: bridge_middle001
+    3300004: bridge_middle002
+    3300006: bridge_middle003
+    3300008: bridge_middle004
+    3300010: bridge_middle005
+    3300012: bridge_middle006
+    3300014: bridge_middle007
+    3300016: bridge_middle008
+    3300018: bridge_start
+    3300020: bridge_start001
+    4300000: bridge_start
+    4300002: bridge_middle
+    4300004: bridge_middle001
+    4300006: bridge_middle002
+    4300008: bridge_middle003
+    4300010: bridge_middle004
+    4300012: bridge_middle005
+    4300014: bridge_middle006
+    4300016: bridge_middle007
+    4300018: bridge_middle008
+    4300020: bridge_start001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    handles: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  additionalBone: 1
+  animationType: 2
+  userData: 
