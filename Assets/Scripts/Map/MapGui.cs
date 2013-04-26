@@ -158,6 +158,8 @@ public class MapGui : MonoBehaviour {
     {
         if (!CurrentGameState.hero.completed)
             return;
+        if (current_location == null)
+            return;
         if (current_location.difficulty_soldier - CurrentGameState.soldierModifier < 1)
             ObstacleController.SOLDIER_RATIO = 1;
         else
@@ -215,13 +217,14 @@ public class MapGui : MonoBehaviour {
     void OnGUI()
     {
         GUI.skin = gSkin;
-        if (!started && !stopped && Input.GetKeyDown(KeyCode.Escape))
+        if (!started && !stopped && (Input.GetKeyDown(KeyCode.Escape) || Camera.mainCamera.GetComponent<GUINavigation>().usedMenu))
         {
             this.enabled = false;
             transform.parent.gameObject.GetComponent<MapMovementController>().enabled = false;
             GetComponent<PauseMenuScript>().enabled = true;
             Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
             Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 5;
+            Camera.mainCamera.GetComponent<GUINavigation>().menuKey = 4;
             Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
             Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
             Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
@@ -346,7 +349,10 @@ public class MapGui : MonoBehaviour {
         {
             if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
             {
-                if (!backDown && Input.GetKeyDown(KeyCode.Z))
+                float f = Input.GetAxisRaw("ScrollAxis");
+                if (f < -0.4 || f > 0.4)
+                    scrollPos.y += 3*f;
+                if (!backDown && (Input.GetKeyDown(KeyCode.Z) || GUINavigation.LBButtonDown()))
                 {
                     backDown = true;
                     if (keyLocation == -1 || keyLocation == 0)
@@ -357,7 +363,7 @@ public class MapGui : MonoBehaviour {
                     ResetScroll();
                     CurrentGameState.hero.LookAtLoc(current_location);
                 }
-                else if (!nextDown && Input.GetKeyDown(KeyCode.X))
+                else if (!nextDown && (Input.GetKeyDown(KeyCode.X) || GUINavigation.RBButtonDown()))
                 {
                     nextDown = true;
                     if (keyLocation == -1 || keyLocation == CurrentGameState.loc.locations.Length - 1)
@@ -368,15 +374,15 @@ public class MapGui : MonoBehaviour {
                     ResetScroll();
                     CurrentGameState.hero.LookAtLoc(current_location);
                 }
-                if (Input.GetKeyDown(KeyCode.Return))
+                if (Input.GetKeyDown(KeyCode.Return) || GUINavigation.AButtonDown())
                 {
                     Battle_Pressed();
                 }
             }
         }
-        if (backDown && Input.GetKeyUp(KeyCode.Z))
+        if (backDown && (Input.GetKeyUp(KeyCode.Z) || GUINavigation.LBButtonUp()))
             backDown = false;
-        if (nextDown && Input.GetKeyUp(KeyCode.X))
+        if (nextDown && (Input.GetKeyUp(KeyCode.X) || GUINavigation.RBButtonUp()))
             nextDown = false;
     }
 

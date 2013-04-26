@@ -101,6 +101,7 @@ public class OptionsMenuScript : MonoBehaviour {
                 case 3: GUI.FocusControl("Resolution"); break;
                 case 4: GUI.FocusControl("Quality"); break;
                 case 5: GUI.FocusControl("Accept"); break;
+                default: GUI.FocusControl("title"); break;
             }
         }
         else
@@ -145,10 +146,6 @@ public class OptionsMenuScript : MonoBehaviour {
         enabled = true;
     }
 
-    public void Menu_Options_Dummy()
-    {
-    }
-
     public void Menu_Options_Back() {
         gSkin.button.hover.background = background;
         gSkin.horizontalSlider.hover.background = backgroundSlider;
@@ -179,6 +176,7 @@ public class OptionsMenuScript : MonoBehaviour {
             GetComponent<PauseMenuScript>().enabled = true;
             Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
             Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 5;
+            Camera.mainCamera.GetComponent<GUINavigation>().menuKey = 4;
             Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
             Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
             Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
@@ -247,7 +245,6 @@ public class OptionsMenuScript : MonoBehaviour {
                         //GUI.FocusControl("Fullscreen");
                         if (buttonactive && !Camera.mainCamera.GetComponent<GUINavigation>().activated)
                         {
-                            print("set!");
                             fullscreen = !fullscreen;
                         }
                         break;

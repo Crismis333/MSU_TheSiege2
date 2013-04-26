@@ -35,16 +35,32 @@ public class GUIScript : MonoBehaviour {
     public static bool PERFECT_RUN = true;
     public static float Multiplier = 1;
 
+    public bool started;
+    private float screencountdown;
+
 	// Use this for initialization
 	void Start () {
 		maxZ = (LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64)-32;
         HitList = new List<HitAccuracy>();
         soldierAnim = 0;
         Screen.lockCursor = false;
+        started = true;
+        screencountdown = 1f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (started)
+        {
+            screencountdown -= 0.02f;
+            if (screencountdown < 0)
+            {
+                screencountdown = 0;
+                started = false;
+            }
+        }
+
+
         soldierAnim += Time.deltaTime;
 
         if (soldierAnim > 1)
@@ -123,6 +139,14 @@ public class GUIScript : MonoBehaviour {
                 GUI.DrawTexture(new Rect(armyZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2), 0, 128, 64), runningSoldiers2);
             //GUI.DrawTexture(new Rect(Screen.width - 30 - scrollMidOffset.x * 2 + 1 - 128, 0, 128, 64), runningSoldiers1);
 
+            GUI.EndGroup();
+        }
+
+        if (started)
+        {
+            GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+            GUI.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, 1 - screencountdown));
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
             GUI.EndGroup();
         }
     }
@@ -246,13 +270,14 @@ public class GUIScript : MonoBehaviour {
 
     void OnGUI()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (!started && (Input.GetKeyDown(KeyCode.Escape) || Camera.mainCamera.GetComponent<GUINavigation>().usedMenu))
         {
             this.enabled = false;
             Time.timeScale = 0;
             GetComponent<PauseMenuScript>().enabled = true;
             Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
             Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 5;
+            Camera.mainCamera.GetComponent<GUINavigation>().menuKey = 4;
             Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
             Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
             Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
@@ -290,6 +315,7 @@ public class GUIScript : MonoBehaviour {
         GetComponent<LevelCompleteScript>().enabled = true;
         Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
         Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 1;
+        Camera.mainCamera.GetComponent<GUINavigation>().menuKey = 0;
         Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<LevelCompleteScript>().Accept);
 
     }

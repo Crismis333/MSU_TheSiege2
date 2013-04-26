@@ -72,6 +72,7 @@ public class PauseReturnToScript : MonoBehaviour {
             {
                 case 0: GUI.FocusControl("Yes"); break;
                 case 1: GUI.FocusControl("No"); break;
+                default: GUI.FocusControl("title"); break;
             }
         }
         else
@@ -105,6 +106,7 @@ public class PauseReturnToScript : MonoBehaviour {
             GetComponent<PauseMenuScript>().enabled = true;
             Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
             Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 5;
+            Camera.mainCamera.GetComponent<GUINavigation>().menuKey = 4;
             Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
             Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
             Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);

@@ -66,6 +66,7 @@ public class PauseMenuScript : MonoBehaviour {
                 case 2: GUI.FocusControl("GiveUp"); break;
                 case 3: GUI.FocusControl("Quit"); break;
                 case 4: GUI.FocusControl("Return"); break;
+                default: GUI.FocusControl("title"); break;
             }
         }
         else
