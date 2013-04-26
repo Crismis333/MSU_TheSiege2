@@ -133,7 +133,7 @@ public class GUINavigation : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        print("menukey: " + menuKey + ", size: " + menuelements.Count);
+        //print("menukey: " + menuKey + ", size: " + menuelements.Count);
         if (menuDown)
         {
             if (!StartButtonState())
