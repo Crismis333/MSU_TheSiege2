@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+[RequireComponent(typeof(GUINavigation))]
+[RequireComponent(typeof(PauseMenuScript))]
+[RequireComponent(typeof(LevelCompleteScript))]
 public class GUIScript : MonoBehaviour {
 	
 	public static long SCORE;
 	
     public GUISkin gSkin;
-    public Texture2D runningSoldiers1, runningSoldiers2, runningHero1, runningHero2, runningGoal, damagebar, swordLeft, swordRight, bloodsplatter;
+    public Texture2D runningSoldiers1, runningSoldiers2, runningHero1, runningHero2, runningGoal, damagebar, swordLeft, swordRight;
     public Texture2D backgroundScrollScore, backgroundScrollLeft, backgroundScrollMid, backgroundScrollRight, black;
     public Vector2 scrollScoreOffset, scrollLeftOffset, scrollMidOffset, scrollRightOffset;
     public float engagePercent, releasePercent;
@@ -120,7 +123,6 @@ public class GUIScript : MonoBehaviour {
             GUI.DrawTexture(new Rect(15 + scrollMidOffset.x, Screen.height - 65 + scrollMidOffset.y, Screen.width - 30 - scrollMidOffset.x*2+1, backgroundScrollMid.height), backgroundScrollMid);
         }
 
-        GUI.DrawTexture(new Rect(Screen.width / 2 - 250, Screen.height - 90, 500, 12), damagebar);
         //   GUI.DrawTexture(new Rect(Screen.width / 2 - 250 - swordLeft.width / 2, Screen.height - 90 - swordLeft.height / 2 + 6, swordLeft.width, swordLeft.height), swordLeft);
         //    GUI.DrawTexture(new Rect(Screen.width / 2 + 250 - swordRight.width / 2, Screen.height - 90 - swordRight.height / 2 + 6, swordRight.width, swordRight.height), swordRight);
         //GUI.DrawTexture(new Rect(Screen.width / 2 - bloodsplatter.width / 2, Screen.height - 90 - bloodsplatter.height / 2 + 6, bloodsplatter.width, bloodsplatter.height), bloodsplatter);
@@ -131,14 +133,16 @@ public class GUIScript : MonoBehaviour {
         {
             GUI.BeginGroup(new Rect(15 + scrollMidOffset.x, Screen.height - 64 - 6, Screen.width - 30 - scrollMidOffset.x * 2 + 1, Screen.height));
             //GUI.Box(new Rect(15, Screen.height - 65, Screen.width - 30, 50), "");
-            GUI.DrawTexture(new Rect(currentZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2), 0, 128, 64), runningSoldiers1);
-
+            GUI.DrawTexture(new Rect(Screen.width - 30 - scrollMidOffset.x * 2 - 64, 0, 64, 64), runningGoal);
             if (soldierAnim > 0.5)
-                GUI.DrawTexture(new Rect(armyZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2), 0, 128, 64), runningSoldiers1);
+                GUI.DrawTexture(new Rect(currentZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2), 0, 128, 64), runningHero1);
             else
-                GUI.DrawTexture(new Rect(armyZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2), 0, 128, 64), runningSoldiers2);
+                GUI.DrawTexture(new Rect(currentZ / (maxZ - minZ) * (Screen.width- 30 - scrollMidOffset.x * 2), 0, 128, 64), runningHero2);
+            if (soldierAnim > 0.5)
+                GUI.DrawTexture(new Rect(armyZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2) - 64, 0, 128, 64), runningSoldiers1);
+            else
+                GUI.DrawTexture(new Rect(armyZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2) - 64, 0, 128, 64), runningSoldiers2);
             //GUI.DrawTexture(new Rect(Screen.width - 30 - scrollMidOffset.x * 2 + 1 - 128, 0, 128, 64), runningSoldiers1);
-
             GUI.EndGroup();
         }
 
@@ -275,14 +279,14 @@ public class GUIScript : MonoBehaviour {
             this.enabled = false;
             Time.timeScale = 0;
             GetComponent<PauseMenuScript>().enabled = true;
-            Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
-            Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 5;
-            Camera.mainCamera.GetComponent<GUINavigation>().menuKey = 4;
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
+            GetComponent<GUINavigation>().ClearElements();
+            GetComponent<GUINavigation>().maxKeys = 5;
+            GetComponent<GUINavigation>().menuKey = 4;
+            GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
+            GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
+            GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
+            GetComponent<GUINavigation>().AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
+            GetComponent<GUINavigation>().AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
         }
         else
         {
@@ -313,10 +317,10 @@ public class GUIScript : MonoBehaviour {
     {
         this.enabled = false;
         GetComponent<LevelCompleteScript>().enabled = true;
-        Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
-        Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 1;
-        Camera.mainCamera.GetComponent<GUINavigation>().menuKey = 0;
-        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<LevelCompleteScript>().Accept);
+        GetComponent<GUINavigation>().ClearElements();
+        GetComponent<GUINavigation>().maxKeys = 1;
+        GetComponent<GUINavigation>().menuKey = 0;
+        GetComponent<GUINavigation>().AddElement(0, GetComponent<LevelCompleteScript>().Accept);
 
     }
 
@@ -333,6 +337,7 @@ public class GUIScript : MonoBehaviour {
        
         if (BarActive)
         {
+            GUI.DrawTexture(new Rect(Screen.width / 2 - 250, Screen.height - 90, 500, 12), damagebar);
             if (engagePercent > 0 && engagePercent < 200)
             {
                 float pos = engagePercent / 95 * width / 2;

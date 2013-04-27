@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(GUINavigation))]
 public class HighScoreMenuScript : MonoBehaviour {
 
     public GUISkin gSkin;
@@ -23,11 +24,11 @@ public class HighScoreMenuScript : MonoBehaviour {
 
     void Menu_HighScore()
     {
-        if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+        if (!GetComponent<GUINavigation>().usingMouse)
             GUI.skin.button.hover.background = null;
         else
             GUI.skin.button.hover.background = background;
-        if (Camera.mainCamera.GetComponent<GUINavigation>().activated)
+        if (GetComponent<GUINavigation>().activated)
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
@@ -114,12 +115,12 @@ public class HighScoreMenuScript : MonoBehaviour {
             }
             
             //GUI.color = Color.white;
-            GUI.skin.button.fontSize = 20;
+            GUI.skin.label.fontSize = 20;
 
             GUI.SetNextControlName("Return");
             if (GUI.Button(new Rect(60, 12 * 35, 640, 64), "Return")) { Return(); }
             GUI.Box(new Rect(60, 12 * 35, 640, 64), new GUIContent("", "0"));
-            Camera.mainCamera.GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+            GetComponent<GUINavigation>().mouseover = GUI.tooltip;
 
             GUI.EndGroup();
             //GUI.color = Color.black;
@@ -143,11 +144,11 @@ public class HighScoreMenuScript : MonoBehaviour {
             }
             GUI.EndGroup();
 
-            GUI.skin.button.fontSize = 20;
+            GUI.skin.button.fontSize = 24;
             GUI.color = Color.white;
-            if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+            if (!GetComponent<GUINavigation>().usingMouse)
             {
-                if (Camera.mainCamera.GetComponent<GUINavigation>().keySelect == 0)
+                if (GetComponent<GUINavigation>().keySelect == 0)
                     GUI.FocusControl("Return");
                 else
                     GUI.FocusControl("title");
@@ -182,8 +183,7 @@ public class HighScoreMenuScript : MonoBehaviour {
         movedLeft = false;
         movedRight = false;
         movedUp = false;
-        movedRight = false;
-        CurrentGameState.Restart();
+        movedDown = false;
         firstGUI = true; 
         setname = "";
         if (!mainMenu)
@@ -338,10 +338,10 @@ public class HighScoreMenuScript : MonoBehaviour {
             }
             else
             {
-                Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
-                Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 1;
-                Camera.mainCamera.GetComponent<GUINavigation>().menuKey = 0;
-                Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, Accept);
+                GetComponent<GUINavigation>().ClearElements();
+                GetComponent<GUINavigation>().maxKeys = 1;
+                GetComponent<GUINavigation>().menuKey = 0;
+                GetComponent<GUINavigation>().AddElement(0, Accept);
             }
             firstGUI = false;
         }
@@ -361,12 +361,15 @@ public class HighScoreMenuScript : MonoBehaviour {
             {
                 this.enabled = false;
                 GetComponent<MainMenuScript>().enabled = true;
-                Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
-                Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 4;
-                Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<MainMenuScript>().Menu_Main_Start_Game);
-                Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<MainMenuScript>().Menu_Main_Options);
-                Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, GetComponent<MainMenuScript>().Menu_Main_Highscores);
-                Camera.mainCamera.GetComponent<GUINavigation>().AddElement(3, GetComponent<MainMenuScript>().Menu_Main_Quit);
+                GetComponent<GUINavigation>().ClearElements();
+                GetComponent<GUINavigation>().maxKeys = 7;
+                GetComponent<GUINavigation>().AddElement(0, GetComponent<MainMenuScript>().Menu_Main_Start_Campaign);
+                GetComponent<GUINavigation>().AddElement(1, GetComponent<MainMenuScript>().Menu_Main_Start_Endless);
+                GetComponent<GUINavigation>().AddElement(2, GetComponent<MainMenuScript>().Menu_Main_Controls);
+                GetComponent<GUINavigation>().AddElement(3, GetComponent<MainMenuScript>().Menu_Main_Options);
+                GetComponent<GUINavigation>().AddElement(4, GetComponent<MainMenuScript>().Menu_Main_Highscores);
+                GetComponent<GUINavigation>().AddElement(5, GetComponent<MainMenuScript>().Menu_Main_Credits);
+                GetComponent<GUINavigation>().AddElement(6, GetComponent<MainMenuScript>().Menu_Main_Quit);
             }
             else
             {
@@ -393,10 +396,10 @@ public class HighScoreMenuScript : MonoBehaviour {
             CurrentGameState.AddHighscoreElementInfinite(ob);
             CurrentGameState.UpdateHighscoreInfinite();
         }
-        Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
-        Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 1;
-        Camera.mainCamera.GetComponent<GUINavigation>().menuKey = 0;
-        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, Accept);
+        GetComponent<GUINavigation>().ClearElements();
+        GetComponent<GUINavigation>().maxKeys = 1;
+        GetComponent<GUINavigation>().menuKey = 0;
+        GetComponent<GUINavigation>().AddElement(0, Accept);
     }
 
     public void Accept()

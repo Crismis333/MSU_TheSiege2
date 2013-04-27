@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(GUINavigation))]
 public class QuitAcceptMenu : MonoBehaviour {
 
     public GUISkin gSkin;
@@ -11,11 +12,11 @@ public class QuitAcceptMenu : MonoBehaviour {
 
     void Menu_Quit()
     {
-        if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+        if (!GetComponent<GUINavigation>().usingMouse)
             GUI.skin.button.hover.background = null;
         else
             GUI.skin.button.hover.background = background;
-        if (Camera.mainCamera.GetComponent<GUINavigation>().activated)
+        if (GetComponent<GUINavigation>().activated)
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
@@ -30,16 +31,16 @@ public class QuitAcceptMenu : MonoBehaviour {
 
         GUI.Box(new Rect(0, 1 * 70, Screen.width, 64), new GUIContent("", "0"));
         GUI.Box(new Rect(0, 2 * 70, Screen.width, 64), new GUIContent("", "1"));
-        Camera.mainCamera.GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+        GetComponent<GUINavigation>().mouseover = GUI.tooltip;
 
         GUI.EndGroup();
 
         GUI.skin.button.hover.background = background;
         GUI.skin.button.focused.textColor = inactiveColor;
 
-        if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+        if (!GetComponent<GUINavigation>().usingMouse)
         {
-            switch (Camera.mainCamera.GetComponent<GUINavigation>().keySelect)
+            switch (GetComponent<GUINavigation>().keySelect)
             {
                 case 0: GUI.FocusControl("Yes"); break;
                 case 1: GUI.FocusControl("No"); break;
@@ -77,12 +78,15 @@ public class QuitAcceptMenu : MonoBehaviour {
     {
         this.enabled = false;
         GetComponent<MainMenuScript>().enabled = true;
-        Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
-        Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 4;
-        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<MainMenuScript>().Menu_Main_Start_Game);
-        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<MainMenuScript>().Menu_Main_Options);
-        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, GetComponent<MainMenuScript>().Menu_Main_Highscores);
-        Camera.mainCamera.GetComponent<GUINavigation>().AddElement(3, GetComponent<MainMenuScript>().Menu_Main_Quit);
+        GetComponent<GUINavigation>().ClearElements();
+        GetComponent<GUINavigation>().maxKeys = 7;
+        GetComponent<GUINavigation>().AddElement(0, GetComponent<MainMenuScript>().Menu_Main_Start_Campaign);
+        GetComponent<GUINavigation>().AddElement(1, GetComponent<MainMenuScript>().Menu_Main_Start_Endless);
+        GetComponent<GUINavigation>().AddElement(2, GetComponent<MainMenuScript>().Menu_Main_Controls);
+        GetComponent<GUINavigation>().AddElement(3, GetComponent<MainMenuScript>().Menu_Main_Options);
+        GetComponent<GUINavigation>().AddElement(4, GetComponent<MainMenuScript>().Menu_Main_Highscores);
+        GetComponent<GUINavigation>().AddElement(5, GetComponent<MainMenuScript>().Menu_Main_Credits);
+        GetComponent<GUINavigation>().AddElement(6, GetComponent<MainMenuScript>().Menu_Main_Quit);
     }
 
     void Start()

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(GUINavigation))]
 public class DeathScreenScript : MonoBehaviour {
 
     public GUISkin gSkin;
@@ -22,11 +23,11 @@ public class DeathScreenScript : MonoBehaviour {
 
     void Menu_HighScore()
     {
-        if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+        if (GetComponent<GUINavigation>().usingMouse)
             GUI.skin.button.hover.background = null;
         else
             GUI.skin.button.hover.background = background;
-        if (Camera.mainCamera.GetComponent<GUINavigation>().activated)
+        if (GetComponent<GUINavigation>().activated)
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
@@ -57,7 +58,7 @@ public class DeathScreenScript : MonoBehaviour {
 
         GUI.Box(new Rect(60, 6 * 35, 700, 64), new GUIContent("", "0"));
         GUI.Box(new Rect(60, 8 * 35, 700, 64), new GUIContent("", "1"));
-        Camera.mainCamera.GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+        GetComponent<GUINavigation>().mouseover = GUI.tooltip;
 
         GUI.EndGroup();
         if (started)
@@ -78,9 +79,9 @@ public class DeathScreenScript : MonoBehaviour {
         GUI.skin.button.hover.background = background;
         GUI.skin.button.focused.textColor = inactiveColor;
 
-        if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+        if (!GetComponent<GUINavigation>().usingMouse)
         {
-            switch (Camera.mainCamera.GetComponent<GUINavigation>().keySelect)
+            switch (GetComponent<GUINavigation>().keySelect)
             {
                 case 0: GUI.FocusControl("Return"); break;
                 case 1: GUI.FocusControl("GiveUp"); break;
@@ -116,10 +117,10 @@ public class DeathScreenScript : MonoBehaviour {
             activeColor = GUI.skin.button.active.textColor;
             inactiveColor = GUI.skin.button.focused.textColor;
             firstGUI = false;
-            Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
-            Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 2;
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, ReturnToCamp);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GiveUp);
+            GetComponent<GUINavigation>().ClearElements();
+            GetComponent<GUINavigation>().maxKeys = 2;
+            GetComponent<GUINavigation>().AddElement(0, ReturnToCamp);
+            GetComponent<GUINavigation>().AddElement(1, GiveUp);
         }
         //if (Input.GetKeyDown(KeyCode.Escape))
         //{

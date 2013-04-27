@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(GUINavigation))]
 public class LevelCompleteScript : MonoBehaviour {
 
     public GUISkin gSkin;
@@ -15,11 +16,11 @@ public class LevelCompleteScript : MonoBehaviour {
 
     void LevelComplete()
     {
-        if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+        if (!GetComponent<GUINavigation>().usingMouse)
             GUI.skin.button.hover.background = null;
         else
             GUI.skin.button.hover.background = background;
-        if (Camera.mainCamera.GetComponent<GUINavigation>().activated)
+        if (GetComponent<GUINavigation>().activated)
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
@@ -39,7 +40,7 @@ public class LevelCompleteScript : MonoBehaviour {
         GUI.SetNextControlName("Return");
         if (GUI.Button(new Rect(60, 12 * 35, 640, 64), "Return")) { Accept(); }
         GUI.Box(new Rect(60, 12 * 35, 640, 64), new GUIContent("", "0"));
-        Camera.mainCamera.GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+        GetComponent<GUINavigation>().mouseover = GUI.tooltip;
 
         GUI.EndGroup();
 
@@ -91,9 +92,9 @@ public class LevelCompleteScript : MonoBehaviour {
             background = GUI.skin.button.hover.background;
             activeColor = GUI.skin.button.active.textColor;
             inactiveColor = GUI.skin.button.focused.textColor;
-            Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
-            Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 1;
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, Accept);
+            GetComponent<GUINavigation>().ClearElements();
+            GetComponent<GUINavigation>().maxKeys = 1;
+            GetComponent<GUINavigation>().AddElement(0, Accept);
             firstGUI = false;
         }
         if (Input.GetKeyDown(KeyCode.Escape))

@@ -2,6 +2,8 @@ using UnityEngine;
 using System.Collections;
 using System;
 
+
+[RequireComponent(typeof(GUINavigation))]
 public class OptionsMenuScript : MonoBehaviour {
 	
 	public GUISkin gSkin;
@@ -164,24 +166,27 @@ public class OptionsMenuScript : MonoBehaviour {
         if (!pauseMenu)
         {
             GetComponent<MainMenuScript>().enabled = true;
-            Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
-            Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 4;
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<MainMenuScript>().Menu_Main_Start_Game);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<MainMenuScript>().Menu_Main_Options);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, GetComponent<MainMenuScript>().Menu_Main_Highscores);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(3, GetComponent<MainMenuScript>().Menu_Main_Quit);
+            GetComponent<GUINavigation>().ClearElements();
+            GetComponent<GUINavigation>().maxKeys = 7;
+            GetComponent<GUINavigation>().AddElement(0, GetComponent<MainMenuScript>().Menu_Main_Start_Campaign);
+            GetComponent<GUINavigation>().AddElement(1, GetComponent<MainMenuScript>().Menu_Main_Start_Endless);
+            GetComponent<GUINavigation>().AddElement(2, GetComponent<MainMenuScript>().Menu_Main_Controls);
+            GetComponent<GUINavigation>().AddElement(3, GetComponent<MainMenuScript>().Menu_Main_Options);
+            GetComponent<GUINavigation>().AddElement(4, GetComponent<MainMenuScript>().Menu_Main_Highscores);
+            GetComponent<GUINavigation>().AddElement(5, GetComponent<MainMenuScript>().Menu_Main_Credits);
+            GetComponent<GUINavigation>().AddElement(6, GetComponent<MainMenuScript>().Menu_Main_Quit);
         }
         else
         {
             GetComponent<PauseMenuScript>().enabled = true;
-            Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
-            Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 5;
-            Camera.mainCamera.GetComponent<GUINavigation>().menuKey = 4;
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
+            GetComponent<GUINavigation>().ClearElements();
+            GetComponent<GUINavigation>().maxKeys = 5;
+            GetComponent<GUINavigation>().menuKey = 4;
+            GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
+            GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
+            GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
+            GetComponent<GUINavigation>().AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
+            GetComponent<GUINavigation>().AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
         }
     }
 
@@ -220,9 +225,9 @@ public class OptionsMenuScript : MonoBehaviour {
 
         float kh = Input.GetAxisRaw("Horizontal");
         
-        if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+        if (!GetComponent<GUINavigation>().usingMouse)
         {
-            switch (Camera.mainCamera.GetComponent<GUINavigation>().keySelect)
+            switch (GetComponent<GUINavigation>().keySelect)
             {
                 case 0:
                     {
@@ -243,7 +248,7 @@ public class OptionsMenuScript : MonoBehaviour {
                 case 2:
                     {
                         //GUI.FocusControl("Fullscreen");
-                        if (buttonactive && !Camera.mainCamera.GetComponent<GUINavigation>().activated)
+                        if (buttonactive && !GetComponent<GUINavigation>().activated)
                         {
                             fullscreen = !fullscreen;
                         }
@@ -291,7 +296,7 @@ public class OptionsMenuScript : MonoBehaviour {
             movedRight = false;
             movedLeft = false;
         }
-        buttonactive = Camera.mainCamera.GetComponent<GUINavigation>().activated;
+        buttonactive = GetComponent<GUINavigation>().activated;
         OptionsValues.musicVolume = musicvol;
         OptionsValues.sfxVolume = effectvol;
     }

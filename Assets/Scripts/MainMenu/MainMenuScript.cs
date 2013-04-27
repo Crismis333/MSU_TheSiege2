@@ -1,6 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(GUINavigation))]
+[RequireComponent(typeof(OptionsMenuScript))]
+[RequireComponent(typeof(QuitAcceptMenu))]
+[RequireComponent(typeof(HighScoreMenuScript))]
+[RequireComponent(typeof(ControlsScript))]
+[RequireComponent(typeof(CreditsScript))]
 public class MainMenuScript : MonoBehaviour {
 	
 	
@@ -27,20 +33,29 @@ public class MainMenuScript : MonoBehaviour {
         GUI.SetNextControlName("title");
         GUI.Label(new Rect(Screen.width / 2 - 400, 40, 800, 100), "The assault on East Castle");
         GUI.EndGroup();
-        GUI.BeginGroup(new Rect(0, Screen.height / 2 - 100, Screen.width, Screen.height));
-        GUI.SetNextControlName("Start");
-        if (GUI.Button(new Rect(0, 0 * 70, Screen.width - 30, 64), "Start Game")) { Menu_Main_Start_Game(); }
+        GUI.BeginGroup(new Rect(0, Screen.height / 2 - 140, Screen.width, Screen.height));
+        GUI.SetNextControlName("Campaign");
+        if (GUI.Button(new Rect(0, 0 * 60, Screen.width - 30, 55), "Start Campaign")) { Menu_Main_Start_Campaign(); }
+        GUI.SetNextControlName("Endless");
+        if (GUI.Button(new Rect(0, 1 * 60, Screen.width - 30, 55), "Start Eternal Rush")) { Menu_Main_Start_Endless(); }
+        GUI.SetNextControlName("Controls");
+        if (GUI.Button(new Rect(0, 2 * 60, Screen.width - 30, 55), "Controls")) { Menu_Main_Controls(); }
         GUI.SetNextControlName("Options");
-        if (GUI.Button(new Rect(0, 1 * 70, Screen.width - 30, 64), "Options")) { Menu_Main_Options(); }
+        if (GUI.Button(new Rect(0, 3 * 60, Screen.width - 30, 55), "Options")) { Menu_Main_Options(); }
         GUI.SetNextControlName("Highscores");
-        if (GUI.Button(new Rect(0, 2 * 70, Screen.width - 30, 64), "Highscores")) { Menu_Main_Highscores(); }
+        if (GUI.Button(new Rect(0, 4 * 60, Screen.width - 30, 55), "Highscores")) { Menu_Main_Highscores(); }
+        GUI.SetNextControlName("Credits");
+        if (GUI.Button(new Rect(0, 5 * 60, Screen.width - 30, 55), "Credits")) { Menu_Main_Credits(); }
         GUI.SetNextControlName("Quit");
-        if (GUI.Button(new Rect(0, 3 * 70, Screen.width - 30, 64), "Quit")) { Menu_Main_Quit();  }
+        if (GUI.Button(new Rect(0, 6 * 60, Screen.width - 30, 55), "Quit")) { Menu_Main_Quit(); }
 
-        GUI.Box(new Rect(0, 0 * 70, Screen.width - 30, 64), new GUIContent("", "0"));
-        GUI.Box(new Rect(0, 1 * 70, Screen.width - 30, 64), new GUIContent("", "1"));
-        GUI.Box(new Rect(0, 2 * 70, Screen.width - 30, 64), new GUIContent("", "2"));
-        GUI.Box(new Rect(0, 3 * 70, Screen.width - 30, 64), new GUIContent("", "3"));
+        GUI.Box(new Rect(0, 0 * 60, Screen.width - 30, 55), new GUIContent("", "0"));
+        GUI.Box(new Rect(0, 1 * 60, Screen.width - 30, 55), new GUIContent("", "1"));
+        GUI.Box(new Rect(0, 2 * 60, Screen.width - 30, 55), new GUIContent("", "2"));
+        GUI.Box(new Rect(0, 3 * 60, Screen.width - 30, 55), new GUIContent("", "3"));
+        GUI.Box(new Rect(0, 4 * 60, Screen.width - 30, 55), new GUIContent("", "4"));
+        GUI.Box(new Rect(0, 5 * 60, Screen.width - 30, 55), new GUIContent("", "5"));
+        GUI.Box(new Rect(0, 6 * 60, Screen.width - 30, 55), new GUIContent("", "6"));
         Camera.mainCamera.GetComponent<GUINavigation>().mouseover = GUI.tooltip;
 		GUI.EndGroup();
         if (stopped)
@@ -66,10 +81,13 @@ public class MainMenuScript : MonoBehaviour {
             {
                 switch (GetComponent<GUINavigation>().keySelect)
                 {
-                    case 0: GUI.FocusControl("Start"); break;
-                    case 1: GUI.FocusControl("Options"); break;
-                    case 2: GUI.FocusControl("Highscores"); break;
-                    case 3: GUI.FocusControl("Quit"); break;
+                    case 0: GUI.FocusControl("Campaign"); break;
+                    case 1: GUI.FocusControl("Endless"); break;
+                    case 2: GUI.FocusControl("Controls"); break;
+                    case 3: GUI.FocusControl("Options"); break;
+                    case 4: GUI.FocusControl("Highscores"); break;
+                    case 5: GUI.FocusControl("Credits"); break;
+                    case 6: GUI.FocusControl("Quit"); break;
                     default: GUI.FocusControl("title"); break;
                 }
             }
@@ -81,7 +99,7 @@ public class MainMenuScript : MonoBehaviour {
         GUI.skin.button.focused.textColor = inactiveColor;
 	}
 
-    public void Menu_Main_Start_Game()
+    public void Menu_Main_Start_Campaign()
     {
         if (!started && !stopped)
         {
@@ -91,6 +109,32 @@ public class MainMenuScript : MonoBehaviour {
             stopped = true;
             countdown = 1f;
             music.useGlobal = false;
+        }
+    }
+
+    public void Menu_Main_Start_Endless()
+    {
+        if (!started && !stopped)
+        {
+            //Application.LoadLevel(1);
+            CurrentGameState.InfiniteMode = false;
+            started = false;
+            stopped = true;
+            countdown = 1f;
+            music.useGlobal = false;
+        }
+    }
+
+    public void Menu_Main_Controls()
+    {
+        if (!started && !stopped)
+        {
+            this.enabled = false;
+            GetComponent<ControlsScript>().enabled = true;
+            GetComponent<GUINavigation>().ClearElements();
+            GetComponent<GUINavigation>().maxKeys = 1;
+            GetComponent<GUINavigation>().menuKey = 0;
+            GetComponent<GUINavigation>().AddElement(0, GetComponent<ControlsScript>().Return);
         }
     }
 
@@ -120,6 +164,20 @@ public class MainMenuScript : MonoBehaviour {
         }
     }
 
+    public void Menu_Main_Credits()
+    {
+        if (!started && !stopped)
+        {
+            this.enabled = false;
+            GetComponent<CreditsScript>().enabled = true;
+            GetComponent<GUINavigation>().ClearElements();
+            GetComponent<GUINavigation>().maxKeys = 1;
+            GetComponent<GUINavigation>().menuKey = 0;
+            GetComponent<GUINavigation>().AddElement(0, GetComponent<ControlsScript>().Return);
+        }
+    }
+
+
     public void Menu_Main_Quit()
     {
         if (!started && !stopped)
@@ -138,10 +196,13 @@ public class MainMenuScript : MonoBehaviour {
         if (firstGUI)
         {
             GetComponent<GUINavigation>().maxKeys = 4;
-            GetComponent<GUINavigation>().AddElement(0, Menu_Main_Start_Game);
-            GetComponent<GUINavigation>().AddElement(1, Menu_Main_Options);
-            GetComponent<GUINavigation>().AddElement(2, Menu_Main_Highscores);
-            GetComponent<GUINavigation>().AddElement(3, Menu_Main_Quit);
+            GetComponent<GUINavigation>().AddElement(0, Menu_Main_Start_Campaign);
+            GetComponent<GUINavigation>().AddElement(1, Menu_Main_Start_Endless);
+            GetComponent<GUINavigation>().AddElement(2, Menu_Main_Controls);
+            GetComponent<GUINavigation>().AddElement(3, Menu_Main_Options);
+            GetComponent<GUINavigation>().AddElement(4, Menu_Main_Highscores);
+            GetComponent<GUINavigation>().AddElement(5, Menu_Main_Credits);
+            GetComponent<GUINavigation>().AddElement(6, Menu_Main_Quit);
             background = GUI.skin.button.hover.background;
             activeColor = GUI.skin.button.active.textColor;
             inactiveColor = GUI.skin.button.focused.textColor;
