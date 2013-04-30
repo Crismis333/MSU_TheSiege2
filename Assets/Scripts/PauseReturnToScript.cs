@@ -7,6 +7,9 @@ public class PauseReturnToScript : MonoBehaviour {
     public Texture2D backgroundScroll;
     public Texture2D black;
     public Vector2 scrollOffset;
+    public EffectVolumeSetter cancelSound;
+    public EffectVolumeSetter selectSound;
+
     [HideInInspector]
     public bool onMap, quit, restart;
     private float countdown;
@@ -104,14 +107,15 @@ public class PauseReturnToScript : MonoBehaviour {
             quit = onMap = restart = false;
             this.enabled = false;
             GetComponent<PauseMenuScript>().enabled = true;
-            Camera.mainCamera.GetComponent<GUINavigation>().ClearElements();
-            Camera.mainCamera.GetComponent<GUINavigation>().maxKeys = 5;
-            Camera.mainCamera.GetComponent<GUINavigation>().menuKey = 4;
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
-            Camera.mainCamera.GetComponent<GUINavigation>().AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
+            cancelSound.Play();
+            GetComponent<GUINavigation>().ClearElements();
+            GetComponent<GUINavigation>().maxKeys = 5;
+            GetComponent<GUINavigation>().menuKey = 4;
+            GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
+            GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
+            GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
+            GetComponent<GUINavigation>().AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
+            GetComponent<GUINavigation>().AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
         }
     }
 
@@ -119,6 +123,8 @@ public class PauseReturnToScript : MonoBehaviour {
     {
         //this.enabled = false;
 
+        selectSound.Play();
+        GetComponent<GUINavigation>().SetNoPlay();
         
         ended = true;
         countdown = 1.0f;

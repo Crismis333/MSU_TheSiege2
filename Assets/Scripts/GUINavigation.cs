@@ -216,80 +216,84 @@ public class GUINavigation : MonoBehaviour {
                     }
                 }
             }
-            if (keySelect == -1)
+            if (maxKeys > 0)
             {
-                if (Input.GetAxisRaw("Vertical") > 0.2)
+                if (keySelect == -1)
                 {
-                    keySelect = maxKeys - 1;
-                    mouseOverSound.Play();
-                    movedDown = true;
-                    movedUp = false;
-                }
-                else if (Input.GetAxisRaw("Vertical") < -0.2)
-                {
-                    keySelect = 0;
-                    mouseOverSound.Play();
-                    movedUp = true;
-                    movedDown = false;
-                }
-                else
-                {
-                    movedDown = false;
-                    movedUp = false;
-                }
-            }
-            else
-            {
-                if (Input.GetAxisRaw("Vertical") > 0.2)
-                    if (keySelect == 0)
+                    if (Input.GetAxisRaw("Vertical") > 0.2)
                     {
-                        if (!movedDown)
-                        {
-                            keySelect = maxKeys - 1;
-                            if (maxKeys != 1)
-                                mouseOverSound.Play();
-                            movedDown = true;
-                            movedUp = false;
-                        }
+                        keySelect = maxKeys - 1;
+
+                        mouseOverSound.Play();
+                        movedDown = true;
+                        movedUp = false;
+                    }
+                    else if (Input.GetAxisRaw("Vertical") < -0.2)
+                    {
+                        keySelect = 0;
+                        mouseOverSound.Play();
+                        movedUp = true;
+                        movedDown = false;
                     }
                     else
                     {
-                        if (!movedDown)
-                        {
-                            keySelect--;
-                            if (maxKeys != 1)
-                                mouseOverSound.Play();
-                            movedDown = true;
-                            movedUp = false;
-                        }
+                        movedDown = false;
+                        movedUp = false;
                     }
-                else if (Input.GetAxisRaw("Vertical") < -0.2)
-                    if (keySelect == maxKeys - 1)
-                    {
-                        if (!movedUp)
-                        {
-                            keySelect = 0;
-                            if (maxKeys != 1)
-                                mouseOverSound.Play();
-                            movedUp = true;
-                            movedDown = false;
-                        }
-                    }
-                    else
-                    {
-                        if (!movedUp)
-                        {
-                            keySelect++;
-                            if (maxKeys != 1)
-                                mouseOverSound.Play();
-                            movedUp = true;
-                            movedDown = false;
-                        }
-                    }
+                }
                 else
                 {
-                    movedDown = false;
-                    movedUp = false;
+                    if (Input.GetAxisRaw("Vertical") > 0.2)
+                        if (keySelect == 0)
+                        {
+                            if (!movedDown)
+                            {
+                                keySelect = maxKeys - 1;
+                                if (maxKeys != 1)
+                                    mouseOverSound.Play();
+                                movedDown = true;
+                                movedUp = false;
+                            }
+                        }
+                        else
+                        {
+                            if (!movedDown)
+                            {
+                                keySelect--;
+                                if (maxKeys != 1)
+                                    mouseOverSound.Play();
+                                movedDown = true;
+                                movedUp = false;
+                            }
+                        }
+                    else if (Input.GetAxisRaw("Vertical") < -0.2)
+                        if (keySelect == maxKeys - 1)
+                        {
+                            if (!movedUp)
+                            {
+                                keySelect = 0;
+                                if (maxKeys != 1)
+                                    mouseOverSound.Play();
+                                movedUp = true;
+                                movedDown = false;
+                            }
+                        }
+                        else
+                        {
+                            if (!movedUp)
+                            {
+                                keySelect++;
+                                if (maxKeys != 1)
+                                    mouseOverSound.Play();
+                                movedUp = true;
+                                movedDown = false;
+                            }
+                        }
+                    else
+                    {
+                        movedDown = false;
+                        movedUp = false;
+                    }
                 }
             }
         }

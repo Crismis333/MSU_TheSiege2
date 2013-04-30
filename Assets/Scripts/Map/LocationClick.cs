@@ -19,6 +19,7 @@ public class LocationClick : MonoBehaviour {
             Camera.mainCamera.GetComponent<MapGui>().current_location = this.GetComponent<Location>();
             Camera.mainCamera.GetComponent<MapGui>().keyLocation = this.GetComponent<Location>().positionInParent;
             Camera.mainCamera.GetComponent<MapGui>().ResetScroll();
+            Camera.mainCamera.GetComponent<MapGui>().PlayLocationClick();
             CurrentGameState.hero.LookAtLoc(this.GetComponent<Location>());
 
             if (currentActive == this && countdown > 0)

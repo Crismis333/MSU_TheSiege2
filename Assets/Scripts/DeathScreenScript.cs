@@ -9,6 +9,7 @@ public class DeathScreenScript : MonoBehaviour {
     public Vector2 scrollOffset;
     public Texture2D backgroundScroll2;
     public Vector2 scrollOffset2;
+    public EffectVolumeSetter selectSound;
 
     public Texture2D black;
     private long score;
@@ -134,6 +135,8 @@ public class DeathScreenScript : MonoBehaviour {
     {
         if (!started && !gaveup && !returned)
         {
+            selectSound.Play();
+            GetComponent<GUINavigation>().SetNoPlay();
             gaveup = true;
             countdown = 1.2f;
         }
@@ -143,6 +146,8 @@ public class DeathScreenScript : MonoBehaviour {
     {
         if (!started && !gaveup && !returned)
         {
+            selectSound.Play();
+            GetComponent<GUINavigation>().SetNoPlay();
             returned = true;
             countdown = 2f;
         }

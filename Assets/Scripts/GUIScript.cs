@@ -54,7 +54,7 @@ public class GUIScript : MonoBehaviour {
         started = true;
         screencountdown = 1f;
         PERFECT_RUN = true;
-
+        GetComponent<GUINavigation>().maxKeys = 0;
         lcs = GetComponent<LevelCompleteScript>();
 	}
 	

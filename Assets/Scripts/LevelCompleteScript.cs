@@ -8,6 +8,7 @@ public class LevelCompleteScript : MonoBehaviour {
     public Texture2D backgroundScroll;
     public Vector2 scrollOffset;
     public Texture2D black;
+    public EffectVolumeSetter selectSound;
 
     [HideInInspector]
     public int doubleKills, tripleKills, chargeKills, excellents, averages, goods, perfects;
@@ -29,6 +30,7 @@ public class LevelCompleteScript : MonoBehaviour {
     private int decreaser, todecrease;
     private bool newtarget, completed;
     private long displayedScore;
+    private bool timeout;
 
     void LevelComplete()
     {
@@ -111,6 +113,7 @@ public class LevelCompleteScript : MonoBehaviour {
         beforenextdecrease = 0.5f;
         todecrease = -1;
         firstGUI = true;
+        timeout = false;
         returned = false;
         newtarget = true;
         completed = false;
@@ -220,6 +223,7 @@ public class LevelCompleteScript : MonoBehaviour {
                     beforenextdecrease -= Time.deltaTime;
                 else
                 {
+                    timeout = true;
                     Accept();
                 }
             }
@@ -251,6 +255,11 @@ public class LevelCompleteScript : MonoBehaviour {
     {
         if (!returned)
         {
+            if (!timeout)
+            {
+                selectSound.Play();
+                GetComponent<GUINavigation>().SetNoPlay();
+            }
             displayedScore = calculatedScore;
             averageMultiplier = goodMultiplier = excellentMultiplier = perfectMultiplier = doubleMultiplier = tripleMultiplier = chargeKillMultiplier = 0;
             returned = true;

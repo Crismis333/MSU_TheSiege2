@@ -15,6 +15,8 @@ public class MapGui : MonoBehaviour {
     [HideInInspector]
     public bool stopped, started;
     public MusicVolumeSetter music;
+    public EffectVolumeSetter locationSelectSound;
+    public EffectVolumeSetter levelStartSound;
 
     [HideInInspector]
     public int keyLocation;
@@ -117,6 +119,7 @@ public class MapGui : MonoBehaviour {
             return;
         if (current_location == null)
             return;
+        levelStartSound.Play();
         if (current_location.difficulty_soldier < 1)
             ObstacleController.SOLDIER_RATIO = 1;
         else
@@ -192,8 +195,14 @@ public class MapGui : MonoBehaviour {
         scrollPos = Vector2.zero;
     }
 
+    public void PlayLocationClick()
+    {
+        locationSelectSound.Play();
+    }
+
     void Start()
     {
+        GetComponent<GUINavigation>().maxKeys = 0;
         backDown = false;
         nextDown = false;
         keyLocation = -1;

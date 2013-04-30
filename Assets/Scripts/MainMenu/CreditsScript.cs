@@ -7,6 +7,7 @@ public class CreditsScript : MonoBehaviour {
     public GUISkin gSkin;
     public Texture2D backgroundScroll,textHiderScroll;
     public Vector2 scrollOffset;
+    public EffectVolumeSetter cancelSound;
     [Multiline]
     public string credits;
     private int scroll;
@@ -99,6 +100,7 @@ public class CreditsScript : MonoBehaviour {
 
     public void Return()
     {
+        cancelSound.Play();
         this.enabled = false;
         scroll = 0;
         GetComponent<MainMenuScript>().enabled = true;

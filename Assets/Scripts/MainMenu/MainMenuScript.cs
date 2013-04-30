@@ -20,6 +20,7 @@ public class MainMenuScript : MonoBehaviour {
     private bool started, stopped, firstGUI;
     private Texture2D background;
     private Color activeColor, inactiveColor;
+    private bool infiniteMode;
 
 	void Menu_Main() {
         if (!GetComponent<GUINavigation>().usingMouse)
@@ -105,6 +106,7 @@ public class MainMenuScript : MonoBehaviour {
     {
         if (!started && !stopped)
         {
+            infiniteMode = false;
             //Application.LoadLevel(1);
             CurrentGameState.InfiniteMode = false;
             started = false;
@@ -120,7 +122,8 @@ public class MainMenuScript : MonoBehaviour {
         if (!started && !stopped)
         {
             //Application.LoadLevel(1);
-            CurrentGameState.InfiniteMode = false;
+            infiniteMode = true;
+            CurrentGameState.InfiniteMode = true;
             started = false;
             stopped = true;
             countdown = 1f;
@@ -254,7 +257,10 @@ public class MainMenuScript : MonoBehaviour {
 
             if (stopped && countdown < 0)
             {
-                Application.LoadLevel(1);
+                if (infiniteMode)
+                    Application.LoadLevel(5);
+                else
+                    Application.LoadLevel(1);
             }
         }
     }

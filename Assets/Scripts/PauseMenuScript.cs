@@ -11,6 +11,8 @@ public class PauseMenuScript : MonoBehaviour {
     public Texture2D backgroundScroll;
     public Vector2 scrollOffset;
     public bool onMap;
+    public EffectVolumeSetter cancelSound;
+    public EffectVolumeSetter selectSound;
 
     private Texture2D background;
     private Color activeColor, inactiveColor;
@@ -103,6 +105,7 @@ public class PauseMenuScript : MonoBehaviour {
 
     public void Pause_GiveUp()
     {
+        selectSound.Play();
         this.enabled = false;
         GetComponent<PauseReturnToScript>().onMap = onMap;
         GetComponent<PauseReturnToScript>().enabled = true;
@@ -111,16 +114,10 @@ public class PauseMenuScript : MonoBehaviour {
         GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseReturnToScript>().Return_Yes);
         GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseReturnToScript>().Return_No);
     }
-    /*
-    void Pause_MainMenu()
-    {
-        this.enabled = false;
-        GetComponent<PauseReturnToScript>().onMap = true;
-        GetComponent<PauseReturnToScript>().enabled = true;
-    }
-    */
+
     public void Pause_Quit()
     {
+        selectSound.Play();
         this.enabled = false;
         GetComponent<PauseReturnToScript>().quit = true;
         GetComponent<PauseReturnToScript>().enabled = true;
@@ -133,6 +130,7 @@ public class PauseMenuScript : MonoBehaviour {
     public void Pause_Back()
     {
         this.enabled = false;
+        cancelSound.Play();
         if (onMap)
         {
             GetComponent<MapGui>().enabled = true;
@@ -151,6 +149,7 @@ public class PauseMenuScript : MonoBehaviour {
     public void Pause_Controls()
     {
         this.enabled = false;
+        selectSound.Play();
         GetComponent<ControlsScript>().enabled = true;
         GetComponent<GUINavigation>().ClearElements();
         GetComponent<GUINavigation>().maxKeys = 1;
@@ -161,6 +160,7 @@ public class PauseMenuScript : MonoBehaviour {
     public void Pause_Options()
     {
         this.enabled = false;
+        selectSound.Play();
         GetComponent<OptionsMenuScript>().enabled = true;
         GetComponent<GUINavigation>().ClearElements();
         GetComponent<GUINavigation>().maxKeys = 6;
