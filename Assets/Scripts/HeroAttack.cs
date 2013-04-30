@@ -40,6 +40,7 @@ public class HeroAttack : MonoBehaviour
             anim.SetInteger("AttackState", 0);
             anim.SetLayerWeight(1, 1);
             anim.SetLayerWeight(2, 1);
+            anim.SetLayerWeight(3, 1);
         }
         attackAnimCountdown = 0f;
         AttackList = new List<GameObject>();
@@ -61,7 +62,7 @@ public class HeroAttack : MonoBehaviour
     {
         Vector3 exppos = ObstacleController.PLAYER.transform.position;
         exppos.y = 1;
-        enemy.GetComponent<EnemyAttack>().AddExplosion((ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4) * (100 + 500 * chargePercent), exppos);
+        enemy.GetComponent<EnemyAttack>().AddExplosion((hm.CurrentSpeed / 4) * (100 + 500 * chargePercent), exppos);
 
         enemy.GetComponent<EnemyAttack>().KillSelf(chargePercent);
     }
@@ -84,10 +85,18 @@ public class HeroAttack : MonoBehaviour
         {
             Vector3 exppos = ObstacleController.PLAYER.transform.position;
             exppos.y = 1;
-            other.transform.parent.GetComponent<EnemyAttack>().
-                AddExplosion(ObstacleController.PLAYER.GetComponent<HeroMovement>().CurrentSpeed / 4 * 400, exppos);
+            other.transform.parent.GetComponent<EnemyAttack>().AddExplosion(hm.CurrentSpeed / 4 * 400, exppos);
             //  other.transform.parent.GetComponent<EnemyAttack>().KillSelf();
-            gameObject.GetComponent<HeroMovement>().SlowHero(SlowTime, SlowAmount);
+            hm.SlowHero(SlowTime, SlowAmount);
+
+            if (!hm.Charging)
+            {
+                HitAccuracy ha = new HitAccuracy();
+                ha.Accuracy = -1;
+                ha.NumberOfHits = 0;
+                ha.CurrentSpeed = hm.CurrentSpeed;
+                GUI.AddHit(ha);
+            }
         }
     }
 
@@ -124,6 +133,7 @@ public class HeroAttack : MonoBehaviour
             anim = ObstacleController.PLAYER.GetComponent<Animator>();
             anim.SetLayerWeight(1, 1);
             anim.SetLayerWeight(2, 1);
+            anim.SetLayerWeight(3, 1);
         }
 
         if (Input.GetButtonDown("Fire1"))
@@ -210,7 +220,7 @@ public class HeroAttack : MonoBehaviour
                     hm.Rage += chargePercent / 5;
 
                     GUI.AddHit(ha);
-                 //   GUI.AttackFeedback(chargePercent);
+                    //   GUI.AttackFeedback(chargePercent);
 
                     if (chargePercent > MIN_CHARGE)
                     {
@@ -221,7 +231,14 @@ public class HeroAttack : MonoBehaviour
                     }
                     hitableEnemies.Clear();
                 }
-
+                else
+                {
+                    HitAccuracy ha = new HitAccuracy();
+                    ha.Accuracy = -1;
+                    ha.NumberOfHits = 0;
+                    ha.CurrentSpeed = hm.CurrentSpeed;
+                    GUI.AddHit(ha);
+                }
             }
             charging = false;
         }

@@ -76,6 +76,7 @@ public class HeroMovement : MonoBehaviour {
             charging = true;
             chargeTime = chargeTimeMax;
             Rage = 0;
+            anim.SetBool("Charge", true);
         }
 
 		Run();
@@ -87,8 +88,8 @@ public class HeroMovement : MonoBehaviour {
         moveDirection.y = verticalSpeed;
 
         if (jumping) {
-            moveDirection.x += 0.289f;
-            moveDirection.z -= 1.031f; //animation error fix
+            moveDirection.x += 0.003f;
+            moveDirection.z -= 1.330f; //animation error fix
         }
 
         moveDirection *= Time.deltaTime;
@@ -117,6 +118,7 @@ public class HeroMovement : MonoBehaviour {
             if (chargeTime <= 0.0f) {
                 charging = false;
                 chargeTime = 0.0f;
+                anim.SetBool("Charge", false);
             }
         }
 
@@ -206,9 +208,12 @@ public class HeroMovement : MonoBehaviour {
 			slowAmount = amount * (CurrentSpeed / MoveSpeed);
 		}
 
-        SpeedUp = 0;
-        Rage = 0;
-        GUIScript.PERFECT_RUN = false;
+        if (!charging)
+        {
+            SpeedUp = 0;
+            Rage = 0;
+            GUIScript.PERFECT_RUN = false;
+        }
     }
 
     private bool IsGrounded()

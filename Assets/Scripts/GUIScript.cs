@@ -42,6 +42,8 @@ public class GUIScript : MonoBehaviour {
     public bool started;
     private float screencountdown;
 
+    private LevelCompleteScript lcs;
+
 	// Use this for initialization
 	void Start () {
 		maxZ = (LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64)-32;
@@ -51,6 +53,9 @@ public class GUIScript : MonoBehaviour {
         music.useGlobal = false;
         started = true;
         screencountdown = 1f;
+        PERFECT_RUN = true;
+
+        lcs = GetComponent<LevelCompleteScript>();
 	}
 	
 	// Update is called once per frame
@@ -65,6 +70,11 @@ public class GUIScript : MonoBehaviour {
             }
         }
 
+
+        if (!PERFECT_RUN && lcs.perfectRun)
+        {
+            lcs.perfectRun = false;
+        }
 
         soldierAnim += Time.deltaTime;
 
@@ -202,7 +212,11 @@ public class GUIScript : MonoBehaviour {
         {
             return 2;
         }
-        return 1;
+        if (hitRate > 0)
+        {
+            return 1;
+        }
+        return -1;
     }
 
     public void AddHit(HitAccuracy hit)
@@ -231,36 +245,29 @@ public class GUIScript : MonoBehaviour {
     {
         int accuracy = ConvertHitRate(ha.Accuracy);
         
-
-
         switch (accuracy)
         {
+            case -1: hitFeedback = "Miss!"; break;
             case 1:
             case 2:
             case 3: hitFeedback = "Bad!"; break;
             case 4:
-            case 5: hitFeedback = "Average!"; break;
+            case 5: hitFeedback = "Average!"; lcs.averages++; break;
             case 6:
-            case 7: hitFeedback = "Good!"; break;
+            case 7: hitFeedback = "Good!"; lcs.goods++; break;
             case 8:
-            case 9: hitFeedback = "Excellent!"; break;
-            case 10: hitFeedback = "Perfect!"; break;
+            case 9: hitFeedback = "Excellent!"; lcs.excellents++; break;
+            case 10: hitFeedback = "Perfect!"; lcs.perfects++; break;
         }
         if (ha.NumberOfHits == 2)
         {
             hitFeedback = "Double kill!    " + hitFeedback;
+            lcs.doubleKills++;
         }
         else if (ha.NumberOfHits == 3)
         {
             hitFeedback = "Triple kill!    " + hitFeedback;
-        }
-        else if (ha.NumberOfHits == 4)
-        {
-            hitFeedback = "Quadruple kill!    " + hitFeedback;
-        }
-        else if (ha.NumberOfHits == 5)
-        {
-            hitFeedback = "Quintuple kill!    " + hitFeedback;
+            lcs.tripleKills++;
         }
         hitFeedbackTimer = 2.0f;
     }

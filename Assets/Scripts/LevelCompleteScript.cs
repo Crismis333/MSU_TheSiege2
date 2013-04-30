@@ -10,22 +10,22 @@ public class LevelCompleteScript : MonoBehaviour {
     public Texture2D black;
 
     [HideInInspector]
-    public int doubleKills, tripleKills, chargeKills, bads, averages, goods, perfects;
+    public int doubleKills, tripleKills, chargeKills, excellents, averages, goods, perfects;
 
     [HideInInspector]
-    public bool perfectRun;
+    public bool perfectRun = true;
 
     [HideInInspector]
     public long endScore;
 
-    public int doubleScore, tripleScore, chargeKillScore, badScore, averageScore, goodScore, perfectScore, perfectRunScore;
+    public int doubleScore, tripleScore, chargeKillScore, excellentScore, averageScore, goodScore, perfectScore, perfectRunScore;
 
     private Texture2D background;
     private Color activeColor, inactiveColor;
     private bool firstGUI, returned;
     private float countdown,beforenextdecrease;
     private long calculatedScore, nextIncrement;
-    private int badMultiplier, averageMultiplier, goodMultiplier, perfectMultiplier, chargeKillMultiplier, doubleMultiplier, tripleMultiplier, perfectRunMultiplier;
+    private int excellentMultiplier, averageMultiplier, goodMultiplier, perfectMultiplier, chargeKillMultiplier, doubleMultiplier, tripleMultiplier, perfectRunMultiplier;
     private int decreaser, todecrease;
     private bool newtarget, completed;
     private long displayedScore;
@@ -51,9 +51,9 @@ public class LevelCompleteScript : MonoBehaviour {
         GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 7.5f * 35, 790, 15 * 35));
         GUI.color = Color.black;
         GUI.SetNextControlName("title");
-        GUI.Label(new Rect(60, 1 * 35, 640, 64), bads + "x Bad kills:");
-        GUI.Label(new Rect(60, 2 * 35, 640, 64), averages + "x Average kills:");
-        GUI.Label(new Rect(60, 3 * 35, 640, 64), goods + "x Good kills:");
+        GUI.Label(new Rect(60, 1 * 35, 640, 64), averages + "x Average kills:");
+        GUI.Label(new Rect(60, 2 * 35, 640, 64), goods + "x Good kills:");
+        GUI.Label(new Rect(60, 3 * 35, 640, 64), excellents + "x Excellent kills:");
         GUI.Label(new Rect(60, 4 * 35, 640, 64), perfects + "x Perfect kills:");
         GUI.Label(new Rect(60, 5 * 35, 640, 64), doubleKills + "x Double kills:");
         GUI.Label(new Rect(60, 6 * 35, 640, 64), tripleKills + "x Triple kills:");
@@ -63,9 +63,9 @@ public class LevelCompleteScript : MonoBehaviour {
 
         GUI.color = Color.red;
         GUI.skin.label.alignment = TextAnchor.MiddleRight;
-        GUI.Label(new Rect(400, 1 * 35, 250, 64), "" + badMultiplier);
-        GUI.Label(new Rect(400, 2 * 35, 250, 64), "" + averageMultiplier);
-        GUI.Label(new Rect(400, 3 * 35, 250, 64), "" + goodMultiplier);
+        GUI.Label(new Rect(400, 1 * 35, 250, 64), "" + averageMultiplier);
+        GUI.Label(new Rect(400, 2 * 35, 250, 64), "" + goodMultiplier);
+        GUI.Label(new Rect(400, 3 * 35, 250, 64), "" + excellentMultiplier);
         GUI.Label(new Rect(400, 4 * 35, 250, 64), "" + perfectMultiplier);
         GUI.Label(new Rect(400, 5 * 35, 250, 64), "" + doubleMultiplier);
         GUI.Label(new Rect(400, 6 * 35, 250, 64), "" + tripleMultiplier);
@@ -115,12 +115,12 @@ public class LevelCompleteScript : MonoBehaviour {
         newtarget = true;
         completed = false;
         nextIncrement = 0;
-        bads = averages = goods = perfects = doubleKills = tripleKills = chargeKills = 2;
-        badScore = averageScore = goodScore = perfectScore = doubleScore = tripleScore = chargeKillScore = 10000;
+        //excellents = averages = goods = perfects = doubleKills = tripleKills = chargeKills = 2;
+        //excellentScore = averageScore = goodScore = perfectScore = doubleScore = tripleScore = chargeKillScore = 10000;
         endScore = GUIScript.SCORE;
         displayedScore = endScore;
-        perfectRun = true;
-        badMultiplier = bads * badScore;
+        //perfectRun = true;
+        excellentMultiplier = excellents * excellentScore;
         averageMultiplier = averages * averageScore;
         goodMultiplier = goods * goodScore;
         perfectMultiplier = perfects * perfectScore;
@@ -128,7 +128,8 @@ public class LevelCompleteScript : MonoBehaviour {
         tripleMultiplier = tripleKills * tripleScore;
         chargeKillMultiplier = chargeKills * chargeKillScore;
         perfectRunMultiplier = perfectRun ? perfectRunScore : 0;
-        calculatedScore = endScore + badMultiplier + averageMultiplier + goodMultiplier + perfectMultiplier + doubleMultiplier + tripleMultiplier + chargeKillMultiplier + perfectRunMultiplier;
+        print("run: " + perfectRun + " score: " + perfectRunScore);
+        calculatedScore = endScore + excellentMultiplier + averageMultiplier + goodMultiplier + perfectMultiplier + doubleMultiplier + tripleMultiplier + chargeKillMultiplier + perfectRunMultiplier;
 	}
 	
 	// Update is called once per frame
@@ -166,9 +167,9 @@ public class LevelCompleteScript : MonoBehaviour {
                         todecrease++;
                         switch (todecrease)
                         {
-                            case 0: nextIncrement = badMultiplier; break;
-                            case 1: nextIncrement = averageMultiplier; break;
-                            case 2: nextIncrement = goodMultiplier; break;
+                            case 0: nextIncrement = averageMultiplier; break;
+                            case 1: nextIncrement = goodMultiplier; break;
+                            case 2: nextIncrement = excellentMultiplier; break;
                             case 3: nextIncrement = perfectMultiplier; break;
                             case 4: nextIncrement = doubleMultiplier; break;
                             case 5: nextIncrement = tripleMultiplier; break;
@@ -184,9 +185,9 @@ public class LevelCompleteScript : MonoBehaviour {
                 {
                     switch (todecrease)
                     {
-                        case 0: badMultiplier -= decreaser; break;
-                        case 1: averageMultiplier -= decreaser; break;
-                        case 2: goodMultiplier -= decreaser; break;
+                        case 0: averageMultiplier -= decreaser; break;
+                        case 1: goodMultiplier -= decreaser; break;
+                        case 2: excellentMultiplier -= decreaser; break; 
                         case 3: perfectMultiplier -= decreaser; break;
                         case 4: doubleMultiplier -= decreaser; break;
                         case 5: tripleMultiplier -= decreaser; break;
@@ -199,9 +200,9 @@ public class LevelCompleteScript : MonoBehaviour {
                         displayedScore = nextIncrement;
                         switch (todecrease)
                         {
-                            case 0: badMultiplier = 0; break;
-                            case 1: averageMultiplier = 0; break;
-                            case 2: goodMultiplier = 0; break;
+                            case 0: averageMultiplier = 0; break;
+                            case 1: goodMultiplier = 0; break;
+                            case 2: excellentMultiplier = 0; break;
                             case 3: perfectMultiplier = 0; break;
                             case 4: doubleMultiplier = 0; break;
                             case 5: tripleMultiplier = 0; break;
@@ -251,7 +252,7 @@ public class LevelCompleteScript : MonoBehaviour {
         if (!returned)
         {
             displayedScore = calculatedScore;
-            badMultiplier = averageMultiplier = goodMultiplier = perfectMultiplier = doubleMultiplier = tripleMultiplier = chargeKillMultiplier = 0;
+            averageMultiplier = goodMultiplier = excellentMultiplier = perfectMultiplier = doubleMultiplier = tripleMultiplier = chargeKillMultiplier = 0;
             returned = true;
             countdown = 1f;
         }
