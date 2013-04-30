@@ -37,7 +37,7 @@ public class LevelCreator : MonoBehaviour {
 			sideModules.Add(Resources.Load("SideModules/Sides/"+s, typeof(GameObject)) as GameObject);
 		}
 		
-		moduleCount = LengthConverter(LEVEL_LENGTH);
+		moduleCount = LengthConverter(LEVEL_LENGTH) + 5;
 
         specialModule = Resources.Load("SpecialModules/" + SPECIAL_MODULE, typeof(GameObject)) as GameObject;
 

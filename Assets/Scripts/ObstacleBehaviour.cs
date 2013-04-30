@@ -57,32 +57,36 @@ public class ObstacleBehaviour : MonoBehaviour {
          //   print("left: " + left + " right: " + right);
             if (!other.GetComponent<EnemyAttack>().GetDestroyed())
             {
-                if (Math.Abs(left) > Math.Abs(right))
+                float diff = other.transform.position.z - ObstacleController.PLAYER.transform.position.z;
+                if (diff > 20)
                 {
-                    // Move right
-                    if (other.transform.position.x < 5)
+                    if (Math.Abs(left) > Math.Abs(right))
                     {
-                        other.transform.position = new Vector3(right + moveOffset, other.transform.position.y, other.transform.position.z);
-                        moveOffset += 0.8f;
+                        // Move right
+                        if (other.transform.position.x < 5)
+                        {
+                            other.transform.position = new Vector3(right + moveOffset, other.transform.position.y, other.transform.position.z);
+                            moveOffset += 0.8f;
+                        }
+                        else
+                        {
+                            // Should never be called
+                            other.transform.position = other.transform.position + new Vector3(other.transform.position.x - 8, 0, 0);
+                        }
                     }
                     else
                     {
-                        // Should never be called
-                        other.transform.position = other.transform.position + new Vector3(other.transform.position.x - 8, 0, 0);
-                    }
-                }
-                else
-                {
-                    // Move left
-                    if (other.transform.position.x > -5)
-                    {
-                        other.transform.position = new Vector3(left - moveOffset, other.transform.position.y, other.transform.position.z);
-                        moveOffset += 0.8f;
-                    }
-                    else
-                    {
-                        // Should never be called
-                        other.transform.position = other.transform.position + new Vector3(other.transform.position.x + 8, 0, 0);
+                        // Move left
+                        if (other.transform.position.x > -5)
+                        {
+                            other.transform.position = new Vector3(left - moveOffset, other.transform.position.y, other.transform.position.z);
+                            moveOffset += 0.8f;
+                        }
+                        else
+                        {
+                            // Should never be called
+                            other.transform.position = other.transform.position + new Vector3(other.transform.position.x + 8, 0, 0);
+                        }
                     }
                 }
             }

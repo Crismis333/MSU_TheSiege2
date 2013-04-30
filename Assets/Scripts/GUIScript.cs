@@ -37,6 +37,7 @@ public class GUIScript : MonoBehaviour {
 
     public static bool PERFECT_RUN = true;
     public static float Multiplier = 1;
+    public MusicVolumeSetter music;
 
     public bool started;
     private float screencountdown;
@@ -47,6 +48,7 @@ public class GUIScript : MonoBehaviour {
         HitList = new List<HitAccuracy>();
         soldierAnim = 0;
         Screen.lockCursor = false;
+        music.useGlobal = false;
         started = true;
         screencountdown = 1f;
 	}
@@ -151,7 +153,14 @@ public class GUIScript : MonoBehaviour {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
             GUI.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, 1 - screencountdown));
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+            music.volume = Mathf.Lerp(0, OptionsValues.musicVolume, 1 - countdown);
             GUI.EndGroup();
+        }
+        else
+        {
+
+            music.useGlobal = false;
+            music.volume = OptionsValues.musicVolume;
         }
     }
 
@@ -276,6 +285,7 @@ public class GUIScript : MonoBehaviour {
     {
         if (!started && (Input.GetKeyDown(KeyCode.Escape) || Camera.mainCamera.GetComponent<GUINavigation>().usedMenu))
         {
+            music.useGlobal = true;
             this.enabled = false;
             Time.timeScale = 0;
             GetComponent<PauseMenuScript>().enabled = true;

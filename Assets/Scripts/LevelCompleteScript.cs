@@ -29,6 +29,7 @@ public class LevelCompleteScript : MonoBehaviour {
     private int decreaser, todecrease;
     private bool newtarget, completed;
     private long displayedScore;
+
     void LevelComplete()
     {
         if (!GetComponent<GUINavigation>().usingMouse)

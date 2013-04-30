@@ -99,13 +99,16 @@ public class MapGui : MonoBehaviour {
         else if (started)
         {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
-            GUI.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, 1-countdown));
+            GUI.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, 1 - countdown));
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
             music.volume = Mathf.Lerp(0, OptionsValues.musicVolume, 1 - countdown);
             GUI.EndGroup();
         }
         else
+        {
+            music.useGlobal = false;
             music.volume = OptionsValues.musicVolume;
+        }
     }
 
     public void Battle_Pressed()
@@ -168,6 +171,7 @@ public class MapGui : MonoBehaviour {
         if (!started && !stopped && (Input.GetKeyDown(KeyCode.Escape) || GetComponent<GUINavigation>().usedMenu))
         {
             this.enabled = false;
+            music.useGlobal = true;
             transform.parent.gameObject.GetComponent<MapMovementController>().enabled = false;
             GetComponent<PauseMenuScript>().enabled = true;
             GetComponent<GUINavigation>().ClearElements();
@@ -282,7 +286,6 @@ public class MapGui : MonoBehaviour {
                 {
                     countdown = 0;
                     started = false;
-                    music.useGlobal = true;
                 }
 
             }
