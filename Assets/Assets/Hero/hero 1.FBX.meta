@@ -79,6 +79,8 @@ ModelImporter:
     100146: Low_Broadsword_Blade
     100148: Low_Broadsword_Guard
     100150: Low_Broadsword_Hilt
+    100152: Bip001 Footsteps
+    100154: sword
     400000: baseMale
     400002: Bip001
     400004: Bip001 Head
@@ -155,6 +157,8 @@ ModelImporter:
     400146: Low_Broadsword_Blade
     400148: Low_Broadsword_Guard
     400150: Low_Broadsword_Hilt
+    400152: Bip001 Footsteps
+    400154: sword
     2300000: Low_Broadsword_Blade
     2300002: Low_Broadsword_Guard
     2300004: Low_Broadsword_Hilt
@@ -165,9 +169,11 @@ ModelImporter:
     4300002: Low_Broadsword_Guard
     4300004: Low_Broadsword_Hilt
     4300006: Low_Broadsword_Blade
+    4300008: sword
     7400000: Take 001
     9500000: //RootNode
     13700000: baseMale
+    13700002: sword
   materials:
     importMaterials: 1
     materialName: 0
@@ -693,6 +699,11 @@ ModelImporter:
     - name: Bip001
       position: {x: -.00621900009, y: 1.37468982, z: .0411950052}
       rotation: {x: -.49999997, y: .49999997, z: .49999997, w: .49999997}
+      scale: {x: 1, y: 1, z: 1}
+      transformModified: 1
+    - name: Bip001 Footsteps
+      position: {x: -0, y: 0, z: -1.36957586}
+      rotation: {x: 0, y: 0, z: -.707106292, w: .707107246}
       scale: {x: 1, y: 1, z: 1}
       transformModified: 1
     - name: Bip001 Pelvis
