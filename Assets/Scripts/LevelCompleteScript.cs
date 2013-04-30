@@ -60,7 +60,8 @@ public class LevelCompleteScript : MonoBehaviour {
         GUI.Label(new Rect(60, 5 * 35, 640, 64), doubleKills + "x Double kills:");
         GUI.Label(new Rect(60, 6 * 35, 640, 64), tripleKills + "x Triple kills:");
         GUI.Label(new Rect(60, 7 * 35, 640, 64), chargeKills + "x Charge kills:");
-        GUI.Label(new Rect(60, 8 * 35, 640, 64), "Perfect run bonus:");
+        if (!CurrentGameState.InfiniteMode)
+            GUI.Label(new Rect(60, 8 * 35, 640, 64), "Perfect run bonus:");
         GUI.Label(new Rect(60, 10 * 35, 640, 64), "Final score:");
 
         GUI.color = Color.red;
@@ -72,7 +73,8 @@ public class LevelCompleteScript : MonoBehaviour {
         GUI.Label(new Rect(400, 5 * 35, 250, 64), "" + doubleMultiplier);
         GUI.Label(new Rect(400, 6 * 35, 250, 64), "" + tripleMultiplier);
         GUI.Label(new Rect(400, 7 * 35, 250, 64), "" + chargeKillMultiplier);
-        GUI.Label(new Rect(400, 8 * 35, 250, 64), "" + perfectRunMultiplier);
+        if (!CurrentGameState.InfiniteMode)
+            GUI.Label(new Rect(400, 8 * 35, 250, 64), "" + perfectRunMultiplier);
         GUI.Label(new Rect(400, 10 * 35, 250, 64), "" + displayedScore);
         GUI.skin.label.alignment = TextAnchor.MiddleLeft;
 
@@ -130,8 +132,11 @@ public class LevelCompleteScript : MonoBehaviour {
         doubleMultiplier = doubleKills * doubleScore;
         tripleMultiplier = tripleKills * tripleScore;
         chargeKillMultiplier = chargeKills * chargeKillScore;
-        perfectRunMultiplier = perfectRun ? perfectRunScore : 0;
-        print("run: " + perfectRun + " score: " + perfectRunScore);
+        if (CurrentGameState.InfiniteMode)
+            perfectRunMultiplier = 0;
+        else
+            perfectRunMultiplier = perfectRun ? perfectRunScore * LevelCreator.LEVEL_LENGTH : 0;
+        //print("run: " + perfectRun + " score: " + perfectRunScore);
         calculatedScore = endScore + excellentMultiplier + averageMultiplier + goodMultiplier + perfectMultiplier + doubleMultiplier + tripleMultiplier + chargeKillMultiplier + perfectRunMultiplier;
 	}
 	
@@ -167,19 +172,23 @@ public class LevelCompleteScript : MonoBehaviour {
                     {
                         newtarget = false;
                         beforenextdecrease = 0f;
-                        todecrease++;
-                        switch (todecrease)
+                        do
                         {
-                            case 0: nextIncrement = averageMultiplier; break;
-                            case 1: nextIncrement = goodMultiplier; break;
-                            case 2: nextIncrement = excellentMultiplier; break;
-                            case 3: nextIncrement = perfectMultiplier; break;
-                            case 4: nextIncrement = doubleMultiplier; break;
-                            case 5: nextIncrement = tripleMultiplier; break;
-                            case 6: nextIncrement = chargeKillMultiplier; break;
-                            case 7: nextIncrement = perfectRunMultiplier; break;
-                            case 8: completed = true; beforenextdecrease = 5f; return;
+                            todecrease++;
+                            switch (todecrease)
+                            {
+                                case 0: nextIncrement = averageMultiplier; break;
+                                case 1: nextIncrement = goodMultiplier; break;
+                                case 2: nextIncrement = excellentMultiplier; break;
+                                case 3: nextIncrement = perfectMultiplier; break;
+                                case 4: nextIncrement = doubleMultiplier; break;
+                                case 5: nextIncrement = tripleMultiplier; break;
+                                case 6: nextIncrement = chargeKillMultiplier; break;
+                                case 7: nextIncrement = perfectRunMultiplier; break;
+                                case 8: completed = true; beforenextdecrease = 5f; return;
+                            }
                         }
+                        while (nextIncrement == 0);
                         decreaser = (int)(nextIncrement / 23);
                         nextIncrement += displayedScore;
                     }
