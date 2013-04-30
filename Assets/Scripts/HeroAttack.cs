@@ -37,7 +37,7 @@ public class HeroAttack : MonoBehaviour
         {
             hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
             anim = ObstacleController.PLAYER.GetComponent<Animator>();
-            anim.SetInteger("AttackingState", 0);
+            anim.SetInteger("AttackState", 0);
             anim.SetLayerWeight(1, 1);
             anim.SetLayerWeight(2, 1);
         }
