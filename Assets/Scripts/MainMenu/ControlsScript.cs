@@ -8,6 +8,8 @@ public class ControlsScript : MonoBehaviour {
     public Texture2D backgroundScroll;
     public Vector2 scrollOffset;
     public bool mainMenu;
+    public EffectVolumeSetter cancelSound;
+    public EffectVolumeSetter selectSound;
 
     private Texture2D background;
     private Color activeColor, inactiveColor;
@@ -50,18 +52,24 @@ public class ControlsScript : MonoBehaviour {
         if (GUI.Button(new Rect(0, 6 * 30, 155, 100), "<"))
         {
             screenNr--;
+            GetComponent<GUINavigation>().SetNoPlay();
+            selectSound.Play();
             if (screenNr < 0) screenNr = maxPages-1;
         }
+        GUI.Box(new Rect(0, 6 * 30, 155, 100), new GUIContent("", "left"));
         GUI.EndGroup();
 
         GUI.BeginGroup(new Rect(Screen.width / 2 + 280, Screen.height / 2 - 7.5f * 35, 155, 15 * 35));
         if (GUI.Button(new Rect(0, 6 * 30, 155, 100), ">"))
         {
             screenNr++;
+            GetComponent<GUINavigation>().SetNoPlay();
+            selectSound.Play();
             if (screenNr > maxPages-1) screenNr = 0;
         }
+        GUI.Box(new Rect(0, 6 * 30, 155, 100), new GUIContent("", "right"));
         GUI.EndGroup();
-
+        GetComponent<GUINavigation>().mouseover = GUI.tooltip;
         GUI.skin.button.fontSize = 24;
         if (!GetComponent<GUINavigation>().usingMouse)
         {
@@ -90,9 +98,17 @@ public class ControlsScript : MonoBehaviour {
         float kh = Input.GetAxisRaw("Horizontal");
 
         if (kh > 0.01 && !movedRight)
+        {
+            GetComponent<GUINavigation>().SetNoPlay();
+            selectSound.Play();
             screenNr++;
+        }
         else if (kh < -0.01 && !movedLeft)
+        {
+            GetComponent<GUINavigation>().SetNoPlay();
+            selectSound.Play();
             screenNr--;
+        }
         if (screenNr < 0) screenNr = maxPages-1;
         else if (screenNr > maxPages-1) screenNr = 0;
 
@@ -134,6 +150,7 @@ public class ControlsScript : MonoBehaviour {
     public void Return()
     {
         this.enabled = false;
+        cancelSound.Play();
         if (mainMenu)
         {
             GetComponent<MainMenuScript>().enabled = true;

@@ -11,6 +11,9 @@ public class HighScoreMenuScript : MonoBehaviour {
     public Vector2 scrollOffset2;
     public Texture2D black;
     public bool mainMenu;
+    public EffectVolumeSetter cancelSound;
+    public EffectVolumeSetter selectSound;
+
     private bool addnewScore, started, returned;
     private string setname;
     private float countdown;
@@ -120,7 +123,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.SetNextControlName("Return");
             if (GUI.Button(new Rect(60, 12 * 35, 640, 64), "Return")) { Return(); }
             GUI.Box(new Rect(60, 12 * 35, 640, 64), new GUIContent("", "0"));
-            GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+
 
             GUI.EndGroup();
             //GUI.color = Color.black;
@@ -131,19 +134,26 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.BeginGroup(new Rect(Screen.width / 2 - 495, Screen.height / 2 - 7.5f * 35, 155, 15 * 35));
             if (GUI.Button(new Rect(0, 6 * 30, 155, 100), "<"))
             {
+                GetComponent<GUINavigation>().SetNoPlay();
+                selectSound.Play();
                 highscoreNr--;
                 if (highscoreNr < 0) highscoreNr = 1;
             }
+            GUI.Box(new Rect(0, 6 * 30, 155, 100), new GUIContent("", "left"));
             GUI.EndGroup();
 
             GUI.BeginGroup(new Rect(Screen.width / 2 + 280, Screen.height / 2 - 7.5f * 35, 155, 15 * 35));
             if (GUI.Button(new Rect(0, 6*30, 155, 100), ">"))
             {
+                GetComponent<GUINavigation>().SetNoPlay();
+                selectSound.Play();
                 highscoreNr--;
                 if (highscoreNr < 0) highscoreNr = 1;
             }
-            GUI.EndGroup();
 
+            GUI.Box(new Rect(0, 6 * 30, 155, 100), new GUIContent("", "right"));
+            GUI.EndGroup();
+            GetComponent<GUINavigation>().mouseover = GUI.tooltip;
             GUI.skin.button.fontSize = 24;
             GUI.color = Color.white;
             if (!GetComponent<GUINavigation>().usingMouse)
@@ -301,9 +311,17 @@ public class HighScoreMenuScript : MonoBehaviour {
             float kh = Input.GetAxisRaw("Horizontal");
 
             if (kh < -0.01 && !movedLeft)
+            {
+                GetComponent<GUINavigation>().SetNoPlay();
+                selectSound.Play();
                 highscoreNr++;
+            }
             else if (kh > 0.01 && !movedRight)
+            {
+                GetComponent<GUINavigation>().SetNoPlay();
+                selectSound.Play();
                 highscoreNr--;
+            }
             if (highscoreNr < 0) highscoreNr = 1;
             else if (highscoreNr > 1) highscoreNr = 0;
 
@@ -333,10 +351,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             background = GUI.skin.button.hover.background;
             activeColor = GUI.skin.button.active.textColor;
             inactiveColor = GUI.skin.button.focused.textColor;
-            if (addnewScore)
-            {
-            }
-            else
+            if (!addnewScore)
             {
                 GetComponent<GUINavigation>().ClearElements();
                 GetComponent<GUINavigation>().maxKeys = 1;
@@ -359,6 +374,7 @@ public class HighScoreMenuScript : MonoBehaviour {
         {
             if (mainMenu)
             {
+                cancelSound.Play();
                 this.enabled = false;
                 GetComponent<MainMenuScript>().enabled = true;
                 GetComponent<GUINavigation>().ClearElements();
@@ -373,6 +389,8 @@ public class HighScoreMenuScript : MonoBehaviour {
             }
             else
             {
+                selectSound.Play();
+                GetComponent<GUINavigation>().SetNoPlay();
                 returned = true;
                 countdown = 1f;
             }
@@ -381,6 +399,8 @@ public class HighScoreMenuScript : MonoBehaviour {
 
     void Add_Score()
     {
+        selectSound.Play();
+        GetComponent<GUINavigation>().SetNoPlay();
         addnewScore = false;
         GameObject ob = new GameObject();
         ob.AddComponent<HighScoreElement>();

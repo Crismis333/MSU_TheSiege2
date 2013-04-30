@@ -5,10 +5,15 @@ using System.Collections;
 public class QuitAcceptMenu : MonoBehaviour {
 
     public GUISkin gSkin;
+    public EffectVolumeSetter cancelSound;
+    public EffectVolumeSetter quitSound;
+    public Texture2D black;
+    public MusicVolumeSetter music;
 
     private Texture2D background;
     private Color activeColor, inactiveColor;
-    private bool firstGUI;
+    private bool firstGUI, stopped;
+    private float countdown;
 
     void Menu_Quit()
     {
@@ -49,6 +54,15 @@ public class QuitAcceptMenu : MonoBehaviour {
         }
         else
             GUI.FocusControl("title");
+
+        if (stopped)
+        {
+            GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+            GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, 1 - countdown));
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+            music.volume = Mathf.Lerp(OptionsValues.musicVolume, 0, 1 - countdown);
+            GUI.EndGroup();
+        }
     }
 
     void OnGUI()
@@ -71,13 +85,16 @@ public class QuitAcceptMenu : MonoBehaviour {
 
     public void Menu_Quit_Yes()
     {
-        Application.Quit();
+        quitSound.Play();
+        stopped = true;
+        music.useGlobal = false;
     }
 
     public void Menu_Quit_No()
     {
         this.enabled = false;
         GetComponent<MainMenuScript>().enabled = true;
+        cancelSound.Play();
         GetComponent<GUINavigation>().ClearElements();
         GetComponent<GUINavigation>().maxKeys = 7;
         GetComponent<GUINavigation>().AddElement(0, GetComponent<MainMenuScript>().Menu_Main_Start_Campaign);
@@ -91,6 +108,21 @@ public class QuitAcceptMenu : MonoBehaviour {
 
     void Start()
     {
+        countdown = 1f;
         firstGUI = true;
+        stopped = false;
+    }
+
+    void Update()
+    {
+        if (stopped)
+        {
+            if (countdown > 0)
+                countdown -= Time.deltaTime;
+            else
+            {
+                Application.Quit();
+            }
+        }
     }
 }

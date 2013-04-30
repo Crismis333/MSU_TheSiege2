@@ -13,6 +13,8 @@ public class MainMenuScript : MonoBehaviour {
 	public GUISkin gSkin;
     public Texture2D black;
     public MusicVolumeSetter music;
+    public EffectVolumeSetter startGameSound;
+    public EffectVolumeSetter selectSound;
 
     private float countdown;
     private bool started, stopped, firstGUI;
@@ -109,6 +111,7 @@ public class MainMenuScript : MonoBehaviour {
             stopped = true;
             countdown = 1f;
             music.useGlobal = false;
+            startGameSound.Play();
         }
     }
 
@@ -122,6 +125,7 @@ public class MainMenuScript : MonoBehaviour {
             stopped = true;
             countdown = 1f;
             music.useGlobal = false;
+            startGameSound.Play();
         }
     }
 
@@ -135,6 +139,7 @@ public class MainMenuScript : MonoBehaviour {
             GetComponent<GUINavigation>().maxKeys = 1;
             GetComponent<GUINavigation>().menuKey = 0;
             GetComponent<GUINavigation>().AddElement(0, GetComponent<ControlsScript>().Return);
+            selectSound.Play();
         }
     }
 
@@ -148,6 +153,7 @@ public class MainMenuScript : MonoBehaviour {
             GetComponent<GUINavigation>().maxKeys = 6;
             GetComponent<GUINavigation>().menuKey = 5;
             GetComponent<GUINavigation>().AddElement(5, GetComponent<OptionsMenuScript>().Menu_Options_Back);
+            selectSound.Play();
         }
     }
 
@@ -161,6 +167,7 @@ public class MainMenuScript : MonoBehaviour {
             GetComponent<GUINavigation>().maxKeys = 1;
             GetComponent<GUINavigation>().menuKey = 0;
             GetComponent<GUINavigation>().AddElement(0, GetComponent<HighScoreMenuScript>().Accept);
+            selectSound.Play();
         }
     }
 
@@ -174,6 +181,7 @@ public class MainMenuScript : MonoBehaviour {
             GetComponent<GUINavigation>().maxKeys = 1;
             GetComponent<GUINavigation>().menuKey = 0;
             GetComponent<GUINavigation>().AddElement(0, GetComponent<ControlsScript>().Return);
+            selectSound.Play();
         }
     }
 
@@ -188,6 +196,7 @@ public class MainMenuScript : MonoBehaviour {
             GetComponent<GUINavigation>().maxKeys = 2;
             GetComponent<GUINavigation>().AddElement(0, GetComponent<QuitAcceptMenu>().Menu_Quit_Yes);
             GetComponent<GUINavigation>().AddElement(1, GetComponent<QuitAcceptMenu>().Menu_Quit_No);
+            selectSound.Play();
         }
     }
 
@@ -195,7 +204,7 @@ public class MainMenuScript : MonoBehaviour {
 		GUI.skin = gSkin;
         if (firstGUI)
         {
-            GetComponent<GUINavigation>().maxKeys = 4;
+            GetComponent<GUINavigation>().maxKeys = 7;
             GetComponent<GUINavigation>().AddElement(0, Menu_Main_Start_Campaign);
             GetComponent<GUINavigation>().AddElement(1, Menu_Main_Start_Endless);
             GetComponent<GUINavigation>().AddElement(2, Menu_Main_Controls);

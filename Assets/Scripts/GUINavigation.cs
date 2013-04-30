@@ -24,15 +24,25 @@ public class GUINavigation : MonoBehaviour {
     [HideInInspector]
     public string mouseover;
 
+    public EffectVolumeSetter mouseOverSound;
+
 
     private Dictionary<int, MenuActivation> menuelements;
     private bool menuDown;
+    private string previousmouseover;
+    private int noplay;
 
     public void ClearElements()
     {
+        noplay = 10;
         menuelements = new Dictionary<int, MenuActivation>();
         keySelect = -1;
         menuKey = -1;
+    }
+
+    public void SetNoPlay()
+    {
+        noplay = 10;
     }
 
     public void AddElement(int key, MenuActivation action)
@@ -128,6 +138,7 @@ public class GUINavigation : MonoBehaviour {
         keySelect = -1;
         menuKey = -1;
         mouseover = "";
+        previousmouseover = "";
 	}
 	
 	// Update is called once per frame
@@ -210,12 +221,14 @@ public class GUINavigation : MonoBehaviour {
                 if (Input.GetAxisRaw("Vertical") > 0.2)
                 {
                     keySelect = maxKeys - 1;
+                    mouseOverSound.Play();
                     movedDown = true;
                     movedUp = false;
                 }
                 else if (Input.GetAxisRaw("Vertical") < -0.2)
                 {
                     keySelect = 0;
+                    mouseOverSound.Play();
                     movedUp = true;
                     movedDown = false;
                 }
@@ -233,6 +246,8 @@ public class GUINavigation : MonoBehaviour {
                         if (!movedDown)
                         {
                             keySelect = maxKeys - 1;
+                            if (maxKeys != 1)
+                                mouseOverSound.Play();
                             movedDown = true;
                             movedUp = false;
                         }
@@ -242,6 +257,8 @@ public class GUINavigation : MonoBehaviour {
                         if (!movedDown)
                         {
                             keySelect--;
+                            if (maxKeys != 1)
+                                mouseOverSound.Play();
                             movedDown = true;
                             movedUp = false;
                         }
@@ -252,6 +269,8 @@ public class GUINavigation : MonoBehaviour {
                         if (!movedUp)
                         {
                             keySelect = 0;
+                            if (maxKeys != 1)
+                                mouseOverSound.Play();
                             movedUp = true;
                             movedDown = false;
                         }
@@ -261,6 +280,8 @@ public class GUINavigation : MonoBehaviour {
                         if (!movedUp)
                         {
                             keySelect++;
+                            if (maxKeys != 1)
+                                mouseOverSound.Play();
                             movedUp = true;
                             movedDown = false;
                         }
@@ -274,6 +295,8 @@ public class GUINavigation : MonoBehaviour {
         }
         else
         {
+            if (noplay == 0 && mouseover.Length > 0 && !mouseover.Equals(previousmouseover) && (!Input.GetMouseButton(0) && !Input.GetMouseButton(1)))
+                mouseOverSound.Play();
             if (mouseover != null)
             {
                 try
@@ -283,6 +306,11 @@ public class GUINavigation : MonoBehaviour {
                 catch (Exception) { }
             }
         }
+
+        //if (mouseover.Length > 0)
+            previousmouseover = mouseover;
+            if (noplay > 0)
+                noplay--;
 	}
 
     public static bool MouseUsed()

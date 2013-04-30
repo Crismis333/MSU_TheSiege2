@@ -10,6 +10,9 @@ public class OptionsMenuScript : MonoBehaviour {
     public Texture2D backgroundScroll;
     public Vector2 scrollOffset;
     public bool pauseMenu;
+    public EffectVolumeSetter cancelSound;
+
+
     private float musicvol, effectvol, resolution, quality;
     private bool fullscreen;
     private Resolution mres;
@@ -19,9 +22,9 @@ public class OptionsMenuScript : MonoBehaviour {
     private bool firstGUI, selectrelease, buttonactive;
     private bool movedLeft, movedRight;
     private Resolution[] res;
-    private float f;
+    private float f, previouseffectvol;
 	void Menu_Options() {
-        if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+        if (!GetComponent<GUINavigation>().usingMouse)
         {
             GUI.skin.button.hover.background = null;
             GUI.skin.horizontalSlider.hover.background = backgroundSliderOff;
@@ -35,7 +38,7 @@ public class OptionsMenuScript : MonoBehaviour {
             GUI.skin.toggle.hover.background = backgroundToggle;
             GUI.skin.toggle.onHover.background = backgroundToggleOn;
         }
-        if (Camera.mainCamera.GetComponent<GUINavigation>().activated)
+        if (GetComponent<GUINavigation>().activated)
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
@@ -93,9 +96,9 @@ public class OptionsMenuScript : MonoBehaviour {
         GUI.skin.toggle.onHover.background = backgroundToggleOn;
         GUI.skin.button.focused.textColor = inactiveColor;
 
-        if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+        if (!GetComponent<GUINavigation>().usingMouse)
         {
-            switch (Camera.mainCamera.GetComponent<GUINavigation>().keySelect)
+            switch (GetComponent<GUINavigation>().keySelect)
             {
                 case 0: GUI.FocusControl("Music"); break;
                 case 1: GUI.FocusControl("Effect"); break;
@@ -163,6 +166,7 @@ public class OptionsMenuScript : MonoBehaviour {
         PlayerPrefs.Save();
         QualitySettings.SetQualityLevel((int)quality);
         this.enabled = false;
+        cancelSound.Play();
         if (!pauseMenu)
         {
             GetComponent<MainMenuScript>().enabled = true;
@@ -299,5 +303,6 @@ public class OptionsMenuScript : MonoBehaviour {
         buttonactive = GetComponent<GUINavigation>().activated;
         OptionsValues.musicVolume = musicvol;
         OptionsValues.sfxVolume = effectvol;
+        previouseffectvol = effectvol;
     }
 }
