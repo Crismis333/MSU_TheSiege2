@@ -12,13 +12,14 @@ public class ArmyMovement : MonoBehaviour
 
     private float speedMod = 1.0f;
 
-    private bool AreClose;
+    public bool AreClose, GetTrampled;
 
     private HeroMovement hm;
 
     public float VisibleDistance = 4.0f;
     private float closeTimer;
     public float MaxClose = 5.0f;
+    private float trampleSpeed;
 
     void Start()
     {
@@ -28,32 +29,50 @@ public class ArmyMovement : MonoBehaviour
         }
     }
 
+    public void Trample()
+    {
+        if (AreClose)
+        {
+            GetTrampled = true;
+            trampleSpeed = 1.2f;
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (hm == null && ObstacleController.PLAYER != null)
+        {
             hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
-
+        }
         pZ = ObstacleController.PLAYER.transform.position.z;
         aZ = transform.position.z;
 
         dZ = pZ - aZ;
 
-        if (dZ >= 50)
+        //if (dZ >= 50)
+        //{
+        //    speedMod = (dZ / 45);
+        //    speedMod = Mathf.Min(((Mathf.Max(hm.CurrentSpeed, hm.MoveSpeed) - 0.1f) / hm.MoveSpeed), speedMod);
+        //}
+        //else
         {
-            speedMod = (dZ / 45);
-            speedMod = Mathf.Min(((Mathf.Max(hm.CurrentSpeed, hm.MoveSpeed) - 0.1f) / hm.MoveSpeed), speedMod);
-        }
-        else
-        {
-            speedMod = 1.01f;
+            speedMod = 1.05f;
 
-            if (!AreClose && dZ < VisibleDistance)
+            if (!AreClose)
             {
-                AreClose = true;
-                closeTimer = 0;
+                if (dZ < VisibleDistance)
+                {
+                    AreClose = true;
+                    closeTimer = 0;
+                }
+                else
+                {
+                    AreClose = false;
+                    GetTrampled = false;
+                }
+                
             }
-
             if (dZ <= 0)
             {
                 CurrentGameState.highscorecondition = EndState.Lost;
@@ -70,13 +89,21 @@ public class ArmyMovement : MonoBehaviour
             }
             else
             {
+                GetTrampled = true;
+                trampleSpeed = 1.05f;
                 AreClose = false;
             }
         }
 
-
-        transform.position += (new Vector3(0, 0, hm.MoveSpeed * speedMod) * Time.deltaTime);    
-
+        if (GetTrampled)
+        {
+            speedMod = trampleSpeed;
+            transform.position += (new Vector3(0, 0, hm.MoveSpeed * speedMod) * Time.deltaTime);
+        }
+        else
+        {
+            transform.position += (new Vector3(0, 0, AreClose ? Mathf.Min(hm.MoveSpeed, hm.CurrentSpeed) : hm.MoveSpeed * speedMod) * Time.deltaTime);
+        }
        
     }
 }

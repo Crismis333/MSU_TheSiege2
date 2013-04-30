@@ -55,6 +55,8 @@ public class HeroMovement : MonoBehaviour {
 
     private Animator anim;
 
+    private ArmyMovement am;
+
 	// Use this for initialization
 	void Start () {
         currentSpeed = MoveSpeed;
@@ -62,6 +64,8 @@ public class HeroMovement : MonoBehaviour {
         defaultRot = transform.rotation;
 
         anim = gameObject.GetComponent<Animator>();
+
+        am = GameObject.Find("FellowHeroes").GetComponent<ArmyMovement>();
 	}
 	
 	// Update is called once per frame
@@ -214,6 +218,7 @@ public class HeroMovement : MonoBehaviour {
             SpeedUp = 0;
             Rage = 0;
             GUIScript.PERFECT_RUN = false;
+            am.Trample();
         }
     }
 
