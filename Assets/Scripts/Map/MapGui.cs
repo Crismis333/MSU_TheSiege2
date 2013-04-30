@@ -13,7 +13,8 @@ public class MapGui : MonoBehaviour {
     public Vector2 scrollOffset;
     public MapMovementController mapmove;
     [HideInInspector]
-    public bool stopped,started;
+    public bool stopped, started;
+    public MusicVolumeSetter music;
 
     [HideInInspector]
     public int keyLocation;
@@ -90,18 +91,21 @@ public class MapGui : MonoBehaviour {
         if (stopped)
         {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
-            GUI.color = new Color(1,1,1,Mathf.Lerp(0, 1, 1-countdown));
+            GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, 1 - countdown));
+            music.volume = Mathf.Lerp(OptionsValues.musicVolume, 0, 1 - countdown);
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
             GUI.EndGroup();
         }
-
-        if (started)
+        else if (started)
         {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
             GUI.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, 1-countdown));
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+            music.volume = Mathf.Lerp(0, OptionsValues.musicVolume, 1 - countdown);
             GUI.EndGroup();
         }
+        else
+            music.volume = OptionsValues.musicVolume;
     }
 
     public void Battle_Pressed()
@@ -190,6 +194,7 @@ public class MapGui : MonoBehaviour {
         nextDown = false;
         keyLocation = -1;
         firstGUI = true;
+        music.useGlobal = false;
         CurrentGameState.previousScore = CurrentGameState.currentScore;
         ResetScroll();
         stopped = false;
@@ -277,6 +282,7 @@ public class MapGui : MonoBehaviour {
                 {
                     countdown = 0;
                     started = false;
+                    music.useGlobal = true;
                 }
 
             }
