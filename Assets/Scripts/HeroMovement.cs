@@ -5,17 +5,14 @@ public class HeroMovement : MonoBehaviour {
 
     public float MoveSpeed = 5.0f;
     public float StrafeSpeed = 3.0f;
-	
-	private float currentSpeed;
-	
-	public float CurrentSpeed { get { return currentSpeed; } }
-
     public float SpeedDown = 2.0f;
 
+	private float currentSpeed;
+	public float CurrentSpeed { get { return currentSpeed; } }
+       
     private CollisionFlags collisionFlag;
-
     private float verticalSpeed;
-	
+
 	public bool Slowed = false;
 	private float slowTimer = 0.0f;
 	private float slowMax = 1.0f;
@@ -24,6 +21,7 @@ public class HeroMovement : MonoBehaviour {
     private bool isControllable = true;
 
     private Vector3 moveDirection = Vector3.zero;
+    private Quaternion defaultRot;
 
     //Jumping
     public float JumpHeight = 0.5f;
@@ -61,11 +59,14 @@ public class HeroMovement : MonoBehaviour {
 	void Start () {
         currentSpeed = MoveSpeed;
 
+        defaultRot = transform.rotation;
+
         anim = gameObject.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        transform.rotation = defaultRot;
         if (Input.GetButtonDown("Jump"))
         {
             lastJumpButtonTime = Time.time;
@@ -89,7 +90,7 @@ public class HeroMovement : MonoBehaviour {
 
         if (jumping) {
             moveDirection.x += 0.003f;
-            moveDirection.z -= 1.330f; //animation error fix
+            moveDirection.z -= 2.0f; //animation error fix
         }
 
         moveDirection *= Time.deltaTime;
