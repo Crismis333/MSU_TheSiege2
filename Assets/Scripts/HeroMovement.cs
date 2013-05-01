@@ -19,6 +19,7 @@ public class HeroMovement : MonoBehaviour {
 	private float slowAmount = 0.0f;
 
     private bool isControllable = true;
+    public bool dead;
 
     private Vector3 moveDirection = Vector3.zero;
     private Quaternion defaultRot;
@@ -57,10 +58,55 @@ public class HeroMovement : MonoBehaviour {
 
     private ArmyMovement am;
 
+    public void Kill()
+    {
+        dead = true;
+        isControllable = false;
+        Camera.mainCamera.GetComponent<GUIScript>().LoseLevel();
+        Vector3 pos = transform.position;
+        pos.z -= 5;
+        gameObject.GetComponent<Animator>().enabled = false;
+        //GetComponent<CharacterController>().
+        foreach (CapsuleCollider rs in this.gameObject.GetComponentsInChildren<CapsuleCollider>())
+        {
+            rs.isTrigger = false;
+        }
+        foreach (BoxCollider rs in this.gameObject.GetComponentsInChildren<BoxCollider>())
+        {
+            rs.isTrigger = false;
+        }
+        foreach (SphereCollider rs in this.gameObject.GetComponentsInChildren<SphereCollider>())
+        {
+            rs.isTrigger = false;
+        }
+        foreach (Rigidbody rs in this.gameObject.GetComponentsInChildren<Rigidbody>())
+        {
+            rs.isKinematic = false;
+            rs.WakeUp();
+            rs.AddExplosionForce(1f, pos, 0);
+        }
+    }
+
 	// Use this for initialization
 	void Start () {
+        foreach (CapsuleCollider rs in this.gameObject.GetComponentsInChildren<CapsuleCollider>())
+        {
+            rs.isTrigger = true;
+        }
+        foreach (BoxCollider rs in this.gameObject.GetComponentsInChildren<BoxCollider>())
+        {
+            rs.isTrigger = true;
+        }
+        foreach (SphereCollider rs in this.gameObject.GetComponentsInChildren<SphereCollider>())
+        {
+            rs.isTrigger = true;
+        }
+        foreach (Rigidbody rs in this.gameObject.GetComponentsInChildren<Rigidbody>())
+        {
+            rs.Sleep();
+        }
         currentSpeed = MoveSpeed;
-
+        dead = false;
         defaultRot = transform.rotation;
 
         anim = gameObject.GetComponent<Animator>();
@@ -84,7 +130,7 @@ public class HeroMovement : MonoBehaviour {
             anim.SetBool("Charge", true);
         }
 
-		Run();
+        Run();
 
         ApplyGravity();
 
@@ -92,16 +138,18 @@ public class HeroMovement : MonoBehaviour {
 
         moveDirection.y = verticalSpeed;
 
-        if (jumping) {
+        if (jumping)
+        {
             moveDirection.x += 0.003f;
             moveDirection.z -= 2.0f; //animation error fix
         }
 
         moveDirection *= Time.deltaTime;
 
-        CharacterController cc = GetComponent<CharacterController>();
-        collisionFlag = cc.Move(moveDirection); 
 
+        CharacterController cc = GetComponent<CharacterController>();
+
+        collisionFlag = cc.Move(moveDirection);
         if (IsGrounded() && jumping)
         {
             jumping = false;
@@ -133,6 +181,7 @@ public class HeroMovement : MonoBehaviour {
 		
 		if (transform.position.z >= LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64-32 && !LevelCreator.INF_MODE) {
             Camera.mainCamera.GetComponent<GUIScript>().CompleteLevel();
+            isControllable = false;
 		}
 	}
 	

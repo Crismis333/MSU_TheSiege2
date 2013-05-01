@@ -41,7 +41,8 @@ public class GUIScript : MonoBehaviour {
 
     public bool started;
     private float screencountdown;
-
+    private bool lost;
+    private float prescreencountdown;
     private LevelCompleteScript lcs;
 
 	// Use this for initialization
@@ -56,17 +57,33 @@ public class GUIScript : MonoBehaviour {
         PERFECT_RUN = true;
         GetComponent<GUINavigation>().maxKeys = 0;
         lcs = GetComponent<LevelCompleteScript>();
+        lost = false;
+        prescreencountdown = 0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (started)
         {
-            screencountdown -= 0.02f;
+            screencountdown -= Time.deltaTime;
             if (screencountdown < 0)
             {
                 screencountdown = 0;
                 started = false;
+            }
+        }
+        else if (lost)
+        {
+            prescreencountdown -= Time.deltaTime;
+            if (prescreencountdown <= 0)
+            {
+                screencountdown -= Time.deltaTime;
+                if (screencountdown < 0)
+                {
+                    screencountdown = 0;
+                    CurrentGameState.highscorecondition = EndState.Lost;
+                    Application.LoadLevel(4);
+                }
             }
         }
 
@@ -166,7 +183,14 @@ public class GUIScript : MonoBehaviour {
             music.volume = Mathf.Lerp(0, OptionsValues.musicVolume, 1 - countdown);
             GUI.EndGroup();
         }
-        else
+        else if (lost)
+        {
+            GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
+            GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, 1 - screencountdown));
+            GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+            music.volume = Mathf.Lerp(OptionsValues.musicVolume,0, 1 - countdown);
+            GUI.EndGroup();
+        }
         {
 
             music.useGlobal = false;
@@ -217,6 +241,16 @@ public class GUIScript : MonoBehaviour {
             return 1;
         }
         return -1;
+    }
+
+    public void LoseLevel()
+    {
+        if (!lost)
+        {
+            lost = true;
+            prescreencountdown = 0.5f;
+            screencountdown = 1f;
+        }
     }
 
     public void AddHit(HitAccuracy hit)
@@ -290,7 +324,7 @@ public class GUIScript : MonoBehaviour {
 
     void OnGUI()
     {
-        if (!started && (Input.GetKeyDown(KeyCode.Escape) || Camera.mainCamera.GetComponent<GUINavigation>().usedMenu))
+        if (!started && !lost && (Input.GetKeyDown(KeyCode.Escape) || Camera.mainCamera.GetComponent<GUINavigation>().usedMenu))
         {
             music.useGlobal = true;
             this.enabled = false;

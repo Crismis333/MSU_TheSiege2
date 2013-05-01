@@ -5,8 +5,6 @@ using System.Collections;
 public class DeathScreenScript : MonoBehaviour {
 
     public GUISkin gSkin;
-    public Texture2D backgroundScroll;
-    public Vector2 scrollOffset;
     public Texture2D backgroundScroll2;
     public Vector2 scrollOffset2;
     public EffectVolumeSetter selectSound;
@@ -28,13 +26,14 @@ public class DeathScreenScript : MonoBehaviour {
             GUI.skin.button.hover.background = null;
         else
             GUI.skin.button.hover.background = background;
+
         if (GetComponent<GUINavigation>().activated)
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
         if (backgroundScroll2 != null)
         {
-            GUI.BeginGroup(new Rect(Screen.width / 2 - backgroundScroll2.width / 2 + scrollOffset.x, Screen.height / 2 - backgroundScroll2.height / 2 + scrollOffset.y, backgroundScroll2.width, backgroundScroll2.height));
+            GUI.BeginGroup(new Rect(Screen.width / 2 - backgroundScroll2.width / 2 + scrollOffset2.x, Screen.height / 2 - backgroundScroll2.height / 2 + scrollOffset2.y, backgroundScroll2.width, backgroundScroll2.height));
             GUI.DrawTexture(new Rect(0, 0, backgroundScroll2.width, backgroundScroll2.height), backgroundScroll2);
             GUI.EndGroup();
         }

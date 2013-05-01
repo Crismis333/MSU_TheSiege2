@@ -75,8 +75,10 @@ public class ArmyMovement : MonoBehaviour
             }
             if (dZ <= 0)
             {
-                CurrentGameState.highscorecondition = EndState.Lost;
-                Application.LoadLevel(4);
+                //CurrentGameState.highscorecondition = EndState.Lost;
+                //Application.LoadLevel(4);
+                if (!hm.dead)
+                    hm.Kill();
             }
         }
 
