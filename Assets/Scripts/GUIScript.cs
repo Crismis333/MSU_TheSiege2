@@ -87,6 +87,22 @@ public class GUIScript : MonoBehaviour {
             }
         }
 
+        if (Input.GetKey(KeyCode.Z))
+        {
+            GameObject o = new GameObject();
+            o.AddComponent<DisappearingTextScript>();
+            o.GetComponent<DisappearingTextScript>().text = "Perfect!";
+            o.GetComponent<DisappearingTextScript>().gSkin = gSkin;
+            o.GetComponent<DisappearingTextScript>().x = Screen.width / 2;
+            o.GetComponent<DisappearingTextScript>().y = 200;
+
+            o = new GameObject();
+            o.AddComponent<DisappearingTextScript>();
+            o.GetComponent<DisappearingTextScript>().text = "+5000";
+            o.GetComponent<DisappearingTextScript>().gSkin = gSkin;
+            o.GetComponent<DisappearingTextScript>().x = Screen.width -300;
+            o.GetComponent<DisappearingTextScript>().y = 300;
+        }
 
         if (!PERFECT_RUN && lcs.perfectRun)
         {
