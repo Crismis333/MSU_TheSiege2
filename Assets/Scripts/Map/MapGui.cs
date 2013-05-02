@@ -27,7 +27,8 @@ public class MapGui : MonoBehaviour {
     private bool backDown, nextDown;
     Vector2 scrollPos;
 
-
+    private GUINavigation guin;
+    private PreviousLines prevl;
 
     void Map_Main()
     {
@@ -171,20 +172,20 @@ public class MapGui : MonoBehaviour {
     void OnGUI()
     {
         GUI.skin = gSkin;
-        if (!started && !stopped && (Input.GetKeyDown(KeyCode.Escape) || GetComponent<GUINavigation>().usedMenu))
+        if (!started && !stopped && (Input.GetKeyDown(KeyCode.Escape) || guin.usedMenu))
         {
             this.enabled = false;
             music.useGlobal = true;
             transform.parent.gameObject.GetComponent<MapMovementController>().enabled = false;
             GetComponent<PauseMenuScript>().enabled = true;
-            GetComponent<GUINavigation>().ClearElements();
-            GetComponent<GUINavigation>().maxKeys = 5;
-            GetComponent<GUINavigation>().menuKey = 4;
-            GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
-            GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
-            GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
-            GetComponent<GUINavigation>().AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
-            GetComponent<GUINavigation>().AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
+            guin.ClearElements();
+            guin.maxKeys = 5;
+            guin.menuKey = 4;
+            guin.AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
+            guin.AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
+            guin.AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
+            guin.AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
+            guin.AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
         }
         else
             Map_Main();
@@ -202,7 +203,10 @@ public class MapGui : MonoBehaviour {
 
     void Start()
     {
-        GetComponent<GUINavigation>().maxKeys = 0;
+        GameObject o = GameObject.Find("PreviousLineCreator");
+        prevl = o.GetComponent<PreviousLines>();
+        guin = GetComponent<GUINavigation>();
+        guin.maxKeys = 0;
         backDown = false;
         nextDown = false;
         keyLocation = -1;
@@ -285,8 +289,7 @@ public class MapGui : MonoBehaviour {
                             CurrentGameState.hero.LookAtLoc(CurrentGameState.loc.locations[0]);
                         }
 
-                        GameObject o = GameObject.Find("PreviousLineCreator");
-                        o.GetComponent<PreviousLines>().Init(CurrentGameState.hero);
+                        prevl.Init(CurrentGameState.hero);
                         startReset = false;
                         Screen.lockCursor = false;
                     }
@@ -309,7 +312,7 @@ public class MapGui : MonoBehaviour {
         }
         else
         {
-            if (!GetComponent<GUINavigation>().usingMouse)
+            if (!guin.usingMouse)
             {
                 float f = Input.GetAxisRaw("ScrollAxis");
                 if (f < -0.4 || f > 0.4)

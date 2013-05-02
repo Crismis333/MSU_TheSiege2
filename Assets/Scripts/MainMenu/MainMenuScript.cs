@@ -9,7 +9,6 @@ using System.Collections;
 [RequireComponent(typeof(CreditsScript))]
 public class MainMenuScript : MonoBehaviour {
 	
-	
 	public GUISkin gSkin;
     public Texture2D black;
     public MusicVolumeSetter music;
@@ -22,12 +21,14 @@ public class MainMenuScript : MonoBehaviour {
     private Color activeColor, inactiveColor;
     private bool infiniteMode;
 
+    private GUINavigation guin;
+
 	void Menu_Main() {
-        if (!GetComponent<GUINavigation>().usingMouse)
+        if (!guin.usingMouse)
             GUI.skin.button.hover.background = null;
         else
             GUI.skin.button.hover.background = background;
-        if (GetComponent<GUINavigation>().activated)
+        if (guin.activated)
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
@@ -38,19 +39,26 @@ public class MainMenuScript : MonoBehaviour {
         GUI.EndGroup();
         GUI.BeginGroup(new Rect(0, Screen.height / 2 - 140, Screen.width, Screen.height));
         GUI.SetNextControlName("Campaign");
-        if (GUI.Button(new Rect(0, 0 * 60, Screen.width - 30, 55), "Start Campaign")) { Menu_Main_Start_Campaign(); }
+        if (GUI.Button(new Rect(0, 0 * 60, Screen.width - 30, 55), "Start Campaign")) 
+            Menu_Main_Start_Campaign();
         GUI.SetNextControlName("Endless");
-        if (GUI.Button(new Rect(0, 1 * 60, Screen.width - 30, 55), "Start Eternal Rush")) { Menu_Main_Start_Endless(); }
+        if (GUI.Button(new Rect(0, 1 * 60, Screen.width - 30, 55), "Start Eternal Rush")) 
+            Menu_Main_Start_Endless();
         GUI.SetNextControlName("Controls");
-        if (GUI.Button(new Rect(0, 2 * 60, Screen.width - 30, 55), "Controls")) { Menu_Main_Controls(); }
+        if (GUI.Button(new Rect(0, 2 * 60, Screen.width - 30, 55), "Controls")) 
+            Menu_Main_Controls();
         GUI.SetNextControlName("Options");
-        if (GUI.Button(new Rect(0, 3 * 60, Screen.width - 30, 55), "Options")) { Menu_Main_Options(); }
+        if (GUI.Button(new Rect(0, 3 * 60, Screen.width - 30, 55), "Options")) 
+            Menu_Main_Options();
         GUI.SetNextControlName("Highscores");
-        if (GUI.Button(new Rect(0, 4 * 60, Screen.width - 30, 55), "Highscores")) { Menu_Main_Highscores(); }
+        if (GUI.Button(new Rect(0, 4 * 60, Screen.width - 30, 55), "Highscores")) 
+            Menu_Main_Highscores();
         GUI.SetNextControlName("Credits");
-        if (GUI.Button(new Rect(0, 5 * 60, Screen.width - 30, 55), "Credits")) { Menu_Main_Credits(); }
+        if (GUI.Button(new Rect(0, 5 * 60, Screen.width - 30, 55), "Credits")) 
+            Menu_Main_Credits();
         GUI.SetNextControlName("Quit");
-        if (GUI.Button(new Rect(0, 6 * 60, Screen.width - 30, 55), "Quit")) { Menu_Main_Quit(); }
+        if (GUI.Button(new Rect(0, 6 * 60, Screen.width - 30, 55), "Quit")) 
+            Menu_Main_Quit();
 
         GUI.Box(new Rect(0, 0 * 60, Screen.width - 30, 55), new GUIContent("", "0"));
         GUI.Box(new Rect(0, 1 * 60, Screen.width - 30, 55), new GUIContent("", "1"));
@@ -59,7 +67,7 @@ public class MainMenuScript : MonoBehaviour {
         GUI.Box(new Rect(0, 4 * 60, Screen.width - 30, 55), new GUIContent("", "4"));
         GUI.Box(new Rect(0, 5 * 60, Screen.width - 30, 55), new GUIContent("", "5"));
         GUI.Box(new Rect(0, 6 * 60, Screen.width - 30, 55), new GUIContent("", "6"));
-        Camera.mainCamera.GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+        guin.mouseover = GUI.tooltip;
 		GUI.EndGroup();
         if (stopped)
         {
@@ -80,9 +88,8 @@ public class MainMenuScript : MonoBehaviour {
         else
         {
             music.volume = OptionsValues.musicVolume;
-            if (!GetComponent<GUINavigation>().usingMouse)
-            {
-                switch (GetComponent<GUINavigation>().keySelect)
+            if (!guin.usingMouse)
+                switch (guin.keySelect)
                 {
                     case 0: GUI.FocusControl("Campaign"); break;
                     case 1: GUI.FocusControl("Endless"); break;
@@ -93,7 +100,6 @@ public class MainMenuScript : MonoBehaviour {
                     case 6: GUI.FocusControl("Quit"); break;
                     default: GUI.FocusControl("title"); break;
                 }
-            }
             else
                 GUI.FocusControl("title");
         }
@@ -107,7 +113,6 @@ public class MainMenuScript : MonoBehaviour {
         if (!started && !stopped)
         {
             infiniteMode = false;
-            //Application.LoadLevel(1);
             CurrentGameState.InfiniteMode = false;
             started = false;
             stopped = true;
@@ -121,7 +126,6 @@ public class MainMenuScript : MonoBehaviour {
     {
         if (!started && !stopped)
         {
-            //Application.LoadLevel(1);
             infiniteMode = true;
             CurrentGameState.InfiniteMode = true;
             started = false;
@@ -138,10 +142,10 @@ public class MainMenuScript : MonoBehaviour {
         {
             this.enabled = false;
             GetComponent<ControlsScript>().enabled = true;
-            GetComponent<GUINavigation>().ClearElements();
-            GetComponent<GUINavigation>().maxKeys = 1;
-            GetComponent<GUINavigation>().menuKey = 0;
-            GetComponent<GUINavigation>().AddElement(0, GetComponent<ControlsScript>().Return);
+            guin.ClearElements();
+            guin.maxKeys = 1;
+            guin.menuKey = 0;
+            guin.AddElement(0, GetComponent<ControlsScript>().Return);
             selectSound.Play();
         }
     }
@@ -152,10 +156,10 @@ public class MainMenuScript : MonoBehaviour {
         {
             this.enabled = false;
             GetComponent<OptionsMenuScript>().Menu_Options_Startup();
-            GetComponent<GUINavigation>().ClearElements();
-            GetComponent<GUINavigation>().maxKeys = 6;
-            GetComponent<GUINavigation>().menuKey = 5;
-            GetComponent<GUINavigation>().AddElement(5, GetComponent<OptionsMenuScript>().Menu_Options_Back);
+            guin.ClearElements();
+            guin.maxKeys = 6;
+            guin.menuKey = 5;
+            guin.AddElement(5, GetComponent<OptionsMenuScript>().Menu_Options_Back);
             selectSound.Play();
         }
     }
@@ -166,10 +170,10 @@ public class MainMenuScript : MonoBehaviour {
         {
             this.enabled = false;
             GetComponent<HighScoreMenuScript>().enabled = true;
-            GetComponent<GUINavigation>().ClearElements();
-            GetComponent<GUINavigation>().maxKeys = 1;
-            GetComponent<GUINavigation>().menuKey = 0;
-            GetComponent<GUINavigation>().AddElement(0, GetComponent<HighScoreMenuScript>().Accept);
+            guin.ClearElements();
+            guin.maxKeys = 1;
+            guin.menuKey = 0;
+            guin.AddElement(0, GetComponent<HighScoreMenuScript>().Accept);
             selectSound.Play();
         }
     }
@@ -180,10 +184,10 @@ public class MainMenuScript : MonoBehaviour {
         {
             this.enabled = false;
             GetComponent<CreditsScript>().enabled = true;
-            GetComponent<GUINavigation>().ClearElements();
-            GetComponent<GUINavigation>().maxKeys = 1;
-            GetComponent<GUINavigation>().menuKey = 0;
-            GetComponent<GUINavigation>().AddElement(0, GetComponent<ControlsScript>().Return);
+            guin.ClearElements();
+            guin.maxKeys = 1;
+            guin.menuKey = 0;
+            guin.AddElement(0, GetComponent<ControlsScript>().Return);
             selectSound.Play();
         }
     }
@@ -195,10 +199,10 @@ public class MainMenuScript : MonoBehaviour {
         {
             this.enabled = false;
             GetComponent<QuitAcceptMenu>().enabled = true;
-            GetComponent<GUINavigation>().ClearElements();
-            GetComponent<GUINavigation>().maxKeys = 2;
-            GetComponent<GUINavigation>().AddElement(0, GetComponent<QuitAcceptMenu>().Menu_Quit_Yes);
-            GetComponent<GUINavigation>().AddElement(1, GetComponent<QuitAcceptMenu>().Menu_Quit_No);
+            guin.ClearElements();
+            guin.maxKeys = 2;
+            guin.AddElement(0, GetComponent<QuitAcceptMenu>().Menu_Quit_Yes);
+            guin.AddElement(1, GetComponent<QuitAcceptMenu>().Menu_Quit_No);
             selectSound.Play();
         }
     }
@@ -207,23 +211,21 @@ public class MainMenuScript : MonoBehaviour {
 		GUI.skin = gSkin;
         if (firstGUI)
         {
-            GetComponent<GUINavigation>().maxKeys = 7;
-            GetComponent<GUINavigation>().AddElement(0, Menu_Main_Start_Campaign);
-            GetComponent<GUINavigation>().AddElement(1, Menu_Main_Start_Endless);
-            GetComponent<GUINavigation>().AddElement(2, Menu_Main_Controls);
-            GetComponent<GUINavigation>().AddElement(3, Menu_Main_Options);
-            GetComponent<GUINavigation>().AddElement(4, Menu_Main_Highscores);
-            GetComponent<GUINavigation>().AddElement(5, Menu_Main_Credits);
-            GetComponent<GUINavigation>().AddElement(6, Menu_Main_Quit);
+            guin.maxKeys = 7;
+            guin.AddElement(0, Menu_Main_Start_Campaign);
+            guin.AddElement(1, Menu_Main_Start_Endless);
+            guin.AddElement(2, Menu_Main_Controls);
+            guin.AddElement(3, Menu_Main_Options);
+            guin.AddElement(4, Menu_Main_Highscores);
+            guin.AddElement(5, Menu_Main_Credits);
+            guin.AddElement(6, Menu_Main_Quit);
             background = GUI.skin.button.hover.background;
             activeColor = GUI.skin.button.active.textColor;
             inactiveColor = GUI.skin.button.focused.textColor;
             firstGUI = false;
         }
         if (Input.GetKeyDown(KeyCode.Escape))
-        {
             Menu_Main_Quit();
-        }
         else
             Menu_Main();
 	}
@@ -234,16 +236,14 @@ public class MainMenuScript : MonoBehaviour {
         music.useGlobal = false;
         started = true;
         countdown = 1f;
+        guin = GetComponent<GUINavigation>();
     }
 
     void Update()
     {
-        //print("skin is null: " + (gSkin.button.hover.background == null) + ", mouseactivated: " + Camera.mainCamera.GetComponent<GUINavigation>().usingMouse);
         if (stopped || started)
         {
-            
             countdown -= 0.02f;
-
             if (started)
             {
                 if (countdown < 0)
@@ -254,7 +254,6 @@ public class MainMenuScript : MonoBehaviour {
                 }
 
             }
-
             if (stopped && countdown < 0)
             {
                 if (infiniteMode)

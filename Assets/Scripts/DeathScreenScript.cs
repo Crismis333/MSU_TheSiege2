@@ -20,14 +20,16 @@ public class DeathScreenScript : MonoBehaviour {
     private Color activeColor, inactiveColor;
     private bool firstGUI;
 
+    private GUINavigation guin;
+
     void Menu_HighScore()
     {
-        if (GetComponent<GUINavigation>().usingMouse)
+        if (guin.usingMouse)
             GUI.skin.button.hover.background = null;
         else
             GUI.skin.button.hover.background = background;
 
-        if (GetComponent<GUINavigation>().activated)
+        if (guin.activated)
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
@@ -58,7 +60,7 @@ public class DeathScreenScript : MonoBehaviour {
 
         GUI.Box(new Rect(60, 6 * 35, 700, 64), new GUIContent("", "0"));
         GUI.Box(new Rect(60, 8 * 35, 700, 64), new GUIContent("", "1"));
-        GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+        guin.mouseover = GUI.tooltip;
 
         GUI.EndGroup();
         if (started)
@@ -79,9 +81,9 @@ public class DeathScreenScript : MonoBehaviour {
         GUI.skin.button.hover.background = background;
         GUI.skin.button.focused.textColor = inactiveColor;
 
-        if (!GetComponent<GUINavigation>().usingMouse)
+        if (!guin.usingMouse)
         {
-            switch (GetComponent<GUINavigation>().keySelect)
+            switch (guin.keySelect)
             {
                 case 0: GUI.FocusControl("Return"); break;
                 case 1: GUI.FocusControl("GiveUp"); break;
@@ -102,9 +104,9 @@ public class DeathScreenScript : MonoBehaviour {
         decreaseComplete = false;
 
         score = CurrentGameState.previousScore;
-        //score = 5000000;
         newscore = score / 2;
         pointsDecreaser = newscore / 59L;
+        guin = GetComponent<GUINavigation>();
         
     }
 
@@ -117,16 +119,11 @@ public class DeathScreenScript : MonoBehaviour {
             activeColor = GUI.skin.button.active.textColor;
             inactiveColor = GUI.skin.button.focused.textColor;
             firstGUI = false;
-            GetComponent<GUINavigation>().ClearElements();
-            GetComponent<GUINavigation>().maxKeys = 2;
-            GetComponent<GUINavigation>().AddElement(0, ReturnToCamp);
-            GetComponent<GUINavigation>().AddElement(1, GiveUp);
+            guin.ClearElements();
+            guin.maxKeys = 2;
+            guin.AddElement(0, ReturnToCamp);
+            guin.AddElement(1, GiveUp);
         }
-        //if (Input.GetKeyDown(KeyCode.Escape))
-        //{
-        //    Return();
-        //}
-        //else
         Menu_HighScore();
     }
 
@@ -135,7 +132,7 @@ public class DeathScreenScript : MonoBehaviour {
         if (!started && !gaveup && !returned)
         {
             selectSound.Play();
-            GetComponent<GUINavigation>().SetNoPlay();
+            guin.SetNoPlay();
             gaveup = true;
             countdown = 1.2f;
         }
@@ -146,7 +143,7 @@ public class DeathScreenScript : MonoBehaviour {
         if (!started && !gaveup && !returned)
         {
             selectSound.Play();
-            GetComponent<GUINavigation>().SetNoPlay();
+            guin.SetNoPlay();
             returned = true;
             countdown = 2f;
         }

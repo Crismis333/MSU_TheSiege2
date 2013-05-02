@@ -18,13 +18,16 @@ public class PauseMenuScript : MonoBehaviour {
     private Color activeColor, inactiveColor;
     private bool firstGUI;
 
+    private GUINavigation guin;
+    private PauseReturnToScript prts;
+
     void Menu_Options()
     {
-        if (!GetComponent<GUINavigation>().usingMouse)
+        if (!guin.usingMouse)
             GUI.skin.button.hover.background = null;
         else
             GUI.skin.button.hover.background = background;
-        if (GetComponent<GUINavigation>().activated)
+        if (guin.activated)
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
@@ -55,16 +58,16 @@ public class PauseMenuScript : MonoBehaviour {
         GUI.Box(new Rect(60, 2 * 70, 650, 64), new GUIContent("", "2"));
         GUI.Box(new Rect(60, 3 * 70, 650, 64), new GUIContent("", "3"));
         GUI.Box(new Rect(60, 5 * 70, 650, 64), new GUIContent("", "4"));
-        GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+        guin.mouseover = GUI.tooltip;
 
         GUI.EndGroup();
 
         GUI.skin.button.hover.background = background;
         GUI.skin.button.focused.textColor = inactiveColor;
 
-        if (!GetComponent<GUINavigation>().usingMouse)
+        if (!guin.usingMouse)
         {
-            switch (GetComponent<GUINavigation>().keySelect)
+            switch (guin.keySelect)
             {
                 case 0: GUI.FocusControl("Options"); break;
                 case 1: GUI.FocusControl("Controls"); break;
@@ -94,37 +97,28 @@ public class PauseMenuScript : MonoBehaviour {
             Menu_Options();
     }
 
-    /* 
-    void Pause_Restart()
-    {
-        this.enabled = false;
-        GetComponent<PauseReturnToScript>().restart = true;
-        GetComponent<PauseReturnToScript>().enabled = true;
-    }
-    */ 
-
     public void Pause_GiveUp()
     {
         selectSound.Play();
         this.enabled = false;
-        GetComponent<PauseReturnToScript>().onMap = onMap;
-        GetComponent<PauseReturnToScript>().enabled = true;
-        GetComponent<GUINavigation>().ClearElements();
-        GetComponent<GUINavigation>().maxKeys = 2;
-        GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseReturnToScript>().Return_Yes);
-        GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseReturnToScript>().Return_No);
+        prts.onMap = onMap;
+        prts.enabled = true;
+        guin.ClearElements();
+        guin.maxKeys = 2;
+        guin.AddElement(0, prts.Return_Yes);
+        guin.AddElement(1, prts.Return_No);
     }
 
     public void Pause_Quit()
     {
         selectSound.Play();
         this.enabled = false;
-        GetComponent<PauseReturnToScript>().quit = true;
-        GetComponent<PauseReturnToScript>().enabled = true;
-        GetComponent<GUINavigation>().ClearElements();
-        GetComponent<GUINavigation>().maxKeys = 2;
-        GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseReturnToScript>().Return_Yes);
-        GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseReturnToScript>().Return_No);
+        prts.quit = true;
+        prts.enabled = true;
+        guin.ClearElements();
+        guin.maxKeys = 2;
+        guin.AddElement(0, prts.Return_Yes);
+        guin.AddElement(1, prts.Return_No);
     }
 
     public void Pause_Back()
@@ -142,8 +136,8 @@ public class PauseMenuScript : MonoBehaviour {
             Time.timeScale = 1;
             GetComponent<GUIScript>().enabled = true;
         }
-        GetComponent<GUINavigation>().ClearElements();
-        GetComponent<GUINavigation>().maxKeys = 0;
+        guin.ClearElements();
+        guin.maxKeys = 0;
     }
 
     public void Pause_Controls()
@@ -151,10 +145,10 @@ public class PauseMenuScript : MonoBehaviour {
         this.enabled = false;
         selectSound.Play();
         GetComponent<ControlsScript>().enabled = true;
-        GetComponent<GUINavigation>().ClearElements();
-        GetComponent<GUINavigation>().maxKeys = 1;
-        GetComponent<GUINavigation>().menuKey = 0;
-        GetComponent<GUINavigation>().AddElement(0, GetComponent<ControlsScript>().Return);
+        guin.ClearElements();
+        guin.maxKeys = 1;
+        guin.menuKey = 0;
+        guin.AddElement(0, GetComponent<ControlsScript>().Return);
     }
 
     public void Pause_Options()
@@ -162,13 +156,15 @@ public class PauseMenuScript : MonoBehaviour {
         this.enabled = false;
         selectSound.Play();
         GetComponent<OptionsMenuScript>().enabled = true;
-        GetComponent<GUINavigation>().ClearElements();
-        GetComponent<GUINavigation>().maxKeys = 6;
-        GetComponent<GUINavigation>().AddElement(5, GetComponent<OptionsMenuScript>().Menu_Options_Back);
+        guin.ClearElements();
+        guin.maxKeys = 6;
+        guin.AddElement(5, GetComponent<OptionsMenuScript>().Menu_Options_Back);
     }
 
     void Start()
     {
-        firstGUI = true; 
+        firstGUI = true;
+        guin = GetComponent<GUINavigation>();
+        prts = GetComponent<PauseReturnToScript>();
     }
 }

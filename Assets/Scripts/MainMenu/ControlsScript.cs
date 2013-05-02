@@ -16,13 +16,16 @@ public class ControlsScript : MonoBehaviour {
     private bool firstGUI;
     private bool movedLeft, movedRight;
     private int screenNr, maxPages;
+
+    private GUINavigation guin;
+
     void Menu_Controls()
     {
-        if (!GetComponent<GUINavigation>().usingMouse)
+        if (!guin.usingMouse)
             GUI.skin.button.hover.background = null;
         else
             GUI.skin.button.hover.background = background;
-        if (GetComponent<GUINavigation>().activated)
+        if (guin.activated)
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
@@ -42,7 +45,7 @@ public class ControlsScript : MonoBehaviour {
         GUI.SetNextControlName("Return");
         if (GUI.Button(new Rect(60, 12 * 35, 640, 64), "Return")) { Return(); }
         GUI.Box(new Rect(60, 12 * 35, 640, 64), new GUIContent("", "0"));
-        GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+        guin.mouseover = GUI.tooltip;
 
         GUI.EndGroup();
 
@@ -52,7 +55,7 @@ public class ControlsScript : MonoBehaviour {
         if (GUI.Button(new Rect(0, 6 * 30, 155, 100), "<"))
         {
             screenNr--;
-            GetComponent<GUINavigation>().SetNoPlay();
+            guin.SetNoPlay();
             selectSound.Play();
             if (screenNr < 0) screenNr = maxPages-1;
         }
@@ -63,17 +66,17 @@ public class ControlsScript : MonoBehaviour {
         if (GUI.Button(new Rect(0, 6 * 30, 155, 100), ">"))
         {
             screenNr++;
-            GetComponent<GUINavigation>().SetNoPlay();
+            guin.SetNoPlay();
             selectSound.Play();
             if (screenNr > maxPages-1) screenNr = 0;
         }
         GUI.Box(new Rect(0, 6 * 30, 155, 100), new GUIContent("", "right"));
         GUI.EndGroup();
-        GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+        guin.mouseover = GUI.tooltip;
         GUI.skin.button.fontSize = 24;
-        if (!GetComponent<GUINavigation>().usingMouse)
+        if (!guin.usingMouse)
         {
-            if (GetComponent<GUINavigation>().keySelect == 0)
+            if (guin.keySelect == 0)
                 GUI.FocusControl("Return");
             else
                 GUI.FocusControl("title");
@@ -91,6 +94,7 @@ public class ControlsScript : MonoBehaviour {
         movedLeft = false;
         movedRight = false;
         firstGUI = true;
+        guin = GetComponent<GUINavigation>();
     }
 
     void Update()
@@ -99,13 +103,13 @@ public class ControlsScript : MonoBehaviour {
 
         if (kh > 0.01 && !movedRight)
         {
-            GetComponent<GUINavigation>().SetNoPlay();
+            guin.SetNoPlay();
             selectSound.Play();
             screenNr++;
         }
         else if (kh < -0.01 && !movedLeft)
         {
-            GetComponent<GUINavigation>().SetNoPlay();
+            guin.SetNoPlay();
             selectSound.Play();
             screenNr--;
         }
@@ -153,28 +157,30 @@ public class ControlsScript : MonoBehaviour {
         cancelSound.Play();
         if (mainMenu)
         {
-            GetComponent<MainMenuScript>().enabled = true;
-            GetComponent<GUINavigation>().ClearElements();
-            GetComponent<GUINavigation>().maxKeys = 7;
-            GetComponent<GUINavigation>().AddElement(0, GetComponent<MainMenuScript>().Menu_Main_Start_Campaign);
-            GetComponent<GUINavigation>().AddElement(1, GetComponent<MainMenuScript>().Menu_Main_Start_Endless);
-            GetComponent<GUINavigation>().AddElement(2, GetComponent<MainMenuScript>().Menu_Main_Controls);
-            GetComponent<GUINavigation>().AddElement(3, GetComponent<MainMenuScript>().Menu_Main_Options);
-            GetComponent<GUINavigation>().AddElement(4, GetComponent<MainMenuScript>().Menu_Main_Highscores);
-            GetComponent<GUINavigation>().AddElement(5, GetComponent<MainMenuScript>().Menu_Main_Credits);
-            GetComponent<GUINavigation>().AddElement(6, GetComponent<MainMenuScript>().Menu_Main_Quit);
+            MainMenuScript mms = GetComponent<MainMenuScript>();
+            mms.enabled = true;
+            guin.ClearElements();
+            guin.maxKeys = 7;
+            guin.AddElement(0, mms.Menu_Main_Start_Campaign);
+            guin.AddElement(1, mms.Menu_Main_Start_Endless);
+            guin.AddElement(2, mms.Menu_Main_Controls);
+            guin.AddElement(3, mms.Menu_Main_Options);
+            guin.AddElement(4, mms.Menu_Main_Highscores);
+            guin.AddElement(5, mms.Menu_Main_Credits);
+            guin.AddElement(6, mms.Menu_Main_Quit);
         }
         else
         {
-            GetComponent<PauseMenuScript>().enabled = true;
-            GetComponent<GUINavigation>().ClearElements();
-            GetComponent<GUINavigation>().maxKeys = 5;
-            GetComponent<GUINavigation>().menuKey = 4;
-            GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
-            GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
-            GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
-            GetComponent<GUINavigation>().AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
-            GetComponent<GUINavigation>().AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
+            PauseMenuScript pms = GetComponent<PauseMenuScript>();
+            pms.enabled = true;
+            guin.ClearElements();
+            guin.maxKeys = 5;
+            guin.menuKey = 4;
+            guin.AddElement(0, pms.Pause_Options);
+            guin.AddElement(1, pms.Pause_Controls);
+            guin.AddElement(2, pms.Pause_GiveUp);
+            guin.AddElement(3, pms.Pause_Quit);
+            guin.AddElement(4, pms.Pause_Back);
         }
     }
 }

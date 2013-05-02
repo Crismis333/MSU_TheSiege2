@@ -11,8 +11,13 @@ public class MapMovementController : MonoBehaviour {
     bool onguidown;
     int mdowncool;
 
-
+    private GUINavigation guin;
+    private MapGui mapg;
+    private Camera cam;
     void Start() {
+        cam = Camera.mainCamera;
+        guin = cam.GetComponent<GUINavigation>();
+        mapg = cam.GetComponent<MapGui>();
         zoomedIn = true;
         mdown = false;
         onguidown = false;
@@ -26,51 +31,51 @@ public class MapMovementController : MonoBehaviour {
 
     private Vector3 ClampToMap(Vector3 pos)
     {
-        Vector2 topleftpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
-        Vector2 botrightpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+        Vector2 topleftpos = cam.WorldToScreenPoint(topLeftLimit.transform.position);
+        Vector2 botrightpos = cam.WorldToScreenPoint(bottomRightLimit.transform.position);
         if (topleftpos.x >= 0 && botrightpos.x <= Screen.width)
         {
-            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
-            Vector3 newpos2 = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+            Vector3 newpos = cam.WorldToScreenPoint(topLeftLimit.transform.position);
+            Vector3 newpos2 = cam.WorldToScreenPoint(bottomRightLimit.transform.position);
             newpos.x += Screen.width / 2f + 20;
             newpos2.x -= Screen.width / 2f;
             newpos += newpos2;
             newpos /= 2;
-            pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
+            pos.x = cam.ScreenToWorldPoint(newpos).x;
         }
         if (topleftpos.x >= 0)
         {
-            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
+            Vector3 newpos = cam.WorldToScreenPoint(topLeftLimit.transform.position);
             newpos.x += Screen.width / 2f + 20;
-            pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
+            pos.x = cam.ScreenToWorldPoint(newpos).x;
         }
         else if (botrightpos.x <= Screen.width)
         {
-            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+            Vector3 newpos = cam.WorldToScreenPoint(bottomRightLimit.transform.position);
             newpos.x -= Screen.width / 2f - 20;
-            pos.x = Camera.mainCamera.ScreenToWorldPoint(newpos).x;
+            pos.x = cam.ScreenToWorldPoint(newpos).x;
         }
         if (topleftpos.y <= Screen.height && botrightpos.y >= 0)
         {
-            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
-            Vector3 newpos2 = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+            Vector3 newpos = cam.WorldToScreenPoint(topLeftLimit.transform.position);
+            Vector3 newpos2 = cam.WorldToScreenPoint(bottomRightLimit.transform.position);
             newpos.y -= Screen.height / 2f-20;
             newpos2.y += Screen.height / 2f;
             newpos += newpos2;
             newpos /= 2;
-            pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
+            pos.z = cam.ScreenToWorldPoint(newpos).z;
         }
         else if (topleftpos.y <= Screen.height)
         {
-            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
+            Vector3 newpos = cam.WorldToScreenPoint(topLeftLimit.transform.position);
             newpos.y -= Screen.height / 2f - 20;
-            pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
+            pos.z = cam.ScreenToWorldPoint(newpos).z;
         }
         else if (botrightpos.y >= 0)
         {
-            Vector3 newpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
+            Vector3 newpos = cam.WorldToScreenPoint(bottomRightLimit.transform.position);
             newpos.y += Screen.height / 2f + 20;
-            pos.z = Camera.mainCamera.ScreenToWorldPoint(newpos).z;
+            pos.z = cam.ScreenToWorldPoint(newpos).z;
         }
         return pos;
     }
@@ -93,19 +98,18 @@ public class MapMovementController : MonoBehaviour {
             if (!GUI_Area.Contains(Input.mousePosition))
             {
                 LocationClick.currentActive = null;
-                Camera.mainCamera.GetComponent<MapGui>().current_location = null;
-                Camera.mainCamera.GetComponent<MapGui>().ResetScroll();
+                mapg.current_location = null;
+                mapg.ResetScroll();
             }
         }
 
-        Camera.mainCamera.transform.Rotate(new Vector3(30, 0, 0));
+        cam.transform.Rotate(new Vector3(30, 0, 0));
         Vector3 pos = this.transform.position;
         bool left, right, up, down;
         left = right = up = down = false;
 
-        Vector2 topleftpos = Camera.mainCamera.WorldToScreenPoint(topLeftLimit.transform.position);
-        Vector2 botrightpos = Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position);
-        //Vector2 newposright = Camera.mainCamera.ScreenToWorldPoint(Camera.mainCamera.WorldToScreenPoint(bottomRightLimit.transform.position));
+        Vector2 topleftpos = cam.WorldToScreenPoint(topLeftLimit.transform.position);
+        Vector2 botrightpos = cam.WorldToScreenPoint(bottomRightLimit.transform.position);
 
         float multiplier = 20.0f;
 
@@ -125,7 +129,7 @@ public class MapMovementController : MonoBehaviour {
         if (mdowncool > 0)
             mdowncool--;
         float xm, ym;
-        if (Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+        if (guin.usingMouse)
         {
             xm = Input.GetAxis("Mouse X");
             ym = Input.GetAxis("Mouse Y");
@@ -144,8 +148,8 @@ public class MapMovementController : MonoBehaviour {
             ym = -Input.GetAxis("Vertical");
         }
 
-        if (!GetComponentInChildren<MapGui>().started && !GetComponentInChildren<MapGui>().stopped)
-            if (Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+        if (!mapg.started && !mapg.stopped)
+            if (guin.usingMouse)
             {
                 if (Input.GetMouseButton(0) && !onguidown)
                 {
@@ -186,6 +190,6 @@ public class MapMovementController : MonoBehaviour {
             mdown = false;
 
         this.transform.position = pos;
-        Camera.mainCamera.transform.Rotate(new Vector3(-30, 0, 0));
+        cam.transform.Rotate(new Vector3(-30, 0, 0));
     }
 }

@@ -23,8 +23,11 @@ public class OptionsMenuScript : MonoBehaviour {
     private bool movedLeft, movedRight;
     private Resolution[] res;
     private float f, previouseffectvol;
+
+    private GUINavigation guin;
+
 	void Menu_Options() {
-        if (!GetComponent<GUINavigation>().usingMouse)
+        if (!guin.usingMouse)
         {
             GUI.skin.button.hover.background = null;
             GUI.skin.horizontalSlider.hover.background = backgroundSliderOff;
@@ -38,7 +41,7 @@ public class OptionsMenuScript : MonoBehaviour {
             GUI.skin.toggle.hover.background = backgroundToggle;
             GUI.skin.toggle.onHover.background = backgroundToggleOn;
         }
-        if (GetComponent<GUINavigation>().activated)
+        if (guin.activated)
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
@@ -75,7 +78,8 @@ public class OptionsMenuScript : MonoBehaviour {
         quality = GUI.HorizontalSlider(new Rect(250, 4 * 70, 512, 64), quality, 0.0f, 5.0f);
         quality = ((int)quality + 0.5f);
         GUI.SetNextControlName("Accept");
-        if (GUI.Button(new Rect(60, 5 * 70, 730, 64), "Accept")) { Menu_Options_Back();  }
+        if (GUI.Button(new Rect(60, 5 * 70, 730, 64), "Accept"))
+            Menu_Options_Back();
         GUI.color = Color.red;
         GUI.Label(new Rect(450, 3 * 70, 340, 64), mres.width + "x" + mres.height);
         GUI.Label(new Rect(450, 4 * 70, 340, 64), QualitySettings.names[(int)quality]);
@@ -86,7 +90,7 @@ public class OptionsMenuScript : MonoBehaviour {
         GUI.Box(new Rect(250, 3 * 70, 512, 64), new GUIContent("", "3"));
         GUI.Box(new Rect(250, 4 * 70, 512, 64), new GUIContent("", "4"));
         GUI.Box(new Rect(60, 5 * 70, 730, 64), new GUIContent("", "5"));
-        Camera.mainCamera.GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+        guin.mouseover = GUI.tooltip;
 
 		GUI.EndGroup();
 
@@ -96,9 +100,8 @@ public class OptionsMenuScript : MonoBehaviour {
         GUI.skin.toggle.onHover.background = backgroundToggleOn;
         GUI.skin.button.focused.textColor = inactiveColor;
 
-        if (!GetComponent<GUINavigation>().usingMouse)
-        {
-            switch (GetComponent<GUINavigation>().keySelect)
+        if (!guin.usingMouse)
+            switch (guin.keySelect)
             {
                 case 0: GUI.FocusControl("Music"); break;
                 case 1: GUI.FocusControl("Effect"); break;
@@ -108,7 +111,6 @@ public class OptionsMenuScript : MonoBehaviour {
                 case 5: GUI.FocusControl("Accept"); break;
                 default: GUI.FocusControl("title"); break;
             }
-        }
         else
             GUI.FocusControl("title");
 	}
@@ -130,9 +132,7 @@ public class OptionsMenuScript : MonoBehaviour {
             firstGUI = false;
         }
         if (Input.GetKeyDown(KeyCode.Escape))
-        {
             Menu_Options_Back();
-        }
         else
 		    Menu_Options();
 	}
@@ -169,28 +169,30 @@ public class OptionsMenuScript : MonoBehaviour {
         cancelSound.Play();
         if (!pauseMenu)
         {
-            GetComponent<MainMenuScript>().enabled = true;
-            GetComponent<GUINavigation>().ClearElements();
-            GetComponent<GUINavigation>().maxKeys = 7;
-            GetComponent<GUINavigation>().AddElement(0, GetComponent<MainMenuScript>().Menu_Main_Start_Campaign);
-            GetComponent<GUINavigation>().AddElement(1, GetComponent<MainMenuScript>().Menu_Main_Start_Endless);
-            GetComponent<GUINavigation>().AddElement(2, GetComponent<MainMenuScript>().Menu_Main_Controls);
-            GetComponent<GUINavigation>().AddElement(3, GetComponent<MainMenuScript>().Menu_Main_Options);
-            GetComponent<GUINavigation>().AddElement(4, GetComponent<MainMenuScript>().Menu_Main_Highscores);
-            GetComponent<GUINavigation>().AddElement(5, GetComponent<MainMenuScript>().Menu_Main_Credits);
-            GetComponent<GUINavigation>().AddElement(6, GetComponent<MainMenuScript>().Menu_Main_Quit);
+            MainMenuScript mms = GetComponent<MainMenuScript>();
+            mms.enabled = true;
+            guin.ClearElements();
+            guin.maxKeys = 7;
+            guin.AddElement(0, mms.Menu_Main_Start_Campaign);
+            guin.AddElement(1, mms.Menu_Main_Start_Endless);
+            guin.AddElement(2, mms.Menu_Main_Controls);
+            guin.AddElement(3, mms.Menu_Main_Options);
+            guin.AddElement(4, mms.Menu_Main_Highscores);
+            guin.AddElement(5, mms.Menu_Main_Credits);
+            guin.AddElement(6, mms.Menu_Main_Quit);
         }
         else
         {
-            GetComponent<PauseMenuScript>().enabled = true;
-            GetComponent<GUINavigation>().ClearElements();
-            GetComponent<GUINavigation>().maxKeys = 5;
-            GetComponent<GUINavigation>().menuKey = 4;
-            GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
-            GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
-            GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
-            GetComponent<GUINavigation>().AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
-            GetComponent<GUINavigation>().AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
+            PauseMenuScript pms = GetComponent<PauseMenuScript>();
+            pms.enabled = true;
+            guin.ClearElements();
+            guin.maxKeys = 5;
+            guin.menuKey = 4;
+            guin.AddElement(0, pms.Pause_Options);
+            guin.AddElement(1, pms.Pause_Controls);
+            guin.AddElement(2, pms.Pause_GiveUp);
+            guin.AddElement(3, pms.Pause_Quit);
+            guin.AddElement(4, pms.Pause_Back);
         }
     }
 
@@ -204,6 +206,7 @@ public class OptionsMenuScript : MonoBehaviour {
         musicvol = OptionsValues.musicVolume;
         effectvol = OptionsValues.sfxVolume;
         fullscreen = Screen.fullScreen;
+        guin = GetComponent<GUINavigation>();
         
         res = Screen.resolutions;
         f = 0.0f;
@@ -228,17 +231,15 @@ public class OptionsMenuScript : MonoBehaviour {
                     f += 1.0f;
 
         float kh = Input.GetAxisRaw("Horizontal");
-        
-        if (!GetComponent<GUINavigation>().usingMouse)
-        {
-            switch (GetComponent<GUINavigation>().keySelect)
+
+        if (!guin.usingMouse)
+            switch (guin.keySelect)
             {
                 case 0:
                     {
                         musicvol += Input.GetAxis("Horizontal") / 50;
                         if (musicvol < 0) musicvol = 0;
                         else if (musicvol > 1) musicvol = 1;
-                        //GUI.FocusControl("Music"); 
                         break;
                     }
                 case 1: 
@@ -246,13 +247,11 @@ public class OptionsMenuScript : MonoBehaviour {
                         effectvol += Input.GetAxis("Horizontal") / 50;
                         if (effectvol < 0) effectvol = 0;
                         else if (effectvol > 1) effectvol = 1;
-                        //GUI.FocusControl("Effect"); 
                         break; 
                     }
                 case 2:
                     {
-                        //GUI.FocusControl("Fullscreen");
-                        if (buttonactive && !GetComponent<GUINavigation>().activated)
+                        if (buttonactive && !guin.activated)
                         {
                             fullscreen = !fullscreen;
                         }
@@ -260,7 +259,6 @@ public class OptionsMenuScript : MonoBehaviour {
                     }
                 case 3:
                     {
-                       //GUI.FocusControl("Resolution");
                         if (kh < -0.01 && !movedLeft)
                             resolution--;
                         else if (kh > 0.01 && !movedRight)
@@ -273,7 +271,6 @@ public class OptionsMenuScript : MonoBehaviour {
                     }
                 case 4:
                     {
-
                         if (kh < -0.01 && !movedLeft)
                             quality--;
                         else if (kh > 0.01 && !movedRight)
@@ -283,8 +280,6 @@ public class OptionsMenuScript : MonoBehaviour {
                         break;
                     }
             }
-
-        }
         if (kh > 0.01)
         {
             movedRight = true;
@@ -300,7 +295,7 @@ public class OptionsMenuScript : MonoBehaviour {
             movedRight = false;
             movedLeft = false;
         }
-        buttonactive = GetComponent<GUINavigation>().activated;
+        buttonactive = guin.activated;
         OptionsValues.musicVolume = musicvol;
         OptionsValues.sfxVolume = effectvol;
         previouseffectvol = effectvol;

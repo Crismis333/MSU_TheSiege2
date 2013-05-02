@@ -15,13 +15,15 @@ public class QuitAcceptMenu : MonoBehaviour {
     private bool firstGUI, stopped;
     private float countdown;
 
+    private GUINavigation guin;
+
     void Menu_Quit()
     {
-        if (!GetComponent<GUINavigation>().usingMouse)
+        if (!guin.usingMouse)
             GUI.skin.button.hover.background = null;
         else
             GUI.skin.button.hover.background = background;
-        if (GetComponent<GUINavigation>().activated)
+        if (guin.activated)
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
@@ -30,28 +32,28 @@ public class QuitAcceptMenu : MonoBehaviour {
         GUI.SetNextControlName("title");
         GUI.Label(new Rect(0, 0 * 70, Screen.width, 64), "Do you really wish to quit?");
         GUI.SetNextControlName("Yes");
-        if (GUI.Button(new Rect(0, 1 * 70, Screen.width, 64), "Yes")) { Menu_Quit_Yes(); }
+        if (GUI.Button(new Rect(0, 1 * 70, Screen.width, 64), "Yes")) 
+            Menu_Quit_Yes();
         GUI.SetNextControlName("No");
-        if (GUI.Button(new Rect(0, 2 * 70, Screen.width, 64), "No")) { Menu_Quit_No(); }
+        if (GUI.Button(new Rect(0, 2 * 70, Screen.width, 64), "No")) 
+            Menu_Quit_No();
 
         GUI.Box(new Rect(0, 1 * 70, Screen.width, 64), new GUIContent("", "0"));
         GUI.Box(new Rect(0, 2 * 70, Screen.width, 64), new GUIContent("", "1"));
-        GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+        guin.mouseover = GUI.tooltip;
 
         GUI.EndGroup();
 
         GUI.skin.button.hover.background = background;
         GUI.skin.button.focused.textColor = inactiveColor;
 
-        if (!GetComponent<GUINavigation>().usingMouse)
-        {
-            switch (GetComponent<GUINavigation>().keySelect)
+        if (!guin.usingMouse)
+            switch (guin.keySelect)
             {
                 case 0: GUI.FocusControl("Yes"); break;
                 case 1: GUI.FocusControl("No"); break;
                 default: GUI.FocusControl("title"); break;
             }
-        }
         else
             GUI.FocusControl("title");
 
@@ -93,17 +95,18 @@ public class QuitAcceptMenu : MonoBehaviour {
     public void Menu_Quit_No()
     {
         this.enabled = false;
-        GetComponent<MainMenuScript>().enabled = true;
         cancelSound.Play();
-        GetComponent<GUINavigation>().ClearElements();
-        GetComponent<GUINavigation>().maxKeys = 7;
-        GetComponent<GUINavigation>().AddElement(0, GetComponent<MainMenuScript>().Menu_Main_Start_Campaign);
-        GetComponent<GUINavigation>().AddElement(1, GetComponent<MainMenuScript>().Menu_Main_Start_Endless);
-        GetComponent<GUINavigation>().AddElement(2, GetComponent<MainMenuScript>().Menu_Main_Controls);
-        GetComponent<GUINavigation>().AddElement(3, GetComponent<MainMenuScript>().Menu_Main_Options);
-        GetComponent<GUINavigation>().AddElement(4, GetComponent<MainMenuScript>().Menu_Main_Highscores);
-        GetComponent<GUINavigation>().AddElement(5, GetComponent<MainMenuScript>().Menu_Main_Credits);
-        GetComponent<GUINavigation>().AddElement(6, GetComponent<MainMenuScript>().Menu_Main_Quit);
+        MainMenuScript mms = GetComponent<MainMenuScript>();
+        mms.enabled = true;
+        guin.ClearElements();
+        guin.maxKeys = 7;
+        guin.AddElement(0, mms.Menu_Main_Start_Campaign);
+        guin.AddElement(1, mms.Menu_Main_Start_Endless);
+        guin.AddElement(2, mms.Menu_Main_Controls);
+        guin.AddElement(3, mms.Menu_Main_Options);
+        guin.AddElement(4, mms.Menu_Main_Highscores);
+        guin.AddElement(5, mms.Menu_Main_Credits);
+        guin.AddElement(6, mms.Menu_Main_Quit);
     }
 
     void Start()
@@ -111,6 +114,7 @@ public class QuitAcceptMenu : MonoBehaviour {
         countdown = 1f;
         firstGUI = true;
         stopped = false;
+        guin = GetComponent<GUINavigation>(); 
     }
 
     void Update()
