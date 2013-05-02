@@ -13,6 +13,9 @@ public class GUIScript : MonoBehaviour {
     public GUISkin gSkin;
     public Texture2D runningSoldiers1, runningSoldiers2, runningHero1, runningHero2, runningGoal, damagebar, swordLeft, swordRight;
     public Texture2D backgroundScrollScore, backgroundScrollLeft, backgroundScrollMid, backgroundScrollRight, black;
+    public Texture2D sideBar, progressBackground, progressForeground, campIcon, rageOrbBackground, rageOrbForeground;
+    public Texture2D slowDownBackground, slowDownForeground, chargeBarBackground, chargeBarForeground;
+
     public Vector2 scrollScoreOffset, scrollLeftOffset, scrollMidOffset, scrollRightOffset;
     public float engagePercent, releasePercent;
     public float fixedEngagePercent;
@@ -44,6 +47,7 @@ public class GUIScript : MonoBehaviour {
     private bool lost;
     private float prescreencountdown;
     private LevelCompleteScript lcs;
+    private GUINavigation guin;
 
 	// Use this for initialization
 	void Start () {
@@ -55,7 +59,8 @@ public class GUIScript : MonoBehaviour {
         started = true;
         screencountdown = 1f;
         PERFECT_RUN = true;
-        GetComponent<GUINavigation>().maxKeys = 0;
+        guin = GetComponent<GUINavigation>();
+        guin.maxKeys = 0;
         lcs = GetComponent<LevelCompleteScript>();
         lost = false;
         prescreencountdown = 0f;
@@ -90,18 +95,18 @@ public class GUIScript : MonoBehaviour {
         if (Input.GetKey(KeyCode.Z))
         {
             GameObject o = new GameObject();
-            o.AddComponent<DisappearingTextScript>();
-            o.GetComponent<DisappearingTextScript>().text = "Perfect!";
-            o.GetComponent<DisappearingTextScript>().gSkin = gSkin;
-            o.GetComponent<DisappearingTextScript>().x = Screen.width / 2;
-            o.GetComponent<DisappearingTextScript>().y = 200;
+            DisappearingTextScript dp = o.AddComponent<DisappearingTextScript>();
+            dp.text = "Perfect!";
+            dp.gSkin = gSkin;
+            dp.x = Screen.width / 2;
+            dp.y = 200;
 
             o = new GameObject();
-            o.AddComponent<DisappearingTextScript>();
-            o.GetComponent<DisappearingTextScript>().text = "+5000";
-            o.GetComponent<DisappearingTextScript>().gSkin = gSkin;
-            o.GetComponent<DisappearingTextScript>().x = Screen.width -300;
-            o.GetComponent<DisappearingTextScript>().y = 300;
+            dp = o.AddComponent<DisappearingTextScript>();
+            dp.text = "+5000";
+            dp.gSkin = gSkin;
+            dp.x = Screen.width -300;
+            dp.y = 300;
         }
 
         if (!PERFECT_RUN && lcs.perfectRun)
@@ -147,14 +152,83 @@ public class GUIScript : MonoBehaviour {
 
         if (backgroundScrollScore != null)
         {
-            GUI.DrawTexture(new Rect(Screen.width - 225 + scrollScoreOffset.x, 25 + scrollScoreOffset.y, backgroundScrollScore.width, backgroundScrollScore.height), backgroundScrollScore);
+            //GUI.DrawTexture(new Rect(Screen.width - 225 + scrollScoreOffset.x, 25 + scrollScoreOffset.y, backgroundScrollScore.width, backgroundScrollScore.height), backgroundScrollScore);
         }
         //GUI.Box(new Rect(Screen.width-225, 25, 200, 75), "");
-        GUI.color = Color.black;
-        GUI.Label(new Rect(Screen.width - 225 + 15, 25 + 15-5, 200, 75), "Score:   "+ SCORE);
-        GUI.Label(new Rect(Screen.width - 225 + 15, 25 + 15*2, 200, 75), "Multiplier:   x" + Multiplier);
+        /*
+        if (sideBarTop != null)
+        {
+            GUI.DrawTexture(new Rect(Screen.width - sideBarTop.width, 0, sideBarTop.width, sideBarTop.height), sideBarTop);
+        }
 
+        if (sideBarBot != null)
+        {
+            GUI.DrawTexture(new Rect(Screen.width - sideBarBot.width, Screen.height - sideBarBot.height, sideBarBot.width, sideBarBot.height), sideBarBot);
+        }
+
+        if (sideBarMid != null)
+        {
+            GUI.DrawTexture(new Rect(Screen.width - sideBarMid.width, 233, sideBarMid.width, Screen.height - 233 - 344), sideBarMid);
+        }
+         */
+        float yscale = Screen.height / 1080f;
+        if (sideBar != null)
+        {
+            GUI.DrawTexture(new Rect(Screen.width - sideBar.width*yscale,0,sideBar.width*yscale,sideBar.height*yscale), sideBar);
+        }
+
+        if (progressBackground != null)
+        {
+            GUI.DrawTexture(new Rect(Screen.width - progressBackground.width * yscale, 166 * yscale, progressBackground.width * yscale, progressBackground.height * yscale), progressBackground);
+        }
+
+        if (progressForeground != null)
+        {
+            GUI.DrawTexture(new Rect(Screen.width - progressForeground.width * yscale, 166 * yscale, progressForeground.width * yscale, progressForeground.height * yscale), progressForeground);
+        }
+
+        if (campIcon != null)
+        {
+            GUI.DrawTexture(new Rect(Screen.width - campIcon.width * yscale, 116* yscale, campIcon.width * yscale, campIcon.height * yscale),campIcon);
+        }
+
+        if (rageOrbBackground != null)
+        {
+            GUI.DrawTexture(new Rect(Screen.width - rageOrbBackground.width * yscale, Screen.height - rageOrbBackground.height * yscale, rageOrbBackground.width * yscale, rageOrbBackground.height * yscale), rageOrbBackground);
+        }
+
+        if (rageOrbForeground != null)
+        {
+            GUI.DrawTexture(new Rect(Screen.width - rageOrbForeground.width * yscale, Screen.height - rageOrbForeground.height * yscale, rageOrbForeground.width * yscale, rageOrbForeground.height * yscale), rageOrbForeground);
+        }
+
+        if (slowDownBackground != null)
+        {
+            GUI.DrawTexture(new Rect(Screen.width - slowDownBackground.width * yscale, 830 * yscale, slowDownBackground.width * yscale, slowDownBackground.height * yscale), slowDownBackground);
+        }
+
+        if (slowDownForeground != null)
+        {
+            GUI.DrawTexture(new Rect(Screen.width - slowDownForeground.width * yscale, 830 * yscale, slowDownForeground.width * yscale, slowDownForeground.height * yscale), slowDownForeground);
+        }
+
+        if (chargeBarBackground != null)
+        {
+            GUI.DrawTexture(new Rect(Screen.width / 2 - chargeBarBackground.width * yscale / 2, Screen.height - chargeBarBackground.height * yscale, chargeBarBackground.width * yscale, chargeBarBackground.height * yscale), chargeBarBackground);
+        }
+
+        if (chargeBarForeground != null)
+        {
+            GUI.DrawTexture(new Rect(Screen.width / 2 - chargeBarForeground.width * yscale / 2, Screen.height - chargeBarForeground.height * yscale, chargeBarForeground.width * yscale, chargeBarForeground.height * yscale), chargeBarForeground);
+        }
+
+        gSkin.label.fontSize = (int)(30f*yscale);
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
+        GUI.Label(new Rect(Screen.width - (225 + 15 + 60) * yscale, (15 - 5) * yscale, 250 * yscale, 75 * yscale), "99999999");
         GUI.color = Color.white;
+
+        gSkin.label.fontSize = 24;
+        /*
         if (backgroundScrollLeft != null)
         {
             GUI.DrawTexture(new Rect(15 + scrollLeftOffset.x, Screen.height - 65 + scrollLeftOffset.y, backgroundScrollLeft.width, backgroundScrollLeft.height), backgroundScrollLeft);
@@ -171,6 +245,7 @@ public class GUIScript : MonoBehaviour {
         //   GUI.DrawTexture(new Rect(Screen.width / 2 - 250 - swordLeft.width / 2, Screen.height - 90 - swordLeft.height / 2 + 6, swordLeft.width, swordLeft.height), swordLeft);
         //    GUI.DrawTexture(new Rect(Screen.width / 2 + 250 - swordRight.width / 2, Screen.height - 90 - swordRight.height / 2 + 6, swordRight.width, swordRight.height), swordRight);
         //GUI.DrawTexture(new Rect(Screen.width / 2 - bloodsplatter.width / 2, Screen.height - 90 - bloodsplatter.height / 2 + 6, bloodsplatter.width, bloodsplatter.height), bloodsplatter);
+        */
         GUI.EndGroup();
 
 
@@ -178,6 +253,7 @@ public class GUIScript : MonoBehaviour {
         {
             GUI.BeginGroup(new Rect(15 + scrollMidOffset.x, Screen.height - 64 - 6, Screen.width - 30 - scrollMidOffset.x * 2 + 1, Screen.height));
             //GUI.Box(new Rect(15, Screen.height - 65, Screen.width - 30, 50), "");
+            /*
             GUI.DrawTexture(new Rect(Screen.width - 30 - scrollMidOffset.x * 2 - 64, 0, 64, 64), runningGoal);
             if (soldierAnim > 0.5)
                 GUI.DrawTexture(new Rect(currentZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2), 0, 128, 64), runningHero1);
@@ -188,6 +264,7 @@ public class GUIScript : MonoBehaviour {
             else
                 GUI.DrawTexture(new Rect(armyZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2) - 64, 0, 128, 64), runningSoldiers2);
             //GUI.DrawTexture(new Rect(Screen.width - 30 - scrollMidOffset.x * 2 + 1 - 128, 0, 128, 64), runningSoldiers1);
+            */
             GUI.EndGroup();
         }
 
@@ -340,20 +417,21 @@ public class GUIScript : MonoBehaviour {
 
     void OnGUI()
     {
-        if (!started && !lost && (Input.GetKeyDown(KeyCode.Escape) || Camera.mainCamera.GetComponent<GUINavigation>().usedMenu))
+        if (!started && !lost && (Input.GetKeyDown(KeyCode.Escape) || guin.usedMenu))
         {
             music.useGlobal = true;
             this.enabled = false;
             Time.timeScale = 0;
-            GetComponent<PauseMenuScript>().enabled = true;
-            GetComponent<GUINavigation>().ClearElements();
-            GetComponent<GUINavigation>().maxKeys = 5;
-            GetComponent<GUINavigation>().menuKey = 4;
-            GetComponent<GUINavigation>().AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
-            GetComponent<GUINavigation>().AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
-            GetComponent<GUINavigation>().AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
-            GetComponent<GUINavigation>().AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
-            GetComponent<GUINavigation>().AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
+            PauseMenuScript pms = GetComponent<PauseMenuScript>();
+            pms.enabled = true;
+            guin.ClearElements();
+            guin.maxKeys = 5;
+            guin.menuKey = 4;
+            guin.AddElement(0, pms.Pause_Options);
+            guin.AddElement(1, pms.Pause_Controls);
+            guin.AddElement(2, pms.Pause_GiveUp);
+            guin.AddElement(3, pms.Pause_Quit);
+            guin.AddElement(4, pms.Pause_Back);
         }
         else
         {
@@ -373,8 +451,8 @@ public class GUIScript : MonoBehaviour {
             if (ObstacleController.PLAYER.GetComponent<HeroMovement>().Rage >= 1)
                 GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200), "CHARGE!!");
 
-            gSkin.label.fontSize = 0;
-            gSkin.label.alignment = TextAnchor.UpperLeft;
+            gSkin.label.fontSize = 24;
+            gSkin.label.alignment = TextAnchor.UpperRight;
 
             EngageReleaseBar();
         }
