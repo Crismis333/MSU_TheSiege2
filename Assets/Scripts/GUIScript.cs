@@ -564,10 +564,10 @@ public class GUIScript : MonoBehaviour {
     {
         this.enabled = false;
         GetComponent<LevelCompleteScript>().enabled = true;
-        GetComponent<GUINavigation>().ClearElements();
-        GetComponent<GUINavigation>().maxKeys = 1;
-        GetComponent<GUINavigation>().menuKey = 0;
-        GetComponent<GUINavigation>().AddElement(0, GetComponent<LevelCompleteScript>().Accept);
+        guin.ClearElements();
+        guin.maxKeys = 1;
+        guin.menuKey = 0;
+        guin.AddElement(0, GetComponent<LevelCompleteScript>().Accept);
 
     }
 

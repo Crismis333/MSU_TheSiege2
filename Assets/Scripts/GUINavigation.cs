@@ -184,6 +184,8 @@ public class GUINavigation : MonoBehaviour {
         }
         if (!usingMouse)
         {
+            if (menuKey != -1 && keySelect == -1)
+                keySelect = menuKey;
             if (menuKey != -1 && (StartButtonDown() || BButtonDown() || Input.GetKeyDown(KeyCode.Backspace)))
             {
                     if (menuelements.ContainsKey(menuKey))

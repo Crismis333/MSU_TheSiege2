@@ -32,13 +32,15 @@ public class LevelCompleteScript : MonoBehaviour {
     private long displayedScore;
     private bool timeout;
 
+    private GUINavigation guin;
+
     void LevelComplete()
     {
-        if (!GetComponent<GUINavigation>().usingMouse)
+        if (!guin.usingMouse)
             GUI.skin.button.hover.background = null;
         else
             GUI.skin.button.hover.background = background;
-        if (GetComponent<GUINavigation>().activated)
+        if (guin.activated)
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
@@ -82,9 +84,10 @@ public class LevelCompleteScript : MonoBehaviour {
         GUI.color = Color.white;
 
         GUI.SetNextControlName("Return");
-        if (GUI.Button(new Rect(60, 12 * 35, 640, 64), "Return")) { Accept(); }
+        if (GUI.Button(new Rect(60, 12 * 35, 640, 64), "Continue"))
+            Accept();
         GUI.Box(new Rect(60, 12 * 35, 640, 64), new GUIContent("", "0"));
-        GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+        guin.mouseover = GUI.tooltip;
 
         GUI.EndGroup();
 
@@ -99,9 +102,9 @@ public class LevelCompleteScript : MonoBehaviour {
         GUI.skin.button.hover.background = background;
         GUI.skin.button.focused.textColor = inactiveColor;
 
-        if (!GetComponent<GUINavigation>().usingMouse)
+        if (!guin.usingMouse)
         {
-            if (GetComponent<GUINavigation>().keySelect == 0)
+            if (guin.keySelect == 0)
                 GUI.FocusControl("Return");
             else
                 GUI.FocusControl("title");
@@ -247,9 +250,6 @@ public class LevelCompleteScript : MonoBehaviour {
             background = GUI.skin.button.hover.background;
             activeColor = GUI.skin.button.active.textColor;
             inactiveColor = GUI.skin.button.focused.textColor;
-            GetComponent<GUINavigation>().ClearElements();
-            GetComponent<GUINavigation>().maxKeys = 1;
-            GetComponent<GUINavigation>().AddElement(0, Accept);
             firstGUI = false;
         }
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -267,7 +267,7 @@ public class LevelCompleteScript : MonoBehaviour {
             if (!timeout)
             {
                 selectSound.Play();
-                GetComponent<GUINavigation>().SetNoPlay();
+                guin.SetNoPlay();
             }
             displayedScore = calculatedScore;
             averageMultiplier = goodMultiplier = excellentMultiplier = perfectMultiplier = doubleMultiplier = tripleMultiplier = chargeKillMultiplier = 0;
