@@ -46,7 +46,7 @@ public class MapGui : MonoBehaviour {
             
             GUI.color = Color.black;
             GUI.skin.label.fontSize = 24;
-            GUI.Label(new Rect(35, 5, 350, 50), current_location.LevelName);
+            GUI.Label(new Rect(35, 5, 350, 100), current_location.LevelName);
             GUI.skin.label.fontSize = 10;
             GUI.color = Color.white;
             Vector2 sizeOfLabel = GUI.skin.label.CalcSize(new GUIContent(current_location.description));
@@ -55,7 +55,7 @@ public class MapGui : MonoBehaviour {
             {
                 scrollPos = GUI.BeginScrollView(new Rect(10, 70 + 20, 330, 190), scrollPos, new Rect(0, 0, 0, sizeOfLabel.y), false, true);
                 GUI.color = Color.black;
-                GUI.Label(new Rect(15, 0, 335, sizeOfLabel.y), current_location.description);
+                GUI.Label(new Rect(15, 50 + 20, 335, sizeOfLabel.y), current_location.description);
                 GUI.EndScrollView();
             }
             else
@@ -177,15 +177,16 @@ public class MapGui : MonoBehaviour {
             this.enabled = false;
             music.useGlobal = true;
             transform.parent.gameObject.GetComponent<MapMovementController>().enabled = false;
-            GetComponent<PauseMenuScript>().enabled = true;
+            PauseMenuScript pms = GetComponent<PauseMenuScript>();
+            pms.enabled = true;
             guin.ClearElements();
             guin.maxKeys = 5;
             guin.menuKey = 4;
-            guin.AddElement(0, GetComponent<PauseMenuScript>().Pause_Options);
-            guin.AddElement(1, GetComponent<PauseMenuScript>().Pause_Controls);
-            guin.AddElement(2, GetComponent<PauseMenuScript>().Pause_GiveUp);
-            guin.AddElement(3, GetComponent<PauseMenuScript>().Pause_Quit);
-            guin.AddElement(4, GetComponent<PauseMenuScript>().Pause_Back);
+            guin.AddElement(0, pms.Pause_Options);
+            guin.AddElement(1, pms.Pause_Controls);
+            guin.AddElement(2, pms.Pause_GiveUp);
+            guin.AddElement(3, pms.Pause_Quit);
+            guin.AddElement(4, pms.Pause_Back);
         }
         else
             Map_Main();
@@ -221,8 +222,6 @@ public class MapGui : MonoBehaviour {
         Time.timeScale = 50;
         countdown = 1f;
         startcountdown = 50f;
-        Screen.lockCursor = true;
-
     }
 
     void Update()
@@ -291,7 +290,6 @@ public class MapGui : MonoBehaviour {
 
                         prevl.Init(CurrentGameState.hero);
                         startReset = false;
-                        Screen.lockCursor = false;
                     }
                 }
                 if (countdown < 0)
