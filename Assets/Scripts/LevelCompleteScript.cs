@@ -115,6 +115,7 @@ public class LevelCompleteScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        guin = GetComponent<GUINavigation>();
         beforenextdecrease = 0.5f;
         todecrease = -1;
         firstGUI = true;
