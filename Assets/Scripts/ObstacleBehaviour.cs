@@ -37,8 +37,11 @@ public class ObstacleBehaviour : MonoBehaviour {
                 Vector3 exppos = ObstacleController.PLAYER.transform.position;
                 exppos.y = 1;
 				rb.AddExplosionForce(other.GetComponent<HeroMovement>().CurrentSpeed/4,exppos,0);
-				
-				Physics.IgnoreCollision(rb.gameObject.collider, other);
+
+                if (rb.gameObject.collider != null)
+                    Physics.IgnoreCollision(rb.gameObject.collider, ObstacleController.PLAYER.collider);
+                else
+                    Physics.IgnoreCollision(rb.gameObject.GetComponentInChildren<BoxCollider>(), ObstacleController.PLAYER.collider);
 			}
 			
 			other.GetComponent<HeroMovement>().SlowHero(SlowTime,SlowAmount);
@@ -97,8 +100,12 @@ public class ObstacleBehaviour : MonoBehaviour {
 			{
 				rb.isKinematic = false;
 				rb.AddExplosionForce(3.5f,other.transform.position,0);
-				
-				Physics.IgnoreCollision(rb.gameObject.collider, ObstacleController.PLAYER.collider);
+
+                if (rb.gameObject.collider != null)
+                    Physics.IgnoreCollision(rb.gameObject.collider, ObstacleController.PLAYER.collider);
+                else
+                    Physics.IgnoreCollision(rb.gameObject.GetComponentInChildren<BoxCollider>(), ObstacleController.PLAYER.collider);
+
 				Physics.IgnoreCollision(other.collider, ObstacleController.PLAYER.collider);
 			}
             if (ps != null)
