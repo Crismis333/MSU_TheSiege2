@@ -54,12 +54,11 @@ public class CameraLock : MonoBehaviour
 
         CameraSmoothing(hm.Rage);
 
-       
-
         newPos.x += OffsetX;
         newPos.y += OffsetY + (UseBump ? Mathf.Sin(y_bump) * 10f * Time.deltaTime : 0);
         newPos.z += OffsetZ;
 
+        
         if (rageCurrent > 0)
         {
             Vector3 pos = ObstacleController.PLAYER.transform.position;

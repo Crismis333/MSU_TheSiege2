@@ -69,11 +69,16 @@ public class GUIScript : MonoBehaviour {
         lcs = GetComponent<LevelCompleteScript>();
         lost = false;
         prescreencountdown = 0f;
-        hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
+        
+        if (ObstacleController.PLAYER != null)
+            hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (hm == null)
+            hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
+
         if (started)
         {
             screencountdown -= Time.deltaTime;
