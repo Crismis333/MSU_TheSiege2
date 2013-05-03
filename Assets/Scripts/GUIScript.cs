@@ -184,7 +184,9 @@ public class GUIScript : MonoBehaviour {
 
         if (progressForeground != null)
         {
-            GUI.DrawTexture(new Rect(Screen.width - progressForeground.width * yscale, 166 * yscale, progressForeground.width * yscale, progressForeground.height * yscale), progressForeground);
+            Rect progRect = new Rect(Screen.width - progressForeground.width * yscale, 166 * yscale, progressForeground.width * yscale, progressForeground.height * yscale);
+            Rect texRect = new Rect(0.0f, 0.0f, 1.0f, 0.9f);
+            GUI.DrawTextureWithTexCoords(progRect, progressForeground, texRect);
         }
 
         if (campIcon != null)
@@ -199,7 +201,8 @@ public class GUIScript : MonoBehaviour {
 
         if (rageOrbForeground != null)
         {
-            GUI.DrawTexture(new Rect(Screen.width - rageOrbForeground.width * yscale, Screen.height - rageOrbForeground.height * yscale, rageOrbForeground.width * yscale, rageOrbForeground.height * yscale), rageOrbForeground);
+            Rect rageRect = new Rect(Screen.width - rageOrbForeground.width * yscale, Screen.height - rageOrbForeground.height * yscale, rageOrbForeground.width * yscale, rageOrbForeground.height * yscale);
+            GUI.DrawTexture(rageRect, rageOrbForeground);
         }
 
         if (slowDownBackground != null)
@@ -284,11 +287,9 @@ public class GUIScript : MonoBehaviour {
             music.volume = Mathf.Lerp(OptionsValues.musicVolume,0, 1 - countdown);
             GUI.EndGroup();
         }
-        {
 
-            music.useGlobal = false;
-            music.volume = OptionsValues.musicVolume;
-        }
+        music.useGlobal = false;
+        music.volume = OptionsValues.musicVolume;
     }
 
     private int ConvertHitRate(float hitRate)

@@ -21,7 +21,8 @@ public class CameraLock : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
+        if (ObstacleController.PLAYER != null)
+            hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
     }
 
     void CameraSmoothing(float rage)
@@ -46,6 +47,9 @@ public class CameraLock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (hm == null)
+            hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
+
         Vector3 newPos = Target.transform.position;
 
         CameraSmoothing(hm.Rage);
