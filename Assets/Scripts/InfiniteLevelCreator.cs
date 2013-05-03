@@ -27,6 +27,13 @@ public class InfiniteLevelCreator : MonoBehaviour
 
     private int currentIndex = 0;
 
+    private bool createSpecial = false;
+    private int specialCount = 0;
+    private int specialIndex = -1;
+
+    private int specialVariation = 15;
+    private int specialVarCount = -1;
+
     // Use this for initialization
     void Start()
     {
@@ -42,54 +49,68 @@ public class InfiniteLevelCreator : MonoBehaviour
     void Update()
     {
         bool nextIndex = false;
-        if (roads.Count < 5)
-        { 
+
+        if (roads.Count + specials.Count < 5)
+        {
             CreateRoads();
             nextIndex = true;
         }
 
-        if (sidesA.Count < 5)
+        if (sidesA.Count + specials.Count < 5)
         { 
             CreateSides(sidesA, true);
             nextIndex = true;
         }
 
-        if (sidesB.Count < 5)
+        if (sidesB.Count + specials.Count < 5)
         { 
             CreateSides(sidesB, false);
             nextIndex = true;
         }
-        
+
+        if (specialIndex != -1 && specialCount > specialModuleParts[specialIndex])
+        {
+            createSpecial = false;
+            specialIndex = -1;
+        }
+
         if (nextIndex)
+        {
             currentIndex++;
 
-        //CreateSpecials();
+            if (specialVarCount > specialVariation)
+                specialVarCount = -1;
 
-        GameObject tmpRoad = roads.Peek();
-        if (tmpRoad.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64)
-        {
-            Destroy(roads.Dequeue());
+            if (specialVarCount != -1)
+                specialVarCount++;
         }
 
-        GameObject tmpSideA = sidesA.Peek();
-        if (tmpSideA.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64)
+        if (roads.Count != 0)
         {
-            Destroy(sidesA.Dequeue());
+            GameObject tmpRoad = roads.Peek();
+            if (tmpRoad.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64)
+                Destroy(roads.Dequeue());
         }
 
-        GameObject tmpSideB = sidesB.Peek();
-        if (tmpSideB.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64)
+        if (sidesA.Count != 0)
         {
-            Destroy(sidesB.Dequeue());
+            GameObject tmpSideA = sidesA.Peek();
+            if (tmpSideA.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64)
+                Destroy(sidesA.Dequeue());
+        }
+
+        if (sidesB.Count != 0)
+        {
+            GameObject tmpSideB = sidesB.Peek();
+            if (tmpSideB.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64)
+                Destroy(sidesB.Dequeue());
         }
 
         if (specials.Count != 0)
         {
             GameObject tmpSpecial = specials.Peek();
             if (tmpSpecial.transform.position.z <= ObstacleController.PLAYER.transform.position.z - 64)
-            {
                 Destroy(specials.Dequeue());
-            }
         }
     }
 
@@ -99,9 +120,31 @@ public class InfiniteLevelCreator : MonoBehaviour
         Vector3 pos = transform.position;
         pos.z = 64 * currentIndex;
 
-        tmp = Instantiate(defaultRoad, pos, defaultRoad.transform.rotation) as GameObject;
+        if (createSpecial)
+        {
+            if (specialIndex == -1)
+            {
+                specialIndex = Random.Range(0, specialModules.Count);
+                specialCount = 1;
+                specialVarCount = 0;
+            }
 
-        roads.Enqueue(tmp);
+            GameObject specialMod = specialModules[specialIndex];
+            string sName = Regex.Replace(specialMod.name, @"[\d-]", string.Empty);
+
+            specialMod = Resources.Load("SpecialModules/" + sName + specialCount, typeof(GameObject)) as GameObject;
+
+            tmp = Instantiate(specialMod, pos, specialMod.transform.rotation) as GameObject;
+
+            specials.Enqueue(tmp);
+
+            specialCount++;
+        }
+        else
+        {
+            tmp = Instantiate(defaultRoad, pos, defaultRoad.transform.rotation) as GameObject;
+            roads.Enqueue(tmp);
+        }
     }
 
     private void CreateSides(Queue<GameObject> sides, bool left)
@@ -112,7 +155,9 @@ public class InfiniteLevelCreator : MonoBehaviour
         int variationCounter = left ? varACount : varBCount;
         int state = left ? sideAState : sideBState;
         int prevSide = left ? prevASide : prevBSide;
-        //bool forceSide = false;
+
+        if (createSpecial)
+            return;
 
         GameObject tmp;
         Vector3 pos = transform.position;
@@ -129,7 +174,9 @@ public class InfiniteLevelCreator : MonoBehaviour
 
         if (state == -1)
         {
-            randomSide = Random.Range(0, sideModules.Count);
+            randomSide = Random.Range(0, sideModules.Count + 3);
+            if (randomSide >= sideModules.Count)
+                randomSide = 0;
             if (variationCounter >= variationCap)
             {
                 int q = randomSide;
@@ -140,13 +187,19 @@ public class InfiniteLevelCreator : MonoBehaviour
             }
         }
 
+        if (!left && curBSide == 0 && curBSide == curASide &&
+            (state == 3 || state == -1) && (sideAState == 3 || sideAState == -1) && specialVarCount == -1)
+        {
+            createSpecial = true;
+        }
+
         if (prevSide != -1)
         {
             string tmpName = Regex.Replace(sideModules[randomSide].name, @"[\d-]", string.Empty);
             string prevName = Regex.Replace(sideModules[prevSide].name, @"[\d-]", string.Empty);
             GameObject side = null;
 
-            if (!tmpName.Equals(prevName) && state == -1)
+            if (!tmpName.Equals(prevName) && state == -1 && !createSpecial)
             {
                 state = 0;
                 variationCounter = 0;
@@ -156,12 +209,10 @@ public class InfiniteLevelCreator : MonoBehaviour
                 variationCounter++;
             }
 
-            string realName = sideModules[randomSide].name;
-
             switch (state)
             {
                 case -1:
-                    side = Resources.Load("SideModules/Sides/" + realName, typeof(GameObject)) as GameObject;
+                    side = sideModules[randomSide];
                     break;
                 case 0:
                     side = Resources.Load("SideModules/SideStarts/" + prevName + "_start", typeof(GameObject)) as GameObject;
@@ -176,7 +227,7 @@ public class InfiniteLevelCreator : MonoBehaviour
                     state++;
                     break;
                 case 3:
-                    side = Resources.Load("SideModules/Sides/" + realName, typeof(GameObject)) as GameObject;
+                    side = sideModules[randomSide];
                     state = -1;
                     break;
             }

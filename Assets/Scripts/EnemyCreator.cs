@@ -8,13 +8,10 @@ public class EnemyCreator : MonoBehaviour
     private float CountDownTime;
     public GameObject Enemy, SpaceChecker;
 
-    private float moduleCount;
-
     // Use this for initialization
     void Start()
     {
 		CountDownTime = RatioToSeconds(ObstacleController.SOLDIER_RATIO);
-        moduleCount = LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH);
     }
 
     // Update is called once per frame
@@ -59,7 +56,7 @@ public class EnemyCreator : MonoBehaviour
                
 
                 bool EnemyOK = false;
-                if (z + 70 < moduleCount * 64 - 32 || LevelCreator.INF_MODE)
+                if (z + 70 < ObstacleController.LEVEL_LENGTH_Z || LevelCreator.INF_MODE)
                 {
                     //   Instantiate(SpaceChecker, new Vector3(x_val, 0.1f, z + 70), Quaternion.AngleAxis(180, Vector3.up));
                     EnemyOK = true;
@@ -101,4 +98,9 @@ public class EnemyCreator : MonoBehaviour
             ratio = 6;
 		return (5.333f * Mathf.Pow(10, -0.125076810788137f * ratio));
 	}
+
+    public void RecalcTimer()
+    {
+        CountDownTime = RatioToSeconds(ObstacleController.SOLDIER_RATIO);
+    }
 }

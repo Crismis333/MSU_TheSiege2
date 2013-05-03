@@ -53,8 +53,8 @@ public class LevelCompleteScript : MonoBehaviour {
         GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 7.5f * 35, 790, 15 * 35));
         GUI.color = Color.black;
         GUI.SetNextControlName("title");
-        GUI.Label(new Rect(60, 1 * 35, 640, 64), averages + "x Average kills:");
-        GUI.Label(new Rect(60, 2 * 35, 640, 64), goods + "x Good kills:");
+        GUI.Label(new Rect(60, 1 * 35, 640, 64), averages + "x Good kills:");
+        GUI.Label(new Rect(60, 2 * 35, 640, 64), goods + "x Great kills:");
         GUI.Label(new Rect(60, 3 * 35, 640, 64), excellents + "x Excellent kills:");
         GUI.Label(new Rect(60, 4 * 35, 640, 64), perfects + "x Perfect kills:");
         GUI.Label(new Rect(60, 5 * 35, 640, 64), doubleKills + "x Double kills:");
@@ -150,7 +150,7 @@ public class LevelCompleteScript : MonoBehaviour {
                 CurrentGameState.SetWin();
                 CurrentGameState.currentScore = calculatedScore;
                 //Debug.Log("End Score: "+ GUIScript.SCORE);
-                if (CurrentGameState.locID == 38)
+                if (CurrentGameState.locID == 39)
                 {
 
                     CurrentGameState.highscorecondition = EndState.Won;

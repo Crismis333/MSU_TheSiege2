@@ -11,6 +11,8 @@ public class ArmyMovement : MonoBehaviour
     private float dZ = 0;
 
     private float speedMod = 1.0f;
+    [HideInInspector]
+    public float InfSpeedMod = 1;
 
     public bool AreClose, GetTrampled;
     private float levelLength;
@@ -50,7 +52,7 @@ public class ArmyMovement : MonoBehaviour
         pZ = ObstacleController.PLAYER.transform.position.z;
         aZ = transform.position.z;
 
-        if (pZ > levelLength)
+        if (pZ > levelLength && !LevelCreator.INF_MODE)
         {
             return;
         }
@@ -63,30 +65,29 @@ public class ArmyMovement : MonoBehaviour
         //    speedMod = Mathf.Min(((Mathf.Max(hm.CurrentSpeed, hm.MoveSpeed) - 0.1f) / hm.MoveSpeed), speedMod);
         //}
         //else
-        {
-            speedMod = 1.05f;
 
-            if (!AreClose)
+        speedMod = 1.05f * InfSpeedMod;
+
+        if (!AreClose)
+        {
+            if (dZ < VisibleDistance)
             {
-                if (dZ < VisibleDistance)
-                {
-                    AreClose = true;
-                    closeTimer = 0;
-                }
-                else
-                {
-                    AreClose = false;
-                    GetTrampled = false;
-                }
+                AreClose = true;
+                closeTimer = 0;
+            }
+            else
+            {
+                AreClose = false;
+                GetTrampled = false;
+            }
                 
-            }
-            if (dZ <= 0)
-            {
-                //CurrentGameState.highscorecondition = EndState.Lost;
-                //Application.LoadLevel(4);
-                if (!hm.dead)
-                    hm.Kill();
-            }
+        }
+        if (dZ <= 0)
+        {
+            //CurrentGameState.highscorecondition = EndState.Lost;
+            //Application.LoadLevel(4);
+            if (!hm.dead)
+                hm.Kill();
         }
 
         if (AreClose)

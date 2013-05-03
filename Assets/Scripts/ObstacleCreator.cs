@@ -5,13 +5,13 @@ using System.Collections.Generic;
 public class ObstacleCreator : MonoBehaviour {
 
     private float countDown;
-    private float CountDownTime;
+    private float countDownTime;
 
     public List<GameObject> ObstacleList;
 
 	// Use this for initialization
 	void Start () {
-        CountDownTime = RatioToSeconds(ObstacleController.OBSTACLE_RATIO);
+        countDownTime = RatioToSeconds(ObstacleController.OBSTACLE_RATIO);
 	}
 	
 	// Update is called once per frame
@@ -22,11 +22,11 @@ public class ObstacleCreator : MonoBehaviour {
             
             HeroMovement hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
             if (hm.CurrentSpeed > 0)
-                countDown = CountDownTime * (hm.MoveSpeed / hm.CurrentSpeed);
+                countDown = countDownTime * (hm.MoveSpeed / hm.CurrentSpeed);
 
             int rIndex = Random.Range(0, ObstacleList.Count);
 
-            if (z + 70 < LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH) * 64 - 32 || LevelCreator.INF_MODE)
+            if (z + 70 < ObstacleController.LEVEL_LENGTH_Z || LevelCreator.INF_MODE)
     	    	Instantiate(ObstacleList[rIndex], new Vector3(Random.Range(-6, 7), 0.1f, z + 70), Quaternion.AngleAxis(180, Vector3.up));
         }
         countDown -= Time.deltaTime;
@@ -34,7 +34,11 @@ public class ObstacleCreator : MonoBehaviour {
 
     public float RatioToSeconds(int ratio)
     {
-        //return (5.333f * Mathf.Pow(10, -0.125076810788137f * ratio));
         return (5.333f * Mathf.Pow(10, -0.1f * ratio));
+    }
+
+    public void RecalcTimer() 
+    {
+        countDownTime = RatioToSeconds(ObstacleController.OBSTACLE_RATIO);
     }
 }

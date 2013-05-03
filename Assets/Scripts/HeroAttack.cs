@@ -93,7 +93,7 @@ public class HeroAttack : MonoBehaviour
             if (!hm.Charging)
             {
                 HitAccuracy ha = new HitAccuracy();
-                ha.Accuracy = -1;
+                ha.Accuracy = -2;
                 ha.NumberOfHits = 0;
                 ha.CurrentSpeed = hm.CurrentSpeed;
                 GUI.AddHit(ha);

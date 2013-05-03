@@ -292,7 +292,7 @@ public class GUIScript : MonoBehaviour {
         */
         gSkin.label.fontSize = (int)(30f*yscale);
         GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
-        GUI.Label(new Rect(Screen.width - (225 + 15 + 60) * yscale, (15 - 5) * yscale, 250 * yscale, 75 * yscale), "99999999");
+        GUI.Label(new Rect(Screen.width - (225 + 15 + 60) * yscale, (15 - 5) * yscale, 250 * yscale, 75 * yscale), ""+SCORE);
         GUI.color = Color.white;
 
         gSkin.label.fontSize = 24;
@@ -417,7 +417,7 @@ public class GUIScript : MonoBehaviour {
         {
             return 1;
         }
-        return -1;
+        return (int)hitRate;
     }
 
     public void LoseLevel()
@@ -458,14 +458,15 @@ public class GUIScript : MonoBehaviour {
         
         switch (accuracy)
         {
+            case -2: hitFeedback = "Fail"; break;
             case -1: hitFeedback = "Miss"; break;
             case 1:
             case 2:
             case 3: hitFeedback = "Bad"; break;
             case 4:
-            case 5: hitFeedback = "Average"; lcs.averages++; break;
+            case 5: hitFeedback = "Good"; lcs.averages++; break;
             case 6:
-            case 7: hitFeedback = "Good"; lcs.goods++; break;
+            case 7: hitFeedback = "Great"; lcs.goods++; break;
             case 8:
             case 9: hitFeedback = "Excellent"; lcs.excellents++; break;
             case 10: hitFeedback = "Perfect"; lcs.perfects++; break;
