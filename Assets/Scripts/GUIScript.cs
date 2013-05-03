@@ -17,7 +17,7 @@ public class GUIScript : MonoBehaviour {
     public Texture2D slowDownBackground, slowDownForeground, chargeBarBackground, chargeBarForeground;
 
     public Vector2 scrollScoreOffset, scrollLeftOffset, scrollMidOffset, scrollRightOffset;
-    public float engagePercent, releasePercent;
+    public float engagePercent, lastEngagePercent, releasePercent;
     public float fixedEngagePercent;
     public bool engageFixed, releaseFixed;
     public bool BarActive;
@@ -49,6 +49,8 @@ public class GUIScript : MonoBehaviour {
     private float prescreencountdown;
     private LevelCompleteScript lcs;
     private GUINavigation guin;
+
+    private float yscale;
 
     HeroMovement hm;
 
@@ -175,7 +177,7 @@ public class GUIScript : MonoBehaviour {
             GUI.DrawTexture(new Rect(Screen.width - sideBarMid.width, 233, sideBarMid.width, Screen.height - 233 - 344), sideBarMid);
         }
          */
-        float yscale = Screen.height / 1080f;
+        yscale = Screen.height / 1080f;
         if (sideBar != null)
         {
             GUI.DrawTexture(new Rect(Screen.width - sideBar.width*yscale,0,sideBar.width*yscale,sideBar.height*yscale), sideBar);
@@ -200,54 +202,60 @@ public class GUIScript : MonoBehaviour {
             GUI.DrawTexture(new Rect(Screen.width - campIcon.width * yscale, 116* yscale, campIcon.width * yscale, campIcon.height * yscale),campIcon);
         }
 
-        if (rageOrbBackground != null)
+        if (false)
         {
-            int bottomPadding = 16; // Magic number
-            int orbHeight = 178; // Magic number
-            int topPadding = 256 - bottomPadding - orbHeight; // Magic number
-            float per = hm.Rage;
-            float percent = (topPadding + orbHeight * per ) / 256.0f;
-            Rect clip = new Rect(Screen.width - rageOrbBackground.width * yscale, Screen.height - rageOrbBackground.height * yscale, rageOrbBackground.width * yscale, rageOrbBackground.height * yscale * percent);
-        //    clip = new Rect(Screen.width - rageOrbBackground.width * yscale, (Screen.height - orbHeight - bottomPadding) * yscale, rageOrbBackground.width * yscale, orbHeight * yscale); 
-            GUI.BeginGroup(clip);
-          //  GUI.DrawTexture(new Rect(Screen.width - rageOrbBackground.width * yscale, Screen.height - rageOrbBackground.height * yscale, rageOrbBackground.width * yscale, rageOrbBackground.height * yscale), rageOrbBackground);
-            GUI.DrawTexture(new Rect(0, 0, clip.width, rageOrbBackground.height * yscale), rageOrbBackground);
-           // GUI.DrawTexture(new Rect(0, topPadding,  rageOrbBackground.width * yscale, orbHeight * yscale), rageOrbBackground);
-            GUI.EndGroup();
-        }
+            if (rageOrbBackground != null)
+            {
+                int bottomPadding = 16; // Magic number
+                int orbHeight = 178; // Magic number
+                int topPadding = 256 - bottomPadding - orbHeight; // Magic number
+                float per = hm.Rage;
+                float percent = (topPadding + orbHeight * per) / 256.0f;
+                Rect clip = new Rect(Screen.width - rageOrbBackground.width * yscale, Screen.height - rageOrbBackground.height * yscale, rageOrbBackground.width * yscale, rageOrbBackground.height * yscale * percent);
+                //    clip = new Rect(Screen.width - rageOrbBackground.width * yscale, (Screen.height - orbHeight - bottomPadding) * yscale, rageOrbBackground.width * yscale, orbHeight * yscale); 
+                GUI.BeginGroup(clip);
+                //  GUI.DrawTexture(new Rect(Screen.width - rageOrbBackground.width * yscale, Screen.height - rageOrbBackground.height * yscale, rageOrbBackground.width * yscale, rageOrbBackground.height * yscale), rageOrbBackground);
+                GUI.DrawTexture(new Rect(0, 0, clip.width, rageOrbBackground.height * yscale), rageOrbBackground);
+                // GUI.DrawTexture(new Rect(0, topPadding,  rageOrbBackground.width * yscale, orbHeight * yscale), rageOrbBackground);
+                GUI.EndGroup();
+            }
 
-        if (rageOrbForeground != null)
-        {
-            Rect rageRect = new Rect(Screen.width - rageOrbForeground.width * yscale, Screen.height - rageOrbForeground.height * yscale, rageOrbForeground.width * yscale, rageOrbForeground.height * yscale);
-            GUI.DrawTexture(rageRect, rageOrbForeground);
+            if (rageOrbForeground != null)
+            {
+                Rect rageRect = new Rect(Screen.width - rageOrbForeground.width * yscale, Screen.height - rageOrbForeground.height * yscale, rageOrbForeground.width * yscale, rageOrbForeground.height * yscale);
+                GUI.DrawTexture(rageRect, rageOrbForeground);
+            }
         }
-
-        if (rageFull != null)
+        else
         {
-            Rect fullRect = new Rect(Screen.width - rageFull.width * yscale, Screen.height - rageFull.height * yscale, rageFull.width * yscale, rageFull.height * yscale);
-            GUI.DrawTexture(fullRect, rageFull);
-        }
+            if (rageFull != null)
+            {
+                Rect fullRect = new Rect(Screen.width - rageFull.width * yscale, Screen.height - rageFull.height * yscale, rageFull.width * yscale, rageFull.height * yscale);
+                GUI.DrawTexture(fullRect, rageFull);
+            }
 
-        if (rageEmpty != null)
-        {
-            int bottomPadding = 16; // Magic number
-            int orbHeight = 178; // Magic number
-            int topPadding = 256 - bottomPadding - orbHeight; // Magic number
-            float per = hm.Rage;
-            float percent = 1 - (topPadding + orbHeight * per) / 256.0f;
-            Rect clip = new Rect(Screen.width - rageEmpty.width * yscale, Screen.height - rageEmpty.height * yscale, rageEmpty.width * yscale, rageEmpty.height * yscale * percent);
-            //    clip = new Rect(Screen.width - rageOrbBackground.width * yscale, (Screen.height - orbHeight - bottomPadding) * yscale, rageOrbBackground.width * yscale, orbHeight * yscale); 
-            GUI.BeginGroup(clip);
-            //  GUI.DrawTexture(new Rect(Screen.width - rageOrbBackground.width * yscale, Screen.height - rageOrbBackground.height * yscale, rageOrbBackground.width * yscale, rageOrbBackground.height * yscale), rageOrbBackground);
-            GUI.DrawTexture(new Rect(0, 0, clip.width, rageEmpty.height * yscale), rageEmpty);
-            // GUI.DrawTexture(new Rect(0, topPadding,  rageOrbBackground.width * yscale, orbHeight * yscale), rageOrbBackground);
-            GUI.EndGroup();
-        }
+            if (rageEmpty != null)
+            {
+                int bottomPadding = 16; // Magic number
+                int orbHeight = 178; // Magic number
+                int topPadding = 256 - bottomPadding - orbHeight; // Magic number
+                float per = hm.Rage;
+                float percent = 1 - (bottomPadding + orbHeight * per) / 256.0f;
+                Rect clip = new Rect(Screen.width - rageEmpty.width * yscale, Screen.height - rageEmpty.height * yscale, rageEmpty.width * yscale, rageEmpty.height * yscale * percent);
+                //    clip = new Rect(Screen.width - rageOrbBackground.width * yscale, (Screen.height - orbHeight - bottomPadding) * yscale, rageOrbBackground.width * yscale, orbHeight * yscale); 
+                GUI.BeginGroup(clip);
+                //  GUI.DrawTexture(new Rect(Screen.width - rageOrbBackground.width * yscale, Screen.height - rageOrbBackground.height * yscale, rageOrbBackground.width * yscale, rageOrbBackground.height * yscale), rageOrbBackground);
+                GUI.DrawTexture(new Rect(0, 0, clip.width, rageEmpty.height * yscale), rageEmpty);
+                // GUI.DrawTexture(new Rect(0, topPadding,  rageOrbBackground.width * yscale, orbHeight * yscale), rageOrbBackground);
+                GUI.EndGroup();
+            }
 
-        if (rageShadow != null)
-        {
-            Rect fullRect = new Rect(Screen.width - rageShadow.width * yscale, Screen.height - rageShadow.height * yscale, rageShadow.width * yscale, rageShadow.height * yscale);
-            GUI.DrawTexture(fullRect, rageShadow);
+            if (rageShadow != null)
+            {
+                Rect fullRect = new Rect(Screen.width - rageShadow.width * yscale, Screen.height - rageShadow.height * yscale, rageShadow.width * yscale, rageShadow.height * yscale);
+                GUI.DrawTexture(fullRect, rageShadow);
+               
+            }
         }
 
         if (slowDownBackground != null)
@@ -257,9 +265,16 @@ public class GUIScript : MonoBehaviour {
 
         if (slowDownForeground != null)
         {
-            GUI.DrawTexture(new Rect(Screen.width - slowDownForeground.width * yscale, 830 * yscale, slowDownForeground.width * yscale, slowDownForeground.height * yscale), slowDownForeground);
+            if (hm.Slowed)
+            {
+                Color c = new Color(1, 1, 1, hm.GetSlowed());
+                GUI.color = c;
+                GUI.DrawTexture(new Rect(Screen.width - slowDownForeground.width * yscale, 830 * yscale, slowDownForeground.width * yscale, slowDownForeground.height * yscale), slowDownForeground);
+                c.a = 1;
+                GUI.color = c;
+            }
         }
-
+/*
         if (chargeBarBackground != null)
         {
             GUI.DrawTexture(new Rect(Screen.width / 2 - chargeBarBackground.width * yscale / 2, Screen.height - chargeBarBackground.height * yscale, chargeBarBackground.width * yscale, chargeBarBackground.height * yscale), chargeBarBackground);
@@ -269,7 +284,7 @@ public class GUIScript : MonoBehaviour {
         {
             GUI.DrawTexture(new Rect(Screen.width / 2 - chargeBarForeground.width * yscale / 2, Screen.height - chargeBarForeground.height * yscale, chargeBarForeground.width * yscale, chargeBarForeground.height * yscale), chargeBarForeground);
         }
-
+        */
         gSkin.label.fontSize = (int)(30f*yscale);
         GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
         GUI.Label(new Rect(Screen.width - (225 + 15 + 60) * yscale, (15 - 5) * yscale, 250 * yscale, 75 * yscale), "99999999");
@@ -302,7 +317,7 @@ public class GUIScript : MonoBehaviour {
         Rect progRect = new Rect(Screen.width - progressForeground.width * yscale, 166 * yscale, progressForeground.width * yscale, progressForeground.height * yscale);
         GUI.BeginGroup(progRect);
      //   Rect progRect = new Rect(Screen.width - progressForeground.width * yscale, 166 * yscale, progressForeground.width * yscale, progressForeground.height * yscale);
-        print(progRect);
+        
         Rect texRect = new Rect(0, 1, 1.0f, 0.39f);
      //   GUI.DrawTextureWithTexCoords(progRect, progressForeground, texRect);
         float p = currentZ / (maxZ - minZ);
@@ -438,28 +453,29 @@ public class GUIScript : MonoBehaviour {
         
         switch (accuracy)
         {
-            case -1: hitFeedback = "Miss!"; break;
+            case -1: hitFeedback = "Miss"; break;
             case 1:
             case 2:
-            case 3: hitFeedback = "Bad!"; break;
+            case 3: hitFeedback = "Bad"; break;
             case 4:
-            case 5: hitFeedback = "Average!"; lcs.averages++; break;
+            case 5: hitFeedback = "Average"; lcs.averages++; break;
             case 6:
-            case 7: hitFeedback = "Good!"; lcs.goods++; break;
+            case 7: hitFeedback = "Good"; lcs.goods++; break;
             case 8:
-            case 9: hitFeedback = "Excellent!"; lcs.excellents++; break;
-            case 10: hitFeedback = "Perfect!"; lcs.perfects++; break;
+            case 9: hitFeedback = "Excellent"; lcs.excellents++; break;
+            case 10: hitFeedback = "Perfect"; lcs.perfects++; break;
         }
         if (ha.NumberOfHits == 2)
         {
-            hitFeedback = "Double kill!    " + hitFeedback;
+            hitFeedback += " Double Kill";
             lcs.doubleKills++;
         }
         else if (ha.NumberOfHits == 3)
         {
-            hitFeedback = "Triple kill!    " + hitFeedback;
+            hitFeedback += " Triple Kill";
             lcs.tripleKills++;
         }
+        hitFeedback += "!";
         hitFeedbackTimer = 2.0f;
     }
 
@@ -504,16 +520,32 @@ public class GUIScript : MonoBehaviour {
             GUI.skin = gSkin;
             Level_Interface();
 
-            gSkin.label.alignment = TextAnchor.MiddleCenter;
-            gSkin.label.fontSize = 20;
-            if (hitFeedbackTimer > 0)
-                GUI.Label(new Rect(Screen.width / 2 - 60, 30 , 120, 30), hitFeedback);
-            else
+            
+            if (!hitFeedback.Equals(""))
+            {
+                GameObject o = new GameObject();
+                DisappearingTextScript dp = o.AddComponent<DisappearingTextScript>();
+                dp.text = hitFeedback;
+                dp.gSkin = gSkin;
+                dp.x = Screen.width / 2;
+                dp.y = (int)(400 * yscale);
                 hitFeedback = "";
-
+            }
+            gSkin.label.alignment = TextAnchor.MiddleCenter;
             gSkin.label.fontSize = 40;
             if (ObstacleController.PLAYER.GetComponent<HeroMovement>().Rage >= 1)
-                GUI.Label(new Rect(Screen.width / 2 - 100, Screen.height / 2 - 100, 200, 200), "CHARGE!!");
+            {
+                GUI.color = new Color(0, 0, 0, 1);
+                GUI.Label(new Rect(Screen.width / 2 - 301, Screen.height / 2 - 201, 600, 400), "CHARGE!!");
+                GUI.Label(new Rect(Screen.width / 2 - 301, Screen.height / 2 - 199, 600, 400), "CHARGE!!");
+                GUI.Label(new Rect(Screen.width / 2 - 299, Screen.height / 2 - 201, 600, 400), "CHARGE!!");
+                GUI.Label(new Rect(Screen.width / 2 - 299, Screen.height / 2 - 199, 600, 400), "CHARGE!!");
+
+                GUI.color = new Color(200f / 256f, 0, 0, 1);
+                GUI.Label(new Rect(Screen.width / 2 - 300, Screen.height / 2 - 200, 600, 400), "CHARGE!!");
+
+                GUI.color = new Color(1, 1, 1, 1);
+            }
 
             gSkin.label.fontSize = 24;
             gSkin.label.alignment = TextAnchor.UpperRight;
@@ -546,7 +578,39 @@ public class GUIScript : MonoBehaviour {
        
         if (BarActive)
         {
+            float yscale = Screen.height / 1080f;
+            if (chargeBarBackground != null)
+            {
+                GUI.DrawTexture(new Rect(Screen.width / 2 - chargeBarBackground.width * yscale / 2, Screen.height - chargeBarBackground.height * yscale, chargeBarBackground.width * yscale, chargeBarBackground.height * yscale), chargeBarBackground);
+            }
+
+            if (chargeBarForeground != null)
+            {
+                float epsilon = 20.0f;
+                if (engagePercent > lastEngagePercent + epsilon || engagePercent < lastEngagePercent - epsilon)
+                {
+                    engagePercent = lastEngagePercent;
+                }
+
+                int right = 252; // Magic number
+                int swordlength = 389; // Magic number
+                int left = 1024 - right - swordlength;
+                float percent = engagePercent > 100 ? 200 - engagePercent : engagePercent;
+               
+                
+
+                float per = (left + (percent / 100) * swordlength) / 1024;
+
+                Rect r = new Rect(Screen.width / 2 - chargeBarForeground.width * yscale / 2, Screen.height - chargeBarForeground.height * yscale, chargeBarForeground.width * yscale * per, chargeBarForeground.height * yscale);
+                GUI.BeginGroup(r);
+                GUI.DrawTexture(new Rect(0,0, chargeBarForeground.width * yscale, chargeBarForeground.height * yscale), chargeBarForeground);
+                GUI.EndGroup();
+                lastEngagePercent = engagePercent;
+            }
+            /*
             GUI.DrawTexture(new Rect(Screen.width / 2 - 250, Screen.height - 90, 500, 12), damagebar);
+
+
             if (engagePercent > 0 && engagePercent < 200)
             {
                 float pos = engagePercent / 95 * width / 2;
@@ -569,6 +633,7 @@ public class GUIScript : MonoBehaviour {
             //    GUI.Box(new Rect(left + (width - pos), top, 2, height), new GUIContent(""));
                 GUI.DrawTexture(new Rect(Screen.width / 2 + 250 - swordRight.width / 2 - pos, Screen.height - 90 - swordRight.height / 2 + 6, swordRight.width, swordRight.height), swordRight);
             }
+             */
         }
     }
 

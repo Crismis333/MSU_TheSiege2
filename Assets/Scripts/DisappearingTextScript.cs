@@ -11,7 +11,7 @@ public class DisappearingTextScript : MonoBehaviour {
     private int offset;
 	// Use this for initialization
 	void Start () {
-        alpha = 1.2f;
+        alpha = 1.5f;
         offset = 0;
 	}
 	
@@ -19,6 +19,10 @@ public class DisappearingTextScript : MonoBehaviour {
 	void Update () {
         alpha -= Time.deltaTime;
         offset -= 1;
+        if (alpha <= 0)
+        {
+            Destroy(gameObject);
+        }
 
 	}
 
@@ -26,16 +30,25 @@ public class DisappearingTextScript : MonoBehaviour {
     {
         GUI.skin = gSkin;
         TextAnchor t = gSkin.label.alignment;
+        int f = gSkin.label.fontSize;
+
         gSkin.label.alignment = TextAnchor.MiddleCenter;
+        gSkin.label.fontSize = 32;
 
         GUI.BeginGroup(new Rect(x-300, y-200, 600, 400));
 
-        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f, Mathf.Clamp(alpha, 0, 1));
+        GUI.color = new Color(0, 0, 0, Mathf.Clamp(alpha, 0, 1));
+        GUI.Label(new Rect(1, 1 + offset, 600, 400), text);
+        GUI.Label(new Rect(-1, -1 + offset, 600, 400), text);
+        GUI.Label(new Rect(1, - 1 + offset, 600, 400), text);
+        GUI.Label(new Rect(-1, 1 + offset, 600, 400), text);
 
-        GUI.Label(new Rect(0, offset, 500, 500), text);
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f, Mathf.Clamp(alpha, 0, 1));
+        GUI.Label(new Rect(0, offset, 600, 400), text);
 
         GUI.EndGroup();
 
         gSkin.label.alignment = t;
+        gSkin.label.fontSize = f;
     }
 }

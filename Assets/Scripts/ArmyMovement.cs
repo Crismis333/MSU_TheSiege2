@@ -13,6 +13,7 @@ public class ArmyMovement : MonoBehaviour
     private float speedMod = 1.0f;
 
     public bool AreClose, GetTrampled;
+    private float levelLength;
 
     private HeroMovement hm;
 
@@ -27,6 +28,7 @@ public class ArmyMovement : MonoBehaviour
         {
             hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
         }
+        levelLength = LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH) * 64 - 32;
     }
 
     public void Trample()
@@ -47,6 +49,11 @@ public class ArmyMovement : MonoBehaviour
         }
         pZ = ObstacleController.PLAYER.transform.position.z;
         aZ = transform.position.z;
+
+        if (pZ > levelLength)
+        {
+            return;
+        }
 
         dZ = pZ - aZ;
 

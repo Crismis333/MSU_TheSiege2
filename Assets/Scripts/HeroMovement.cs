@@ -58,6 +58,15 @@ public class HeroMovement : MonoBehaviour {
 
     private ArmyMovement am;
 
+    public float GetSlowed()
+    {
+        if (slowMax != 0)
+        {
+            return slowTimer / slowMax;
+        }
+        return 0;
+    }
+
     public void Kill()
     {
         dead = true;
@@ -249,6 +258,16 @@ public class HeroMovement : MonoBehaviour {
     }
 	
 	public void SlowHero(float time, float amount) {
+        if (!charging)
+        {
+            SpeedUp = 0;
+            Rage = 0;
+            GUIScript.PERFECT_RUN = false;
+            am.Trample();
+        }
+        else
+            return;
+
 		if (Slowed) {
 			if (amount > (slowAmount * (slowTimer / slowMax))) {
 				slowTimer = time;
@@ -262,14 +281,6 @@ public class HeroMovement : MonoBehaviour {
 			slowMax = time;
 			slowAmount = amount * (CurrentSpeed / MoveSpeed);
 		}
-
-        if (!charging)
-        {
-            SpeedUp = 0;
-            Rage = 0;
-            GUIScript.PERFECT_RUN = false;
-            am.Trample();
-        }
     }
 
     private bool IsGrounded()

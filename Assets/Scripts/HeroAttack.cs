@@ -83,6 +83,7 @@ public class HeroAttack : MonoBehaviour
         }
         if (other.gameObject.name.Equals("EnemyBox"))
         {
+             GameObject enemy = other.transform.parent.gameObject;
             Vector3 exppos = ObstacleController.PLAYER.transform.position;
             exppos.y = 1;
             other.transform.parent.GetComponent<EnemyAttack>().AddExplosion(hm.CurrentSpeed / 4 * 400, exppos);
@@ -96,6 +97,10 @@ public class HeroAttack : MonoBehaviour
                 ha.NumberOfHits = 0;
                 ha.CurrentSpeed = hm.CurrentSpeed;
                 GUI.AddHit(ha);
+            }
+            if (hitableEnemies.Contains(enemy))
+            {
+                hitableEnemies.Remove(enemy);
             }
         }
     }
@@ -243,6 +248,7 @@ public class HeroAttack : MonoBehaviour
                 }
             }
             charging = false;
+            GUI.lastEngagePercent = 0;
         }
     }
 }
