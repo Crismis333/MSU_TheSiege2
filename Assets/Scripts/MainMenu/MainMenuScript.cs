@@ -187,7 +187,7 @@ public class MainMenuScript : MonoBehaviour {
             guin.ClearElements();
             guin.maxKeys = 1;
             guin.menuKey = 0;
-            guin.AddElement(0, GetComponent<ControlsScript>().Return);
+            guin.AddElement(0, GetComponent<CreditsScript>().Return);
             selectSound.Play();
         }
     }

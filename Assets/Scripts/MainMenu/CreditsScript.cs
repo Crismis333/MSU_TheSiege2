@@ -52,7 +52,8 @@ public class CreditsScript : MonoBehaviour {
 
         GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 7.5f * 35, 790, 15 * 35));
         GUI.SetNextControlName("Return");
-        if (GUI.Button(new Rect(60, 12 * 35, 640, 64), "Return")) { Return(); }
+        if (GUI.Button(new Rect(60, 12 * 35, 640, 64), "Return")) 
+            Return();
         GUI.Box(new Rect(60, 12 * 35, 640, 64), new GUIContent("", "0"));
         guin.mouseover = GUI.tooltip;
 

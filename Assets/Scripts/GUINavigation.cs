@@ -173,7 +173,7 @@ public class GUINavigation : MonoBehaviour {
         }
         if (!usingMouse)
         {
-            if (menuKey != -1 && StartButtonDown())
+            if (menuKey != -1 && (StartButtonDown() || Input.GetKeyDown(KeyCode.Backspace)))
             {
                     if (menuelements.ContainsKey(menuKey))
                     {
