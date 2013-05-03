@@ -154,10 +154,9 @@ public class HeroMovement : MonoBehaviour {
 
         moveDirection *= Time.deltaTime;
 
-
         CharacterController cc = GetComponent<CharacterController>();
-
         collisionFlag = cc.Move(moveDirection);
+
         if (IsGrounded() && jumping)
         {
             jumping = false;
@@ -230,7 +229,7 @@ public class HeroMovement : MonoBehaviour {
                 SendMessage("DidJumpReachApex", SendMessageOptions.DontRequireReceiver);
             }
 
-            if (IsGrounded())
+            if (IsGrounded() && !jumping)
                 verticalSpeed = 0.0f;
             else
                 verticalSpeed -= Gravity * Time.deltaTime;
