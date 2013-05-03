@@ -217,8 +217,10 @@ public class HeroAttack : MonoBehaviour
                     //print(ha.ToString());
 
                     hm.SpeedUp += 0.5f; //capped at 4.0f in the setter
-                    hm.Rage += chargePercent / 5;
-
+                    if (!hm.Charging)
+                    {
+                        hm.Rage += chargePercent / 5;
+                    }
                     GUI.AddHit(ha);
                     //   GUI.AttackFeedback(chargePercent);
 

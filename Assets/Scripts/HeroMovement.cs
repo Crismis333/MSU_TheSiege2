@@ -126,7 +126,6 @@ public class HeroMovement : MonoBehaviour {
 
             charging = true;
             chargeTime = chargeTimeMax;
-            Rage = 0;
             anim.SetBool("Charge", true);
         }
 
@@ -168,15 +167,17 @@ public class HeroMovement : MonoBehaviour {
         if (Charging)
         {
             chargeTime -= Time.deltaTime;
+           
             if (chargeTime <= 0.0f) {
                 charging = false;
                 chargeTime = 0.0f;
                 anim.SetBool("Charge", false);
             }
+            Rage = chargeTime / chargeTimeMax;
         }
 
         if (Rage >= 0 && Rage < 1) {
-            Rage = Mathf.Max(Rage - (0.05f * Time.deltaTime), 0);
+            Rage = Mathf.Max(Rage - (0.03f * Time.deltaTime), 0);
         }
 		
 		if (transform.position.z >= LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64-32 && !LevelCreator.INF_MODE) {
