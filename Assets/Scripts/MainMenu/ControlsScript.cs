@@ -100,14 +100,15 @@ public class ControlsScript : MonoBehaviour {
     void Update()
     {
         float kh = Input.GetAxisRaw("Horizontal");
+        float kh2 = Input.GetAxisRaw("DPadHorizontal");
 
-        if (kh > 0.01 && !movedRight)
+        if ((kh > 0.2 || kh2 > 0.2) && !movedRight)
         {
             guin.SetNoPlay();
             selectSound.Play();
             screenNr++;
         }
-        else if (kh < -0.01 && !movedLeft)
+        else if ((kh < -0.2 || kh < -0.2) && !movedLeft)
         {
             guin.SetNoPlay();
             selectSound.Play();
@@ -116,12 +117,12 @@ public class ControlsScript : MonoBehaviour {
         if (screenNr < 0) screenNr = maxPages-1;
         else if (screenNr > maxPages-1) screenNr = 0;
 
-        if (kh > 0.01)
+        if (kh > 0.2 || kh2 > 0.2)
         {
             movedRight = true;
             movedLeft = false;
         }
-        else if (kh < -0.01)
+        else if (kh < -0.2 || kh2 < -0.2)
         {
             movedRight = false;
             movedLeft = true;

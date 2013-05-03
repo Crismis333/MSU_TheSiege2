@@ -15,6 +15,7 @@ public class GUINavigation : MonoBehaviour {
     public static KeyCode RBButton = KeyCode.JoystickButton5;
     public static KeyCode BackButton = KeyCode.JoystickButton6;
     public static KeyCode StartButton = KeyCode.JoystickButton7; 
+
     [HideInInspector]
     public int maxKeys;
     [HideInInspector]
@@ -110,6 +111,11 @@ public class GUINavigation : MonoBehaviour {
         return Input.GetKeyDown(LBButton);
     }
 
+    public static bool LBButtonState()
+    {
+        return Input.GetKey(LBButton);
+    }
+
     public static bool LBButtonUp()
     {
         return Input.GetKeyUp(LBButton);
@@ -123,6 +129,11 @@ public class GUINavigation : MonoBehaviour {
     public static bool RBButtonUp()
     {
         return Input.GetKeyUp(RBButton);
+    }
+
+    public static bool RBButtonState()
+    {
+        return Input.GetKey(RBButton);
     }
 
 	// Use this for initialization
@@ -173,7 +184,7 @@ public class GUINavigation : MonoBehaviour {
         }
         if (!usingMouse)
         {
-            if (menuKey != -1 && (StartButtonDown() || Input.GetKeyDown(KeyCode.Backspace)))
+            if (menuKey != -1 && (StartButtonDown() || BButtonDown() || Input.GetKeyDown(KeyCode.Backspace)))
             {
                     if (menuelements.ContainsKey(menuKey))
                     {

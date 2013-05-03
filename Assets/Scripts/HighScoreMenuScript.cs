@@ -25,13 +25,15 @@ public class HighScoreMenuScript : MonoBehaviour {
     private bool movedUp, movedDown, movedLeft, movedRight, keyDownA, keyDownB;
     private int highscoreNr;
 
+    private GUINavigation guin;
+
     void Menu_HighScore()
     {
-        if (!GetComponent<GUINavigation>().usingMouse)
+        if (!guin.usingMouse)
             GUI.skin.button.hover.background = null;
         else
             GUI.skin.button.hover.background = background;
-        if (GetComponent<GUINavigation>().activated)
+        if (guin.activated)
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
@@ -134,7 +136,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.BeginGroup(new Rect(Screen.width / 2 - 495, Screen.height / 2 - 7.5f * 35, 155, 15 * 35));
             if (GUI.Button(new Rect(0, 6 * 30, 155, 100), "<"))
             {
-                GetComponent<GUINavigation>().SetNoPlay();
+                guin.SetNoPlay();
                 selectSound.Play();
                 highscoreNr--;
                 if (highscoreNr < 0) highscoreNr = 1;
@@ -145,7 +147,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.BeginGroup(new Rect(Screen.width / 2 + 280, Screen.height / 2 - 7.5f * 35, 155, 15 * 35));
             if (GUI.Button(new Rect(0, 6*30, 155, 100), ">"))
             {
-                GetComponent<GUINavigation>().SetNoPlay();
+                guin.SetNoPlay();
                 selectSound.Play();
                 highscoreNr--;
                 if (highscoreNr < 0) highscoreNr = 1;
@@ -153,12 +155,12 @@ public class HighScoreMenuScript : MonoBehaviour {
 
             GUI.Box(new Rect(0, 6 * 30, 155, 100), new GUIContent("", "right"));
             GUI.EndGroup();
-            GetComponent<GUINavigation>().mouseover = GUI.tooltip;
+            guin.mouseover = GUI.tooltip;
             GUI.skin.button.fontSize = 24;
             GUI.color = Color.white;
-            if (!GetComponent<GUINavigation>().usingMouse)
+            if (!guin.usingMouse)
             {
-                if (GetComponent<GUINavigation>().keySelect == 0)
+                if (guin.keySelect == 0)
                     GUI.FocusControl("Return");
                 else
                     GUI.FocusControl("title");
@@ -186,6 +188,7 @@ public class HighScoreMenuScript : MonoBehaviour {
 
     void Start()
     {
+        guin = GetComponent<GUINavigation>();
         highscoreNr = 0;
         finalchar = -1;
         keyDownA = false;
@@ -228,23 +231,26 @@ public class HighScoreMenuScript : MonoBehaviour {
         else if (addnewScore)
         {
             float kv = Input.GetAxisRaw("Vertical");
+            float kv2 = Input.GetAxisRaw("DPadVertical");
+
+            float kh = Input.GetAxisRaw("Horizontal");
+            float kh2 = Input.GetAxisRaw("DPadHorizontal");
 
 
-            if (!Camera.mainCamera.GetComponent<GUINavigation>().usingMouse)
+            if (!guin.usingMouse)
             {
 
-                if (!keyDownA && (Input.GetButton("Fire1") || Input.GetKey(KeyCode.Z) || GUINavigation.AButtonState()))
+                if (!keyDownA && (kh > 0.2 || kh2 > 0.2 || GUINavigation.RBButtonState()))
                 {
                     keyDownA = true;
-                    setname += 'a';
-                    finalchar = 1;
+                    setname += CharIndexFinder(finalchar);
                 }
-                else if (keyDownA && (!Input.GetButton("Fire1") && !Input.GetKey(KeyCode.Z) && !GUINavigation.AButtonState()))
+                else if (keyDownA && !(kh > 0.2 || kh2 > 0.2 || GUINavigation.RBButtonState()))
                 {
                     keyDownA = false;
                 }
 
-                if (!keyDownB && (Input.GetButton("Fire2") || Input.GetKey(KeyCode.X) || GUINavigation.BButtonState()))
+                if (!keyDownB && (kh < -0.2 || kh2 < -0.2 || GUINavigation.LBButtonState()))
                 {
                     keyDownB = true;
                     if (setname.Length > 0)
@@ -253,12 +259,12 @@ public class HighScoreMenuScript : MonoBehaviour {
                         finalchar = IndexFinder(GetLastCharacter());
                     }
                 }
-                else if (keyDownB && (!Input.GetButton("Fire2") && !Input.GetKey(KeyCode.X) && !GUINavigation.BButtonState()))
+                else if (keyDownB && !(kh < -0.2 || kh2 < -0.2 || GUINavigation.LBButtonState()))
                 {
                     keyDownB = false;
                 }
 
-                if (Input.GetKeyDown(KeyCode.Return) || GetComponent<GUINavigation>().usedMenu)
+                if (Input.GetKeyDown(KeyCode.Return) || GUINavigation.AButtonDown() || GUINavigation.StartButtonDown() || guin.usedMenu)
                 {
                     Add_Score();
                     return;
@@ -268,16 +274,16 @@ public class HighScoreMenuScript : MonoBehaviour {
 
                 if (finalchar == -1)
                 {
-                    if (kv < -0.01 && !movedUp)
+                    if ((kv < -0.2 || kv2 < -0.2) && !movedUp)
                         finalchar = 1;
-                    else if (kv > 0.01 && !movedDown)
+                    else if ((kv > 0.2 || kv2 > 0.2) && !movedDown)
                         finalchar = 0;
                 }
                 else
                 {
-                    if (kv < -0.01 && !movedUp)
+                    if ((kv < -0.2 || kv2 < -0.2) && !movedUp)
                         finalchar++;
-                    else if (kv > 0.01 && !movedDown)
+                    else if ((kv > 0.2 || kv2 > 0.2) && !movedDown)
                         finalchar--;
                     if (finalchar < 0) finalchar = 69;
                     else if (finalchar > 69) finalchar = 0;
@@ -287,14 +293,12 @@ public class HighScoreMenuScript : MonoBehaviour {
                     SetLastCharacter(CharIndexFinder(finalchar));
             }
 
-
-
-            if (kv > 0.01)
+            if (kv > 0.2 || kv2 > 0.2)
             {
                 movedDown = true;
                 movedUp = false;
             }
-            else if (kv < -0.01)
+            else if (kv < -0.2 || kv2 < -0.2)
             {
                 movedDown = false;
                 movedUp = true;
@@ -309,28 +313,29 @@ public class HighScoreMenuScript : MonoBehaviour {
         else
         {
             float kh = Input.GetAxisRaw("Horizontal");
-
-            if (kh < -0.01 && !movedLeft)
+            float kh2 = Input.GetAxisRaw("DPadHorizontal");
+            float kh3 = Input.GetAxisRaw("DPadVertical");
+            if ((kh < -0.2 || kh2 < -0.2 || kh3 < -0.2) && !movedLeft)
             {
-                GetComponent<GUINavigation>().SetNoPlay();
+                guin.SetNoPlay();
                 selectSound.Play();
                 highscoreNr++;
             }
-            else if (kh > 0.01 && !movedRight)
+            else if ((kh > 0.2 || kh2 > 0.2 || kh3 > 0.2) && !movedRight)
             {
-                GetComponent<GUINavigation>().SetNoPlay();
+                guin.SetNoPlay();
                 selectSound.Play();
                 highscoreNr--;
             }
             if (highscoreNr < 0) highscoreNr = 1;
             else if (highscoreNr > 1) highscoreNr = 0;
 
-            if (kh > 0.01)
+            if (kh > 0.2 || kh2 > 0.2 || kh3 > 0.2)
             {
                 movedRight = true;
                 movedLeft = false;
             }
-            else if (kh < -0.01)
+            else if (kh < -0.2 || kh < -0.2 || kh3 < -0.2)
             {
                 movedRight = false;
                 movedLeft = true;
@@ -353,19 +358,17 @@ public class HighScoreMenuScript : MonoBehaviour {
             inactiveColor = GUI.skin.button.focused.textColor;
             if (!addnewScore)
             {
-                GetComponent<GUINavigation>().ClearElements();
-                GetComponent<GUINavigation>().maxKeys = 1;
-                GetComponent<GUINavigation>().menuKey = 0;
-                GetComponent<GUINavigation>().AddElement(0, Accept);
+                guin.ClearElements();
+                guin.menuKey = 0;
+                guin.maxKeys = 1;
+                guin.AddElement(0, Accept);
             }
             firstGUI = false;
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
+        if (!addnewScore && Input.GetKeyDown(KeyCode.Escape))
             Accept();
-        }
         else
-            Menu_HighScore();
+           Menu_HighScore();
     }
 
     void Return()
@@ -374,23 +377,24 @@ public class HighScoreMenuScript : MonoBehaviour {
         {
             if (mainMenu)
             {
+                MainMenuScript mms = GetComponent<MainMenuScript>();
                 cancelSound.Play();
                 this.enabled = false;
-                GetComponent<MainMenuScript>().enabled = true;
-                GetComponent<GUINavigation>().ClearElements();
-                GetComponent<GUINavigation>().maxKeys = 7;
-                GetComponent<GUINavigation>().AddElement(0, GetComponent<MainMenuScript>().Menu_Main_Start_Campaign);
-                GetComponent<GUINavigation>().AddElement(1, GetComponent<MainMenuScript>().Menu_Main_Start_Endless);
-                GetComponent<GUINavigation>().AddElement(2, GetComponent<MainMenuScript>().Menu_Main_Controls);
-                GetComponent<GUINavigation>().AddElement(3, GetComponent<MainMenuScript>().Menu_Main_Options);
-                GetComponent<GUINavigation>().AddElement(4, GetComponent<MainMenuScript>().Menu_Main_Highscores);
-                GetComponent<GUINavigation>().AddElement(5, GetComponent<MainMenuScript>().Menu_Main_Credits);
-                GetComponent<GUINavigation>().AddElement(6, GetComponent<MainMenuScript>().Menu_Main_Quit);
+                mms.enabled = true;
+                guin.ClearElements();
+                guin.maxKeys = 7;
+                guin.AddElement(0, mms.Menu_Main_Start_Campaign);
+                guin.AddElement(1, mms.Menu_Main_Start_Endless);
+                guin.AddElement(2, mms.Menu_Main_Controls);
+                guin.AddElement(3, mms.Menu_Main_Options);
+                guin.AddElement(4, mms.Menu_Main_Highscores);
+                guin.AddElement(5, mms.Menu_Main_Credits);
+                guin.AddElement(6, mms.Menu_Main_Quit);
             }
             else
             {
                 selectSound.Play();
-                GetComponent<GUINavigation>().SetNoPlay();
+                guin.SetNoPlay();
                 returned = true;
                 countdown = 1f;
             }
@@ -400,7 +404,7 @@ public class HighScoreMenuScript : MonoBehaviour {
     void Add_Score()
     {
         selectSound.Play();
-        GetComponent<GUINavigation>().SetNoPlay();
+       guin.SetNoPlay();
         addnewScore = false;
         GameObject ob = new GameObject();
         ob.AddComponent<HighScoreElement>();
@@ -416,10 +420,10 @@ public class HighScoreMenuScript : MonoBehaviour {
             CurrentGameState.AddHighscoreElementInfinite(ob);
             CurrentGameState.UpdateHighscoreInfinite();
         }
-        GetComponent<GUINavigation>().ClearElements();
-        GetComponent<GUINavigation>().maxKeys = 1;
-        GetComponent<GUINavigation>().menuKey = 0;
-        GetComponent<GUINavigation>().AddElement(0, Accept);
+        guin.ClearElements();
+        guin.maxKeys = 1;
+        guin.menuKey = 0;
+        guin.AddElement(0, Accept);
     }
 
     public void Accept()

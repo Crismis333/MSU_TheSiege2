@@ -224,6 +224,7 @@ public class OptionsMenuScript : MonoBehaviour {
     void Update()
     {
         res = Screen.resolutions;
+        float startquality = quality;
         f = 0.0f;
         if (res.Length > 1)
             for (int i = 0; i < res.Length; i++)
@@ -231,20 +232,27 @@ public class OptionsMenuScript : MonoBehaviour {
                     f += 1.0f;
 
         float kh = Input.GetAxisRaw("Horizontal");
+        float kh2 = Input.GetAxisRaw("DPadHorizontal");
 
         if (!guin.usingMouse)
             switch (guin.keySelect)
             {
                 case 0:
                     {
-                        musicvol += Input.GetAxis("Horizontal") / 50;
+                        if (Mathf.Abs(kh) < Mathf.Abs(kh2))
+                            musicvol += Input.GetAxis("Horizontal") / 50;
+                        else
+                            musicvol += Input.GetAxis("DPadHorizontal") / 50;
                         if (musicvol < 0) musicvol = 0;
                         else if (musicvol > 1) musicvol = 1;
                         break;
                     }
                 case 1: 
                     {
-                        effectvol += Input.GetAxis("Horizontal") / 50;
+                        if (Mathf.Abs(kh) < Mathf.Abs(kh2))
+                            effectvol += Input.GetAxis("Horizontal") / 50;
+                        else
+                            effectvol += Input.GetAxis("DPadHorizontal") / 50;
                         if (effectvol < 0) effectvol = 0;
                         else if (effectvol > 1) effectvol = 1;
                         break; 
@@ -259,9 +267,9 @@ public class OptionsMenuScript : MonoBehaviour {
                     }
                 case 3:
                     {
-                        if (kh < -0.01 && !movedLeft)
+                        if ((kh < -0.2 || kh2 < -0.2) && !movedLeft)
                             resolution--;
-                        else if (kh > 0.01 && !movedRight)
+                        else if ((kh > 0.2 || kh2 > 0.2) && !movedRight)
                             resolution++;
                         if (resolution < f) resolution = (int)f;
                         else if (resolution > res.Length - 1) resolution = res.Length - 1;
@@ -271,21 +279,21 @@ public class OptionsMenuScript : MonoBehaviour {
                     }
                 case 4:
                     {
-                        if (kh < -0.01 && !movedLeft)
+                        if ((kh < -0.2 || kh2 < -0.2) && !movedLeft)
                             quality--;
-                        else if (kh > 0.01 && !movedRight)
+                        else if ((kh > 0.2 || kh2 > 0.2) && !movedRight)
                             quality++;
                         if (quality < 0) quality = 0;
                         else if (quality > 5) quality = 5;
                         break;
                     }
             }
-        if (kh > 0.01)
+        if (kh > 0.2 || kh2 > 0.2)
         {
             movedRight = true;
             movedLeft = false;
         }
-        else if (kh < -0.01)
+        else if (kh < -0.2 || kh2 < -0.2)
         {
             movedRight = false;
             movedLeft = true;
@@ -299,5 +307,7 @@ public class OptionsMenuScript : MonoBehaviour {
         OptionsValues.musicVolume = musicvol;
         OptionsValues.sfxVolume = effectvol;
         previouseffectvol = effectvol;
+        if (startquality != quality)
+            QualitySettings.SetQualityLevel((int)quality);
     }
 }
