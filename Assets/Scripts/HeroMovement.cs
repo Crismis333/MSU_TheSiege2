@@ -36,6 +36,8 @@ public class HeroMovement : MonoBehaviour {
     private float jumpRepeatTime = 0.05f;
     private float jumpTimeout = 0.15f;
 
+    private GUIScript GUI;
+
     private float speedUp = 0;
 
     public float SpeedUp
@@ -119,7 +121,7 @@ public class HeroMovement : MonoBehaviour {
         defaultRot = transform.rotation;
 
         anim = gameObject.GetComponent<Animator>();
-
+        GUI = Camera.mainCamera.GetComponent<GUIScript>();
         am = GameObject.Find("FellowHeroes").GetComponent<ArmyMovement>();
 	}
 	
@@ -262,6 +264,7 @@ public class HeroMovement : MonoBehaviour {
             SpeedUp = 0;
             Rage = 0;
             GUIScript.PERFECT_RUN = false;
+            
             am.Trample();
         }
         else
@@ -280,6 +283,8 @@ public class HeroMovement : MonoBehaviour {
 			slowMax = time;
 			slowAmount = amount * (CurrentSpeed / MoveSpeed);
 		}
+        GUI.lastEngagePercent = 0;
+        GUI.BarActive = false;
     }
 
     private bool IsGrounded()
