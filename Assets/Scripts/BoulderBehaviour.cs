@@ -48,6 +48,7 @@ public class BoulderBehaviour : MonoBehaviour {
 		{
 			other.GetComponent<EnemyAttack>().KillSelf(0.7f);
 			other.GetComponent<EnemyAttack>().AddExplosion(600,this.transform.position);
+            Physics.IgnoreCollision(gameObject.collider, ObstacleController.PLAYER.collider);
 		}
 		
 		if (other.tag.Equals("Road") && !hitGround) {

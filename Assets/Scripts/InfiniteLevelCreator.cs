@@ -43,6 +43,7 @@ public class InfiniteLevelCreator : MonoBehaviour
         specials = new Queue<GameObject>();
 
         LevelCreator.INF_MODE = true;
+        GUIScript.SCORE = 0;
     }
 
     // Update is called once per frame
@@ -174,7 +175,7 @@ public class InfiniteLevelCreator : MonoBehaviour
 
         if (state == -1)
         {
-            randomSide = Random.Range(0, sideModules.Count + 5);
+            randomSide = Random.Range(0, sideModules.Count + 3);
             if (randomSide >= sideModules.Count)
                 randomSide = 0;
             if (variationCounter >= variationCap)
@@ -274,21 +275,4 @@ public class InfiniteLevelCreator : MonoBehaviour
             curBSide = randomSide;
         }
     }
-
-    /*
-    private void CreateSpecials()
-    {
-        GameObject tmp;
-        Vector3 pos = transform.position;
-        pos.z = 64 * currentIndex;
-
-        string sName = Regex.Replace(specialModules.name, @"[\d-]", string.Empty);
-
-        specialModule = Resources.Load("SpecialModules/" + sName + (i - specialModuleIndex + 1), typeof(GameObject)) as GameObject;
-
-        tmp = Instantiate(specialModule, pos, specialModule.transform.rotation) as GameObject;
-
-        specials.Enqueue(tmp);
-    }
-    */
 }

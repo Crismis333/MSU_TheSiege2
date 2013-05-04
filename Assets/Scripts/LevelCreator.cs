@@ -34,7 +34,6 @@ public class LevelCreator : MonoBehaviour {
 	void Start () {
         if (gameObject.GetComponent<InfiniteLevelCreator>() == null)
             INF_MODE = false;
-        print(INF_MODE);
 
 		sideModules = new List<GameObject>();
 		foreach(string s in SIDE_MODULE_LIST) {

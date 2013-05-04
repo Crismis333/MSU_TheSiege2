@@ -14,43 +14,17 @@ public class EnemyAttack : MonoBehaviour {
 	
 	private bool destroyed = false;
 
+    private Transform bip;
+
     private ParticleSystem ps;
 
     // Use this for initialization
     void Start()
     {
         player = ObstacleController.PLAYER;
+        bip = gameObject.transform.FindChild("Bip001");
         ps = gameObject.GetComponentInChildren<ParticleSystem>();
-        //ps.Stop();
-    }
-
-    //void enterInRange()
-    //{
-    //    print("Is in range");
-    //    selectedIndicator = (GameObject)Instantiate(Indicator, gameObject.transform.position + new Vector3(0, 3, 0), gameObject.transform.rotation);
-    //    selectedIndicator.transform.parent = gameObject.transform;
-    //}
-
-    //public void SetChosen(bool value)
-    //{
-    //    if (inRange)
-    //    {
-    //        isChosen = value;
-    //        if (value)
-    //        {
-    //            selectedIndicator.renderer.material.color = Color.green;
-    //        }
-    //        else
-    //        {
-    //            selectedIndicator.renderer.material.color = Color.white;
-    //        }
-    //    }
-    //}
-
-    void OnDestroy()
-    {
-	//	if (player != null && gameObject != null)
-        //	player.GetComponent<HeroAttack>().RemoveFromList(gameObject, isChosen);
+        RecalcParticlePosition();
     }
 
     /// <summary>
@@ -59,10 +33,7 @@ public class EnemyAttack : MonoBehaviour {
     /// <param name="power">The power that the enemy is hit with [0, 1]</param>
     public void KillSelf(float power)
     {
-        //inRange = false;
-        //isDone = true;
-     //   player.GetComponent<HeroAttack>().RemoveFromList(gameObject, isChosen);
-      //  Destroy(selectedIndicator);
+        RecalcParticlePosition();
         float basePower = 1f;
         float interval = 4f;
         ps.startSpeed = basePower + power * interval;
@@ -99,32 +70,11 @@ public class EnemyAttack : MonoBehaviour {
 	// Update is called once per frame
     void Update()
     {
-        if (destroyed)
-        {
-            ps.transform.position = gameObject.transform.FindChild("Bip001").transform.position;
-        }
-        //if (!inRange)
-        //{
-        //    if (gameObject.transform.position.z < player.transform.position.z + AwareRange)
-        //    {
-        //        inRange = true;
-        //      //  enterInRange();
-        //     //   player.GetComponent<HeroAttack>().AddToList(gameObject);
-
-
-        //    }
-        //}
-        //else
-        //{
-        //if (gameObject.transform.position.z < player.transform.position.z)
-        //{
-            //inRange = false;
-            //isDone = true;
-        //    player.GetComponent<HeroAttack>().RemoveFromList(gameObject, isChosen);
-        //    Destroy(selectedIndicator);
-            
-        //}
+        RecalcParticlePosition();
     }
-        
-	
+
+    public void RecalcParticlePosition()
+    {
+        ps.transform.position = bip.position;
+    }
 }

@@ -38,12 +38,31 @@ public class EnemyMovement : MonoBehaviour {
             if (fixedCounter == 2)
             {
                 Vector3 d = transform.TransformDirection(Vector3.down);
+                Vector3 newPos;
                 RaycastHit rh;
                 if (Physics.Raycast(transform.position, d, out rh, 6.0f))
                 {
-                    transform.position = rh.point;
+                    Vector3 offset = Vector3.zero;
+                    newPos = rh.point;
+                    if (rh.collider.tag.Equals("Soldier") || rh.collider.tag.Equals("Obstacle"))
+                    {
+                        RaycastHit newRayHit;
+                        while(Physics.Raycast(transform.position + offset, d, out newRayHit, 6.0f)) {
+                            if (!newRayHit.collider.tag.Equals("Soldier") && !newRayHit.collider.tag.Equals("Obstacle"))
+                            {
+                                newPos = newRayHit.point;
+                                break;
+                            }
+                            offset.x += 1f;
+                            if (offset.x >= 6)
+                                offset.x = -6;
+                        }
+                    }
+
+                    transform.position = newPos;
                 }
                 snapped = true;
+                GetComponent<EnemyAttack>().RecalcParticlePosition();
             }
 
             fixedCounter++;
