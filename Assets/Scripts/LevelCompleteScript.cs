@@ -61,7 +61,7 @@ public class LevelCompleteScript : MonoBehaviour {
         GUI.Label(new Rect(60, 4 * 35, 640, 64), perfects + "x Perfect kills:");
         GUI.Label(new Rect(60, 5 * 35, 640, 64), doubleKills + "x Double kills:");
         GUI.Label(new Rect(60, 6 * 35, 640, 64), tripleKills + "x Triple kills:");
-        GUI.Label(new Rect(60, 7 * 35, 640, 64), chargeKills + "x Charge kills:");
+        GUI.Label(new Rect(60, 7 * 35, 640, 64), chargeKills + "x Destruction bonus:");
         if (!CurrentGameState.InfiniteMode)
             GUI.Label(new Rect(60, 8 * 35, 640, 64), "Perfect run bonus:");
         GUI.Label(new Rect(60, 10 * 35, 640, 64), "Final score:");

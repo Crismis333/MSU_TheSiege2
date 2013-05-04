@@ -52,6 +52,7 @@ public class GUIScript : MonoBehaviour {
 
     private float yscale;
 
+    private int scoreAdded;
     HeroMovement hm;
 
 	// Use this for initialization
@@ -434,18 +435,28 @@ public class GUIScript : MonoBehaviour {
     {
         HitList.Add(hit);
         Multiplier = CalculateEfficiency() / 2;
-
+        scoreAdded = 0;
         if (hit.Accuracy > HeroAttack.MIN_CHARGE)
         {
             // Calculate score increase
-            float baseScore = 100;
-            float hitMult = 1;
-            if (hit.NumberOfHits > 1)
-            {
-                hitMult = hit.NumberOfHits * 1.5f;
+            int baseScore;
+            switch (ConvertHitRate(hit.Accuracy)) {
+                case 4: case 5: baseScore = lcs.averageScore; break;
+                case 6: case 7: baseScore = lcs.goodScore; break;
+                case 8: case 9: baseScore = lcs.excellentScore; break;
+                case 10: baseScore = lcs.perfectScore; break;
+                default: baseScore = 0; break;
             }
-            float score = baseScore * hitMult * hit.CurrentSpeed * Multiplier;
-            SCORE += (long)score;
+            if (baseScore > 0)
+            {
+                baseScore *= hit.NumberOfHits;
+                if (hit.NumberOfHits == 2)
+                    baseScore += lcs.doubleScore;
+                else if (hit.NumberOfHits == 3)
+                    baseScore += lcs.tripleScore;
+                SCORE += baseScore;
+                scoreAdded = baseScore;
+            }
             //print("Score increase: " + (long)score);
         }
         AttackFeedback(hit);
@@ -459,17 +470,18 @@ public class GUIScript : MonoBehaviour {
         switch (accuracy)
         {
             case -2: hitFeedback = "Fail"; break;
-            case -1: hitFeedback = "Miss"; break;
+            case -1: 
+            case 0: hitFeedback = "Miss"; break;
             case 1:
             case 2:
             case 3: hitFeedback = "Bad"; break;
             case 4:
-            case 5: hitFeedback = "Good"; lcs.averages++; break;
+            case 5: hitFeedback = "Good"; lcs.averages+= ha.NumberOfHits; break;
             case 6:
-            case 7: hitFeedback = "Great"; lcs.goods++; break;
+            case 7: hitFeedback = "Great"; lcs.goods+= ha.NumberOfHits; break;
             case 8:
-            case 9: hitFeedback = "Excellent"; lcs.excellents++; break;
-            case 10: hitFeedback = "Perfect"; lcs.perfects++; break;
+            case 9: hitFeedback = "Excellent"; lcs.excellents+= ha.NumberOfHits; break;
+            case 10: hitFeedback = "Perfect"; lcs.perfects+= ha.NumberOfHits; break;
         }
         if (ha.NumberOfHits == 2)
         {
@@ -536,6 +548,15 @@ public class GUIScript : MonoBehaviour {
                 dp.x = Screen.width / 2;
                 dp.y = (int)(400 * yscale);
                 hitFeedback = "";
+                if (scoreAdded != 0)
+                {
+                    dp = o.AddComponent<DisappearingTextScript>();
+                    dp.text = "+" + scoreAdded;
+                    dp.gSkin = gSkin;
+                    dp.scoreText = true;
+                    dp.x = Screen.width - (int)(230*yscale);
+                    dp.y = (int)(250 * yscale);
+                }
             }
             gSkin.label.alignment = TextAnchor.MiddleCenter;
             gSkin.label.fontSize = 40;

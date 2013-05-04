@@ -226,6 +226,7 @@ public class MapGui : MonoBehaviour {
 
     void Update()
     {
+        float h = Input.GetAxisRaw("DPadHorizontal");
         if (startHero)
         {
             startHero = false;
@@ -315,7 +316,7 @@ public class MapGui : MonoBehaviour {
                 float f = Input.GetAxisRaw("ScrollAxis");
                 if (f < -0.4 || f > 0.4)
                     scrollPos.y += 3*f;
-                if (!backDown && (Input.GetKeyDown(KeyCode.Z) || GUINavigation.LBButtonDown()))
+                if (!backDown && (h < -0.2 || GUINavigation.LBButtonDown()))
                 {
                     backDown = true;
                     if (keyLocation == -1 || keyLocation == 0)
@@ -326,7 +327,7 @@ public class MapGui : MonoBehaviour {
                     ResetScroll();
                     CurrentGameState.hero.LookAtLoc(current_location);
                 }
-                else if (!nextDown && (Input.GetKeyDown(KeyCode.X) || GUINavigation.RBButtonDown()))
+                else if (!nextDown && (h > 0.2 || GUINavigation.RBButtonDown()))
                 {
                     nextDown = true;
                     if (keyLocation == -1 || keyLocation == CurrentGameState.loc.locations.Length - 1)
@@ -343,9 +344,9 @@ public class MapGui : MonoBehaviour {
                 }
             }
         }
-        if (backDown && (Input.GetKeyUp(KeyCode.Z) || GUINavigation.LBButtonUp()))
+        if (backDown && (h >= -0.2 && GUINavigation.LBButtonUp()))
             backDown = false;
-        if (nextDown && (Input.GetKeyUp(KeyCode.X) || GUINavigation.RBButtonUp()))
+        if (nextDown && (h <= 0.2 && GUINavigation.RBButtonUp()))
             nextDown = false;
     }
 
