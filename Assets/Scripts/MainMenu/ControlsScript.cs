@@ -5,7 +5,7 @@ using System.Collections;
 public class ControlsScript : MonoBehaviour {
 
     public GUISkin gSkin;
-    public Texture2D backgroundScroll;
+    public Texture2D backgroundScroll, xBoxController, keyboardController;
     public Vector2 scrollOffset;
     public bool mainMenu;
     public EffectVolumeSetter cancelSound;
