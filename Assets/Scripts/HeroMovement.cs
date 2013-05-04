@@ -128,7 +128,11 @@ public class HeroMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         transform.rotation = defaultRot;
-        if (Input.GetButtonDown("Jump"))
+
+        float v = Input.GetAxisRaw("Vertical");
+        float h = Input.GetAxisRaw("Horizontal");
+
+        if (Input.GetButtonDown("Jump") || v > 0.3f)
         {
             lastJumpButtonTime = Time.time;
         }
@@ -140,7 +144,7 @@ public class HeroMovement : MonoBehaviour {
             anim.SetBool("Charge", true);
         }
 
-        Run();
+        Run(v,h);
 
         ApplyGravity();
 
@@ -196,11 +200,8 @@ public class HeroMovement : MonoBehaviour {
 		}
 	}
 	
-	private void Run() {
+	private void Run(float v, float h) {
         moveDirection = Vector3.zero;
-
-        float v = Input.GetAxisRaw("Vertical");
-        float h = Input.GetAxisRaw("Horizontal");
 
         if (v < -0.1 && !charging)
             moveDirection.z = MoveSpeed - Mathf.Max(slowAmount * (slowTimer / slowMax), SpeedDown * -v) + SpeedUp;
