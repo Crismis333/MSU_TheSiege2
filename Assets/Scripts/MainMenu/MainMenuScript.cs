@@ -114,6 +114,7 @@ public class MainMenuScript : MonoBehaviour {
         {
             infiniteMode = false;
             CurrentGameState.InfiniteMode = false;
+            LevelCreator.INF_MODE = false;
             started = false;
             stopped = true;
             countdown = 1f;
@@ -128,6 +129,7 @@ public class MainMenuScript : MonoBehaviour {
         {
             infiniteMode = true;
             CurrentGameState.InfiniteMode = true;
+            LevelCreator.INF_MODE = true;
             started = false;
             stopped = true;
             countdown = 1f;
