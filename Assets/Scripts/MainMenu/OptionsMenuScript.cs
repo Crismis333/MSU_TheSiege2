@@ -131,7 +131,7 @@ public class OptionsMenuScript : MonoBehaviour {
             inactiveColor = GUI.skin.button.focused.textColor;
             firstGUI = false;
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (guin.QuitPressed())
             Menu_Options_Back();
         else
 		    Menu_Options();

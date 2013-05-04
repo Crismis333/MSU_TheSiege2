@@ -172,7 +172,7 @@ public class MapGui : MonoBehaviour {
     void OnGUI()
     {
         GUI.skin = gSkin;
-        if (!started && !stopped && (Input.GetKeyDown(KeyCode.Escape) || guin.usedMenu))
+        if (!started && !stopped && (guin.QuitPressed() || guin.usedMenu))
         {
             this.enabled = false;
             music.useGlobal = true;

@@ -253,7 +253,7 @@ public class LevelCompleteScript : MonoBehaviour {
             inactiveColor = GUI.skin.button.focused.textColor;
             firstGUI = false;
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (guin.QuitPressed())
         {
             Accept();
         }

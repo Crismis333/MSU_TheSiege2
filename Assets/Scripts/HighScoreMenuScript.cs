@@ -365,7 +365,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             }
             firstGUI = false;
         }
-        if (!addnewScore && Input.GetKeyDown(KeyCode.Escape))
+        if (!addnewScore && guin.QuitPressed())
             Accept();
         else
            Menu_HighScore();

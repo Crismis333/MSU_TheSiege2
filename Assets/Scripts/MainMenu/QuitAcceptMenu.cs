@@ -77,10 +77,8 @@ public class QuitAcceptMenu : MonoBehaviour {
             inactiveColor = GUI.skin.button.focused.textColor;
             firstGUI = false;
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
+        if (guin.QuitPressed())
             Menu_Quit_No();
-        }
         else
             Menu_Quit();
     }

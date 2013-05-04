@@ -498,7 +498,7 @@ public class GUIScript : MonoBehaviour {
 
     void OnGUI()
     {
-        if (!started && !lost && (Input.GetKeyDown(KeyCode.Escape) || guin.usedMenu))
+        if (!started && !lost && (guin.QuitPressed() || guin.usedMenu))
         {
             music.useGlobal = true;
             this.enabled = false;

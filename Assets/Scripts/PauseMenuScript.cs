@@ -66,7 +66,6 @@ public class PauseMenuScript : MonoBehaviour {
         GUI.skin.button.focused.textColor = inactiveColor;
 
         if (!guin.usingMouse)
-        {
             switch (guin.keySelect)
             {
                 case 0: GUI.FocusControl("Options"); break;
@@ -76,7 +75,6 @@ public class PauseMenuScript : MonoBehaviour {
                 case 4: GUI.FocusControl("Return"); break;
                 default: GUI.FocusControl("title"); break;
             }
-        }
         else
             GUI.FocusControl("title");
     }
@@ -91,7 +89,7 @@ public class PauseMenuScript : MonoBehaviour {
             inactiveColor = GUI.skin.button.focused.textColor;
             firstGUI = false;
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (guin.QuitPressed())
             Pause_Back();
         else
             Menu_Options();

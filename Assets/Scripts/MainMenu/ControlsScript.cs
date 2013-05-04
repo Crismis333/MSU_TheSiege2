@@ -144,10 +144,8 @@ public class ControlsScript : MonoBehaviour {
             inactiveColor = GUI.skin.button.focused.textColor;
             firstGUI = false;
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
+        if (guin.QuitPressed())
             Return();
-        }
         else
             Menu_Controls();
     }

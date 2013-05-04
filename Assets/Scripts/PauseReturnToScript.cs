@@ -96,10 +96,8 @@ public class PauseReturnToScript : MonoBehaviour {
             inactiveColor = GUI.skin.button.focused.textColor;
             firstGUI = false;
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
+        if (guin.QuitPressed())
             Return_No();
-        }
         else
             Return_Accept();
     }

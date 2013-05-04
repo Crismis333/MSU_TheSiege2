@@ -224,7 +224,7 @@ public class MainMenuScript : MonoBehaviour {
             inactiveColor = GUI.skin.button.focused.textColor;
             firstGUI = false;
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (guin.QuitPressed())
             Menu_Main_Quit();
         else
             Menu_Main();

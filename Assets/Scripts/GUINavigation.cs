@@ -32,7 +32,7 @@ public class GUINavigation : MonoBehaviour {
     private bool menuDown;
     private string previousmouseover;
     private int noplay;
-
+    private bool quitdown, quitjustpressed, quitpressed;
     public void ClearElements()
     {
         noplay = 10;
@@ -49,6 +49,17 @@ public class GUINavigation : MonoBehaviour {
     public void AddElement(int key, MenuActivation action)
     {
         menuelements.Add(key, action);
+    }
+
+    public bool QuitPressed()
+    {
+        if (quitjustpressed)
+        {
+            quitjustpressed = false;
+            return true;
+        }
+        else
+            return false;
     }
 
     public static bool AButtonDown()
@@ -154,6 +165,18 @@ public class GUINavigation : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        quitdown = Input.GetKey(KeyCode.Escape);
+        if (quitdown && !quitjustpressed && !quitpressed)
+        {
+            quitjustpressed = true;
+            quitpressed = true;
+        }
+        if (!quitdown)
+        {
+            quitpressed = false;
+            quitjustpressed = false;
+        }
 
         //print("menukey: " + menuKey + ", size: " + menuelements.Count);
         if (menuDown)
