@@ -51,6 +51,12 @@ public class HighScoreMenuScript : MonoBehaviour {
             //GUI.Box(new Rect(0, 0, 790, 15 * 35), "");
             GUI.color = Color.black;
             switch (CurrentGameState.highscorecondition) {
+                case EndState.Infinite:
+                    {
+                        GUI.Label(new Rect(0, 1 * 35, 790, 64), "You have proven yourself worthy to be");
+                        GUI.Label(new Rect(0, 2 * 35, 790, 64), "mentioned on the great Halls of Scores!");
+                        break;
+                    }
                 case EndState.Won:
                     {
                         GUI.Label(new Rect(0, 1 * 35, 790, 64), "You have made a high score! You are truly");

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public enum Modifier { None, Soldier, Obstacle, Pit, Catapult, Jump, MoveSpeed, SlowDown }
-public enum EndState { Won, GaveUp, Lost }
+public enum EndState { Won, GaveUp, Lost, Infinite }
 
 public class CurrentGameState : MonoBehaviour {
 
@@ -55,8 +55,9 @@ public class CurrentGameState : MonoBehaviour {
         locID = nextLevel;
         completedlevels.Add(locID);
         completedLevelLocations.Add(previousPosition);
-        foreach (Modifier m in wins)
-            IncreaseModifier(m);
+        if (!InfiniteMode)
+            foreach (Modifier m in wins)
+                IncreaseModifier(m);
     }
 
     public static void Restart()

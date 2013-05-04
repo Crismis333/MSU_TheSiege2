@@ -46,8 +46,7 @@ public class GUIScript : MonoBehaviour {
     private LevelCompleteScript lcs;
     private GUINavigation guin;
 
-    private float yscale;
-
+    private float yscale, score;
     private int scoreAdded;
     HeroMovement hm;
 
@@ -67,6 +66,7 @@ public class GUIScript : MonoBehaviour {
         guin = GetComponent<GUINavigation>();
         guin.maxKeys = 0;
         lcs = GetComponent<LevelCompleteScript>();
+        lcs.distanceScore = (int) (maxScore);
         lost = false;
         prescreencountdown = 0f;
         countdown = 0;
@@ -99,7 +99,10 @@ public class GUIScript : MonoBehaviour {
                 {
                     screencountdown = 0;
                     CurrentGameState.highscorecondition = EndState.Lost;
-                    Application.LoadLevel(4);
+                    if (CurrentGameState.InfiniteMode)
+                        CompleteLevel();
+                    else
+                        Application.LoadLevel(4);
                 }
             }
         }
@@ -137,7 +140,7 @@ public class GUIScript : MonoBehaviour {
     {
         if (scoreTimer <= 0.0f)
         {
-            float score = (currentZ / maxZ) * maxScore;
+            score = (currentZ / maxZ) * maxScore;
 
             //scoreAdded = (int)(score - prevScore); //remove this to remove text popup
             SCORE += (int)(score - prevScore);
@@ -246,7 +249,7 @@ public class GUIScript : MonoBehaviour {
             music.volume = Mathf.Lerp(0, OptionsValues.musicVolume, 1 - countdown);
             GUI.EndGroup();
         }
-        else if (lost)
+        else if (lost && !CurrentGameState.InfiniteMode)
         {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
             GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, 1 - screencountdown));
@@ -442,11 +445,11 @@ public class GUIScript : MonoBehaviour {
     public void CompleteLevel()
     {
         this.enabled = false;
-        GetComponent<LevelCompleteScript>().enabled = true;
+        lcs.enabled = true;
         guin.ClearElements();
         guin.maxKeys = 1;
         guin.menuKey = 0;
-        guin.AddElement(0, GetComponent<LevelCompleteScript>().Accept);
+        guin.AddElement(0, lcs.Accept);
 
     }
 
