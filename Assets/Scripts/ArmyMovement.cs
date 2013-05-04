@@ -3,8 +3,6 @@ using System.Collections;
 
 public class ArmyMovement : MonoBehaviour
 {
-
-    private float scoreCountdown = 0.1f;
     private float pZ = 0;
     private float aZ = 0;
 
@@ -59,13 +57,6 @@ public class ArmyMovement : MonoBehaviour
 
         dZ = pZ - aZ;
 
-        //if (dZ >= 50)
-        //{
-        //    speedMod = (dZ / 45);
-        //    speedMod = Mathf.Min(((Mathf.Max(hm.CurrentSpeed, hm.MoveSpeed) - 0.1f) / hm.MoveSpeed), speedMod);
-        //}
-        //else
-
         speedMod = 1.05f * InfSpeedMod;
 
         if (!AreClose)
@@ -84,8 +75,6 @@ public class ArmyMovement : MonoBehaviour
         }
         if (dZ <= 0)
         {
-            //CurrentGameState.highscorecondition = EndState.Lost;
-            //Application.LoadLevel(4);
             if (!hm.dead)
                 hm.Kill();
         }

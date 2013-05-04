@@ -12,6 +12,9 @@ public class ObstacleBehaviour : MonoBehaviour {
     private ParticleSystem ps;
 
     private float moveOffset = 1.0f;
+
+    private bool snapped = false;
+    private int fixedCounter = 0;
 	
 	// Update is called once per frame
 	void Update () {
@@ -20,6 +23,25 @@ public class ObstacleBehaviour : MonoBehaviour {
             Destroy(gameObject);
         }
 	}
+
+    void FixedUpdate()
+    {
+        if (!snapped)
+        {
+            if (fixedCounter == 2)
+            {
+                Vector3 d = transform.TransformDirection(Vector3.down);
+                RaycastHit rh;
+                if (Physics.Raycast(transform.position, d, out rh, 6.0f))
+                {
+                    transform.position = rh.point;
+                }
+                snapped = true;
+            }
+
+            fixedCounter++;
+        }
+    }
 
 
     void Start()
@@ -35,7 +57,7 @@ public class ObstacleBehaviour : MonoBehaviour {
 			{
 				rb.isKinematic = false;
                 Vector3 exppos = ObstacleController.PLAYER.transform.position;
-                exppos.y = 1;
+                exppos.y += 1;
 				rb.AddExplosionForce(other.GetComponent<HeroMovement>().CurrentSpeed/4,exppos,0);
 
                 if (rb.gameObject.collider != null)

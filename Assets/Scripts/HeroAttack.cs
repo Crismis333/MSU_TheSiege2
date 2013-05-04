@@ -61,7 +61,7 @@ public class HeroAttack : MonoBehaviour
     void KillEnemy(GameObject enemy)
     {
         Vector3 exppos = ObstacleController.PLAYER.transform.position;
-        exppos.y = 1;
+        exppos.y += 1;
         enemy.GetComponent<EnemyAttack>().AddExplosion((hm.CurrentSpeed / 4) * (100 + 500 * chargePercent), exppos);
 
         enemy.GetComponent<EnemyAttack>().KillSelf(chargePercent);

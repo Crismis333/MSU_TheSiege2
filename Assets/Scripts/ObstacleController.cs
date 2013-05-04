@@ -32,6 +32,13 @@ public class ObstacleController : MonoBehaviour {
         timer = DifficultyIncreaseTimer;
 
         LEVEL_LENGTH_Z = LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH) * 64 - 32;
+
+        if (LevelCreator.INF_MODE)
+        {
+            SOLDIER_RATIO = 1;
+            CATAPULT_RATIO = 1;
+            OBSTACLE_RATIO = 1;
+        }
     }
 
     void Update()

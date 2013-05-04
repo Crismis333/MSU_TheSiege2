@@ -11,9 +11,7 @@ public class GUIScript : MonoBehaviour {
 	public static long SCORE;
 	
     public GUISkin gSkin;
-    public Texture2D runningSoldiers1, runningSoldiers2, runningHero1, runningHero2, runningGoal, damagebar, swordLeft, swordRight;
-    public Texture2D backgroundScrollScore, backgroundScrollLeft, backgroundScrollMid, backgroundScrollRight, black;
-    public Texture2D sideBar, progressBackground, progressForeground, campIcon, rageOrbBackground, rageOrbForeground, rageFull, rageEmpty, rageShadow;
+    public Texture2D black, sideBar, progressBackground, progressForeground, campIcon, rageOrbBackground, rageOrbForeground, rageFull, rageEmpty, rageShadow;
     public Texture2D slowDownBackground, slowDownForeground, chargeBarBackground, chargeBarForeground;
 
     public Vector2 scrollScoreOffset, scrollLeftOffset, scrollMidOffset, scrollRightOffset;
@@ -27,17 +25,15 @@ public class GUIScript : MonoBehaviour {
     private float lingerTimer;
     private bool showLinger;
 
-	private float currentZ;
-	private float armyZ;
-	//private float minZ = -50;
-    private float minZ = 0;
-	private float maxZ;
+	private float currentZ, maxZ, minZ = 0;
 
     private float soldierAnim;
     private float countdown;
 
-    private float hitFeedbackTimer = 0;
     private string hitFeedback = "";
+
+    private float scoreTimer = 0.3f;
+    private float maxScore, prevScore = 0;
 
     public static bool PERFECT_RUN = true;
     public static float Multiplier = 1;
@@ -57,7 +53,10 @@ public class GUIScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		maxZ = (LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64)-32;
+        int moduleCount = (int)LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH);
+        maxScore = moduleCount * 5000;
+
+        maxZ = (moduleCount * 64) - 32;
         HitList = new List<HitAccuracy>();
         soldierAnim = 0;
         Screen.lockCursor = false;
@@ -70,6 +69,7 @@ public class GUIScript : MonoBehaviour {
         lcs = GetComponent<LevelCompleteScript>();
         lost = false;
         prescreencountdown = 0f;
+        countdown = 0;
         
         if (ObstacleController.PLAYER != null)
             hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
@@ -115,7 +115,6 @@ public class GUIScript : MonoBehaviour {
             soldierAnim -= 1;
 
 		currentZ = ObstacleController.PLAYER.transform.position.z;
-		armyZ = ObstacleController.ARMY.transform.position.z;
 
         if (showLinger)
         {
@@ -132,9 +131,24 @@ public class GUIScript : MonoBehaviour {
                 lingerTimer += Time.deltaTime;
             }
         }
-
-        hitFeedbackTimer = Mathf.Max(hitFeedbackTimer - Time.deltaTime, 0);
 	}
+
+    void FixedUpdate()
+    {
+        if (scoreTimer <= 0.0f)
+        {
+            float score = (currentZ / maxZ) * maxScore;
+
+            scoreAdded = (int)(score - prevScore); //remove this to remove text popup
+            SCORE += (int)(score - prevScore);
+            scoreTimer = 0.3f;
+            hitFeedback = " "; //remove this too
+
+            prevScore = score;
+        }
+
+        scoreTimer -= Time.deltaTime;
+    }
 
     string TrimFloat(float f)
     {
@@ -145,27 +159,6 @@ public class GUIScript : MonoBehaviour {
     {
         GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
 
-        if (backgroundScrollScore != null)
-        {
-            //GUI.DrawTexture(new Rect(Screen.width - 225 + scrollScoreOffset.x, 25 + scrollScoreOffset.y, backgroundScrollScore.width, backgroundScrollScore.height), backgroundScrollScore);
-        }
-        //GUI.Box(new Rect(Screen.width-225, 25, 200, 75), "");
-        /*
-        if (sideBarTop != null)
-        {
-            GUI.DrawTexture(new Rect(Screen.width - sideBarTop.width, 0, sideBarTop.width, sideBarTop.height), sideBarTop);
-        }
-
-        if (sideBarBot != null)
-        {
-            GUI.DrawTexture(new Rect(Screen.width - sideBarBot.width, Screen.height - sideBarBot.height, sideBarBot.width, sideBarBot.height), sideBarBot);
-        }
-
-        if (sideBarMid != null)
-        {
-            GUI.DrawTexture(new Rect(Screen.width - sideBarMid.width, 233, sideBarMid.width, Screen.height - 233 - 344), sideBarMid);
-        }
-         */
         yscale = Screen.height / 1080f;
         if (sideBar != null)
         {
@@ -177,74 +170,34 @@ public class GUIScript : MonoBehaviour {
             GUI.DrawTexture(new Rect(Screen.width - progressBackground.width * yscale, 166 * yscale, progressBackground.width * yscale, progressBackground.height * yscale), progressBackground);
         }
 
-        if (progressForeground != null)
-        {
-            //Rect progRect = new Rect(Screen.width - progressForeground.width * yscale, 166 * yscale, progressForeground.width * yscale, progressForeground.height * yscale);
-            //print(progRect);
-            //Rect texRect = new Rect(0,1, 1.0f, 0.39f);
-            //GUI.DrawTextureWithTexCoords(progRect, progressForeground, texRect);
-         //   GUI.DrawTexture(new Rect(Screen.width - progressForeground.width * yscale, 166 * yscale, progressForeground.width * yscale, progressForeground.height * yscale), progressForeground);
-        }
-
         if (campIcon != null)
         {
             GUI.DrawTexture(new Rect(Screen.width - campIcon.width * yscale, 116* yscale, campIcon.width * yscale, campIcon.height * yscale),campIcon);
         }
 
-        if (false)
+        if (rageFull != null)
         {
-            if (rageOrbBackground != null)
-            {
-                int bottomPadding = 16; // Magic number
-                int orbHeight = 178; // Magic number
-                int topPadding = 256 - bottomPadding - orbHeight; // Magic number
-                float per = hm.Rage;
-                float percent = (topPadding + orbHeight * per) / 256.0f;
-                Rect clip = new Rect(Screen.width - rageOrbBackground.width * yscale, Screen.height - rageOrbBackground.height * yscale, rageOrbBackground.width * yscale, rageOrbBackground.height * yscale * percent);
-                //    clip = new Rect(Screen.width - rageOrbBackground.width * yscale, (Screen.height - orbHeight - bottomPadding) * yscale, rageOrbBackground.width * yscale, orbHeight * yscale); 
-                GUI.BeginGroup(clip);
-                //  GUI.DrawTexture(new Rect(Screen.width - rageOrbBackground.width * yscale, Screen.height - rageOrbBackground.height * yscale, rageOrbBackground.width * yscale, rageOrbBackground.height * yscale), rageOrbBackground);
-                GUI.DrawTexture(new Rect(0, 0, clip.width, rageOrbBackground.height * yscale), rageOrbBackground);
-                // GUI.DrawTexture(new Rect(0, topPadding,  rageOrbBackground.width * yscale, orbHeight * yscale), rageOrbBackground);
-                GUI.EndGroup();
-            }
-
-            if (rageOrbForeground != null)
-            {
-                Rect rageRect = new Rect(Screen.width - rageOrbForeground.width * yscale, Screen.height - rageOrbForeground.height * yscale, rageOrbForeground.width * yscale, rageOrbForeground.height * yscale);
-                GUI.DrawTexture(rageRect, rageOrbForeground);
-            }
+            Rect fullRect = new Rect(Screen.width - rageFull.width * yscale, Screen.height - rageFull.height * yscale, rageFull.width * yscale, rageFull.height * yscale);
+            GUI.DrawTexture(fullRect, rageFull);
         }
-        else
+
+        if (rageEmpty != null)
         {
-            if (rageFull != null)
-            {
-                Rect fullRect = new Rect(Screen.width - rageFull.width * yscale, Screen.height - rageFull.height * yscale, rageFull.width * yscale, rageFull.height * yscale);
-                GUI.DrawTexture(fullRect, rageFull);
-            }
+            int bottomPadding = 16; // Magic number
+            int orbHeight = 178; // Magic number
+            float per = hm.Rage;
+            float percent = 1 - (bottomPadding + orbHeight * per) / 256.0f;
+            Rect clip = new Rect(Screen.width - rageEmpty.width * yscale, Screen.height - rageEmpty.height * yscale, rageEmpty.width * yscale, rageEmpty.height * yscale * percent);
+            GUI.BeginGroup(clip);
+            GUI.DrawTexture(new Rect(0, 0, clip.width, rageEmpty.height * yscale), rageEmpty);
+            GUI.EndGroup();
+        }
 
-            if (rageEmpty != null)
-            {
-                int bottomPadding = 16; // Magic number
-                int orbHeight = 178; // Magic number
-                int topPadding = 256 - bottomPadding - orbHeight; // Magic number
-                float per = hm.Rage;
-                float percent = 1 - (bottomPadding + orbHeight * per) / 256.0f;
-                Rect clip = new Rect(Screen.width - rageEmpty.width * yscale, Screen.height - rageEmpty.height * yscale, rageEmpty.width * yscale, rageEmpty.height * yscale * percent);
-                //    clip = new Rect(Screen.width - rageOrbBackground.width * yscale, (Screen.height - orbHeight - bottomPadding) * yscale, rageOrbBackground.width * yscale, orbHeight * yscale); 
-                GUI.BeginGroup(clip);
-                //  GUI.DrawTexture(new Rect(Screen.width - rageOrbBackground.width * yscale, Screen.height - rageOrbBackground.height * yscale, rageOrbBackground.width * yscale, rageOrbBackground.height * yscale), rageOrbBackground);
-                GUI.DrawTexture(new Rect(0, 0, clip.width, rageEmpty.height * yscale), rageEmpty);
-                // GUI.DrawTexture(new Rect(0, topPadding,  rageOrbBackground.width * yscale, orbHeight * yscale), rageOrbBackground);
-                GUI.EndGroup();
-            }
-
-            if (rageShadow != null)
-            {
-                Rect fullRect = new Rect(Screen.width - rageShadow.width * yscale, Screen.height - rageShadow.height * yscale, rageShadow.width * yscale, rageShadow.height * yscale);
-                GUI.DrawTexture(fullRect, rageShadow);
+        if (rageShadow != null)
+        {
+            Rect fullRect = new Rect(Screen.width - rageShadow.width * yscale, Screen.height - rageShadow.height * yscale, rageShadow.width * yscale, rageShadow.height * yscale);
+            GUI.DrawTexture(fullRect, rageShadow);
                
-            }
         }
 
         if (slowDownBackground != null)
@@ -263,41 +216,13 @@ public class GUIScript : MonoBehaviour {
                 GUI.color = c;
             }
         }
-/*
-        if (chargeBarBackground != null)
-        {
-            GUI.DrawTexture(new Rect(Screen.width / 2 - chargeBarBackground.width * yscale / 2, Screen.height - chargeBarBackground.height * yscale, chargeBarBackground.width * yscale, chargeBarBackground.height * yscale), chargeBarBackground);
-        }
 
-        if (chargeBarForeground != null)
-        {
-            GUI.DrawTexture(new Rect(Screen.width / 2 - chargeBarForeground.width * yscale / 2, Screen.height - chargeBarForeground.height * yscale, chargeBarForeground.width * yscale, chargeBarForeground.height * yscale), chargeBarForeground);
-        }
-        */
         gSkin.label.fontSize = (int)(30f*yscale);
         GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
         GUI.Label(new Rect(Screen.width - (225 + 15 + 60) * yscale, (15 - 5) * yscale, 250 * yscale, 75 * yscale), ""+SCORE);
         GUI.color = Color.white;
 
         gSkin.label.fontSize = 24;
-        /*
-        if (backgroundScrollLeft != null)
-        {
-            GUI.DrawTexture(new Rect(15 + scrollLeftOffset.x, Screen.height - 65 + scrollLeftOffset.y, backgroundScrollLeft.width, backgroundScrollLeft.height), backgroundScrollLeft);
-        }
-        if (backgroundScrollRight != null)
-        {
-            GUI.DrawTexture(new Rect(Screen.width - 30 + scrollRightOffset.x, Screen.height - 65 + scrollRightOffset.y, backgroundScrollRight.width, backgroundScrollRight.height), backgroundScrollRight);
-        }
-        if (backgroundScrollMid != null)
-        {
-            GUI.DrawTexture(new Rect(15 + scrollMidOffset.x, Screen.height - 65 + scrollMidOffset.y, Screen.width - 30 - scrollMidOffset.x*2+1, backgroundScrollMid.height), backgroundScrollMid);
-        }
-
-        //   GUI.DrawTexture(new Rect(Screen.width / 2 - 250 - swordLeft.width / 2, Screen.height - 90 - swordLeft.height / 2 + 6, swordLeft.width, swordLeft.height), swordLeft);
-        //    GUI.DrawTexture(new Rect(Screen.width / 2 + 250 - swordRight.width / 2, Screen.height - 90 - swordRight.height / 2 + 6, swordRight.width, swordRight.height), swordRight);
-        //GUI.DrawTexture(new Rect(Screen.width / 2 - bloodsplatter.width / 2, Screen.height - 90 - bloodsplatter.height / 2 + 6, bloodsplatter.width, bloodsplatter.height), bloodsplatter);
-        */
 
         float barHeight = 632f; // Magic number...
 
@@ -305,38 +230,13 @@ public class GUIScript : MonoBehaviour {
         
         Rect progRect = new Rect(Screen.width - progressForeground.width * yscale, 166 * yscale, progressForeground.width * yscale, progressForeground.height * yscale);
         GUI.BeginGroup(progRect);
-     //   Rect progRect = new Rect(Screen.width - progressForeground.width * yscale, 166 * yscale, progressForeground.width * yscale, progressForeground.height * yscale);
-        
-        Rect texRect = new Rect(0, 1, 1.0f, 0.39f);
-     //   GUI.DrawTextureWithTexCoords(progRect, progressForeground, texRect);
+
         float p = currentZ / (maxZ - minZ);
 
         GUI.DrawTexture(new Rect(0, (int) (barHeight * yscale * (1-p)), progressForeground.width * yscale, (int)( progressForeground.height * yscale * p)), progressForeground);
-   //     GUI.DrawTexture(new Rect(0, barPos, progressForeground.width * yscale, height), progressForeground);
-
         GUI.DrawTexture(new Rect(0, (int)(barHeight * yscale * 0.99f + 1), progressForeground.width * yscale, (int)(progressForeground.height * yscale * 0.01f)), progressForeground);
 
         GUI.EndGroup();
-
-
-        if (runningSoldiers1 != null && runningSoldiers2 != null)
-        {
-            GUI.BeginGroup(new Rect(15 + scrollMidOffset.x, Screen.height - 64 - 6, Screen.width - 30 - scrollMidOffset.x * 2 + 1, Screen.height));
-            //GUI.Box(new Rect(15, Screen.height - 65, Screen.width - 30, 50), "");
-            /*
-            GUI.DrawTexture(new Rect(Screen.width - 30 - scrollMidOffset.x * 2 - 64, 0, 64, 64), runningGoal);
-            if (soldierAnim > 0.5)
-                GUI.DrawTexture(new Rect(currentZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2), 0, 128, 64), runningHero1);
-            else
-                GUI.DrawTexture(new Rect(currentZ / (maxZ - minZ) * (Screen.width- 30 - scrollMidOffset.x * 2), 0, 128, 64), runningHero2);
-            if (soldierAnim > 0.5)
-                GUI.DrawTexture(new Rect(armyZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2) - 64, 0, 128, 64), runningSoldiers1);
-            else
-                GUI.DrawTexture(new Rect(armyZ / (maxZ - minZ) * (Screen.width - 30 - scrollMidOffset.x * 2) - 64, 0, 128, 64), runningSoldiers2);
-            //GUI.DrawTexture(new Rect(Screen.width - 30 - scrollMidOffset.x * 2 + 1 - 128, 0, 128, 64), runningSoldiers1);
-            */
-            GUI.EndGroup();
-        }
 
         if (started)
         {
@@ -362,45 +262,25 @@ public class GUIScript : MonoBehaviour {
     private int ConvertHitRate(float hitRate)
     {
         if (hitRate > 0.98)
-        {
             return 10;
-        }
         if (hitRate > 0.95)
-        {
             return 9;
-        }
         if (hitRate > 0.90)
-        {
             return 8;
-        }
         if (hitRate > 0.80)
-        {
             return 7;
-        }
         if (hitRate > 0.70)
-        {
             return 6;
-        }
         if (hitRate > 0.60)
-        {
             return 5;
-        }
         if (hitRate > 0.50)
-        {
             return 4;
-        }
         if (hitRate > 0.40)
-        {
             return 3;
-        }
         if (hitRate > 0.30)
-        {
             return 2;
-        }
         if (hitRate > 0)
-        {
             return 1;
-        }
         return (int)hitRate;
     }
 
@@ -440,10 +320,8 @@ public class GUIScript : MonoBehaviour {
                 SCORE += baseScore;
                 scoreAdded = baseScore;
             }
-            //print("Score increase: " + (long)score);
         }
         AttackFeedback(hit);
-     //   print("Efficiency: " + eff);
     }
 
     public void AttackFeedback(HitAccuracy ha)
@@ -477,7 +355,6 @@ public class GUIScript : MonoBehaviour {
             lcs.tripleKills++;
         }
         hitFeedback += "!";
-        hitFeedbackTimer = 2.0f;
     }
 
     float CalculateEfficiency()
@@ -516,8 +393,6 @@ public class GUIScript : MonoBehaviour {
         }
         else
         {
-
-            //GUI.Label(new Rect(10, 50, 80, 30), "" + Time.timeSinceLevelLoad);
             GUI.skin = gSkin;
             Level_Interface();
 
@@ -577,15 +452,11 @@ public class GUIScript : MonoBehaviour {
 
     void EngageReleaseBar()
     {
-
         handleEngagement();
-        //  handleRelease(120, 55, 100, 20);
     }
 
     void handleEngagement()
     {
-        int width = 500;
-       
         if (BarActive)
         {
             float yscale = Screen.height / 1080f;
@@ -607,8 +478,6 @@ public class GUIScript : MonoBehaviour {
                 int left = 1024 - right - swordlength;
                 float percent = engagePercent > 100 ? 200 - engagePercent : engagePercent;
                
-                
-
                 float per = (left + (percent / 100) * swordlength) / 1024;
 
                 Rect r = new Rect(Screen.width / 2 - chargeBarForeground.width * yscale / 2, Screen.height - chargeBarForeground.height * yscale, chargeBarForeground.width * yscale * per, chargeBarForeground.height * yscale);
@@ -617,33 +486,6 @@ public class GUIScript : MonoBehaviour {
                 GUI.EndGroup();
                 lastEngagePercent = engagePercent;
             }
-            /*
-            GUI.DrawTexture(new Rect(Screen.width / 2 - 250, Screen.height - 90, 500, 12), damagebar);
-
-
-            if (engagePercent > 0 && engagePercent < 200)
-            {
-                float pos = engagePercent / 95 * width / 2;
-                GUI.DrawTexture(new Rect(Screen.width / 2 - 250 - swordLeft.width / 2 + pos, Screen.height - 90 - swordLeft.height / 2 + 6, swordLeft.width, swordLeft.height), swordLeft);
-                GUI.DrawTexture(new Rect(Screen.width / 2 + 250 - swordLeft.width / 2 - pos, Screen.height - 90 - swordLeft.height / 2 + 6, swordLeft.width, swordLeft.height), swordRight);
-                //  print("Engagepercent: " + engagePercent);
-            //    GUI.Box(new Rect(left + pos, top, 2, height), new GUIContent(""));
-            }
-
-            if (engageFixed)
-            {
-                float pos = fixedEngagePercent / 100 * width;
-               // GUI.Box(new Rect(left + pos, top, 2, height), new GUIContent(""));
-                GUI.DrawTexture(new Rect(Screen.width / 2 - 250 - swordLeft.width / 2 + pos, Screen.height - 90 - swordLeft.height / 2 + 6, swordLeft.width, swordLeft.height), swordLeft);
-            }
-
-            if (releasePercent > 0)
-            {
-                float pos = releasePercent / 100 * width;
-            //    GUI.Box(new Rect(left + (width - pos), top, 2, height), new GUIContent(""));
-                GUI.DrawTexture(new Rect(Screen.width / 2 + 250 - swordRight.width / 2 - pos, Screen.height - 90 - swordRight.height / 2 + 6, swordRight.width, swordRight.height), swordRight);
-            }
-             */
         }
     }
 

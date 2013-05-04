@@ -64,7 +64,7 @@ public class EnemyCreator : MonoBehaviour
                 if (EnemyOK)
                 {
                     //Destroy(SpaceChecker);
-                    Instantiate(Enemy, new Vector3(x_val, 0.1f, z + 70), Quaternion.AngleAxis(180, Vector3.up));
+                    Instantiate(Enemy, new Vector3(x_val, 4f, z + 70), Quaternion.AngleAxis(180, Vector3.up));
                 }
             }
         }

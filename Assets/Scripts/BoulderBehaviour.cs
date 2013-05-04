@@ -37,7 +37,7 @@ public class BoulderBehaviour : MonoBehaviour {
         {
             HeroMovement hm = other.GetComponent<HeroMovement>();
             Vector3 exppos = ObstacleController.PLAYER.transform.position;
-            exppos.y = 1;
+            exppos.y += 1;
             exppos.z -= 1;
             gameObject.GetComponent<Rigidbody>().AddExplosionForce((hm.CurrentSpeed / 4)*10, exppos, 0);
             Physics.IgnoreCollision(gameObject.collider, other);

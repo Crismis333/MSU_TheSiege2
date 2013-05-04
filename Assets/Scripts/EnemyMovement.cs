@@ -8,6 +8,9 @@ public class EnemyMovement : MonoBehaviour {
 	
 	private Animator anim;
 
+    private bool snapped = false;
+    private int fixedCounter = 0;
+
 	// Use this for initialization
 	void Start () {
         player = ObstacleController.PLAYER;
@@ -27,4 +30,23 @@ public class EnemyMovement : MonoBehaviour {
             Destroy(gameObject);
         }
 	}
+
+    void FixedUpdate()
+    {
+        if (!snapped)
+        {
+            if (fixedCounter == 2)
+            {
+                Vector3 d = transform.TransformDirection(Vector3.down);
+                RaycastHit rh;
+                if (Physics.Raycast(transform.position, d, out rh, 6.0f))
+                {
+                    transform.position = rh.point;
+                }
+                snapped = true;
+            }
+
+            fixedCounter++;
+        }
+    }
 }
