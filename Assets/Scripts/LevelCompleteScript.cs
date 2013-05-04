@@ -271,7 +271,7 @@ public class LevelCompleteScript : MonoBehaviour {
                 guin.SetNoPlay();
             }
             displayedScore = calculatedScore;
-            averageMultiplier = goodMultiplier = excellentMultiplier = perfectMultiplier = doubleMultiplier = tripleMultiplier = chargeKillMultiplier = 0;
+            averageMultiplier = goodMultiplier = excellentMultiplier = perfectMultiplier = doubleMultiplier = tripleMultiplier = chargeKillMultiplier = perfectRunMultiplier = 0;
             returned = true;
             countdown = 1f;
         }
