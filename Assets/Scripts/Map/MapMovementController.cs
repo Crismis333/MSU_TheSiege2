@@ -84,7 +84,7 @@ public class MapMovementController : MonoBehaviour {
         Rect GUI_Area = new Rect(Screen.width - 400, 0, 350, 530);
         if (Screen.lockCursor)
             return;
-        if (Input.GetMouseButtonDown(0) &&GUI_Area.Contains(Input.mousePosition))
+        if (Input.GetMouseButtonDown(0) && GUI_Area.Contains(Input.mousePosition) && mapg.current_location != null)
             {
                 onguidown = true;
                 return;
@@ -93,9 +93,9 @@ public class MapMovementController : MonoBehaviour {
         if (Input.GetMouseButtonUp(0))
             onguidown = false;
 
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) || GUINavigation.BButtonDown())
         {
-            if (!GUI_Area.Contains(Input.mousePosition))
+            if (!guin.usingMouse || !GUI_Area.Contains(Input.mousePosition))
             {
                 LocationClick.currentActive = null;
                 mapg.current_location = null;

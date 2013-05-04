@@ -32,48 +32,49 @@ public class MapGui : MonoBehaviour {
 
     void Map_Main()
     {
-        if (backgroundScroll != null)
-        {
-            GUI.BeginGroup(new Rect(Screen.width - backgroundScroll.width + scrollOffset.x, Screen.height - backgroundScroll.height + scrollOffset.y, backgroundScroll.width, backgroundScroll.height));
-            GUI.DrawTexture(new Rect(0, 0, backgroundScroll.width, backgroundScroll.height), backgroundScroll);
-            GUI.EndGroup();
-        }
-
-        GUI.BeginGroup(new Rect(Screen.width - 400 , Screen.height - 520, Screen.width, Screen.height));
-
         if (current_location != null)
         {
-            
+            if (backgroundScroll != null)
+            {
+                GUI.BeginGroup(new Rect(Screen.width - backgroundScroll.width + scrollOffset.x, Screen.height - backgroundScroll.height + scrollOffset.y, backgroundScroll.width, backgroundScroll.height));
+                GUI.DrawTexture(new Rect(0, 0, backgroundScroll.width, backgroundScroll.height), backgroundScroll);
+                GUI.EndGroup();
+            }
+
+            GUI.BeginGroup(new Rect(Screen.width - 400, Screen.height - 520, Screen.width, Screen.height));
+
+            if (current_location != null)
+            {
+
+                GUI.color = Color.black;
+                GUI.skin.label.fontSize = 24;
+                GUI.Label(new Rect(35, 5, 350, 100), current_location.LevelName);
+                GUI.skin.label.fontSize = 10;
+                GUI.color = Color.white;
+                Vector2 sizeOfLabel = GUI.skin.label.CalcSize(new GUIContent(current_location.description));
+
+                if (sizeOfLabel.y > 190)
+                {
+                    scrollPos = GUI.BeginScrollView(new Rect(10, 70 + 20, 330, 190), scrollPos, new Rect(0, 0, 0, sizeOfLabel.y), false, true);
+                    GUI.color = Color.black;
+                    GUI.Label(new Rect(15, 0, 335, sizeOfLabel.y), current_location.description);
+                    GUI.EndScrollView();
+                }
+                else
+                {
+                    GUI.color = Color.black;
+                    GUI.Label(new Rect(15, 70 + 20, 335, sizeOfLabel.y), current_location.description);
+                }
+                GUI.color = Color.white;
+            }
             GUI.color = Color.black;
-            GUI.skin.label.fontSize = 24;
-            GUI.Label(new Rect(35, 5, 350, 100), current_location.LevelName);
-            GUI.skin.label.fontSize = 10;
-            GUI.color = Color.white;
-            Vector2 sizeOfLabel = GUI.skin.label.CalcSize(new GUIContent(current_location.description));
 
-            if (sizeOfLabel.y > 190)
-            {
-                scrollPos = GUI.BeginScrollView(new Rect(10, 70 + 20, 330, 190), scrollPos, new Rect(0, 0, 0, sizeOfLabel.y), false, true);
-                GUI.color = Color.black;
-                GUI.Label(new Rect(15, 50 + 20, 335, sizeOfLabel.y), current_location.description);
-                GUI.EndScrollView();
-            }
-            else
-            {
-                GUI.color = Color.black;
-                GUI.Label(new Rect(15, 50 + 20, 335, sizeOfLabel.y), current_location.description);
-            }
-            GUI.color = Color.white;
-        }
-        GUI.color = Color.black;
+            GUI.Label(new Rect(15 + 15, 215 + 20 + 0 * 20 + 80, 128, 128), "Length:");
+            GUI.Label(new Rect(15 + 15, 215 + 20 + 1 * 20 + 80, 128, 128), "Soldiers:");
+            GUI.Label(new Rect(15 + 15, 215 + 20 + 2 * 20 + 80, 128, 128), "Obstacles:");
+            GUI.Label(new Rect(15 + 15, 215 + 20 + 3 * 20 + 80, 128, 128), "Catapults:");
 
-        GUI.Label(new Rect(15 + 15, 215 + 20 + 0 * 20 + 80, 128, 128), "Length:");
-        GUI.Label(new Rect(15 + 15, 215 + 20 + 1 * 20 + 80, 128, 128), "Soldiers:");
-        GUI.Label(new Rect(15 + 15, 215 + 20 + 2 * 20 + 80, 128, 128), "Obstacles:");
-        GUI.Label(new Rect(15 + 15, 215 + 20 + 3 * 20 + 80, 128, 128), "Catapults:");
 
-        if (current_location != null)
-        {
             GUI.Label(new Rect(15 + 100, 215 + 20 + 0 * 20 + 80, 128, 128), toNumerals(current_location.difficulty_length));
             GUI.Label(new Rect(15 + 100, 215 + 20 + 1 * 20 + 80, 128, 128), toNumerals(current_location.difficulty_soldier));
             GUI.Label(new Rect(15 + 100, 215 + 20 + 2 * 20 + 80, 128, 128), toNumerals(current_location.difficulty_obstacles));
@@ -82,15 +83,15 @@ public class MapGui : MonoBehaviour {
 
             if (GUI.Button(new Rect(155, 35 + 20 + 10 * 20, 190, 190), "")) { Battle_Pressed(); }
 
+            GUI.color = Color.black;
+            GUI.skin.label.fontSize = 16;
+            GUI.Label(new Rect(15 + 15, 215 + 20 + 12 * 20, 128, 128), "Score:");
+            GUI.color = Color.red;
+            GUI.Label(new Rect(15 + 15, 215 + 20 + 12 * 20, 350, 128), "               " + CurrentGameState.currentScore);
+            GUI.skin.label.fontSize = 10;
+            GUI.color = Color.white;
+            GUI.EndGroup();
         }
-        GUI.color = Color.black;
-        GUI.skin.label.fontSize = 16;
-        GUI.Label(new Rect(15 + 15, 215 + 20 + 12 * 20, 128, 128), "Score:");
-        GUI.color = Color.red;
-        GUI.Label(new Rect(15 + 15, 215 + 20 + 12 * 20, 350, 128), "               " + CurrentGameState.currentScore);
-        GUI.skin.label.fontSize = 10;
-        GUI.color = Color.white;
-        GUI.EndGroup();
         if (stopped)
         {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
