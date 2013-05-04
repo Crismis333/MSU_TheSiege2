@@ -239,7 +239,7 @@ public class OptionsMenuScript : MonoBehaviour {
             {
                 case 0:
                     {
-                        if (Mathf.Abs(kh) < Mathf.Abs(kh2))
+                        if (Mathf.Abs(kh) > Mathf.Abs(kh2))
                             musicvol += Input.GetAxis("Horizontal") / 50;
                         else
                             musicvol += Input.GetAxis("DPadHorizontal") / 50;
@@ -249,7 +249,7 @@ public class OptionsMenuScript : MonoBehaviour {
                     }
                 case 1: 
                     {
-                        if (Mathf.Abs(kh) < Mathf.Abs(kh2))
+                        if (Mathf.Abs(kh) > Mathf.Abs(kh2))
                             effectvol += Input.GetAxis("Horizontal") / 50;
                         else
                             effectvol += Input.GetAxis("DPadHorizontal") / 50;
