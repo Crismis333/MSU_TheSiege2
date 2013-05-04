@@ -85,7 +85,7 @@ public class HeroAttack : MonoBehaviour
         {
              GameObject enemy = other.transform.parent.gameObject;
             Vector3 exppos = ObstacleController.PLAYER.transform.position;
-            exppos.y = 1;
+            exppos.y += 1;
             other.transform.parent.GetComponent<EnemyAttack>().AddExplosion(hm.CurrentSpeed / 4 * 400, exppos);
             //  other.transform.parent.GetComponent<EnemyAttack>().KillSelf();
             hm.SlowHero(SlowTime, SlowAmount);

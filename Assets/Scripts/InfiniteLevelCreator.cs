@@ -13,13 +13,13 @@ public class InfiniteLevelCreator : MonoBehaviour
     private Queue<GameObject> sidesA;
     private int sideAState = -1;
     private int prevASide = -1;
-    private int curASide = 0;
+    private int curASide = -1;
     private int varACount = 0;
 
     private Queue<GameObject> sidesB;
     private int sideBState = -1;
     private int prevBSide = -1;
-    private int curBSide = 0;
+    private int curBSide = -1;
     private int varBCount = 0;
 
     private Queue<GameObject> roads;
@@ -174,7 +174,7 @@ public class InfiniteLevelCreator : MonoBehaviour
 
         if (state == -1)
         {
-            randomSide = Random.Range(0, sideModules.Count + 3);
+            randomSide = Random.Range(0, sideModules.Count + 5);
             if (randomSide >= sideModules.Count)
                 randomSide = 0;
             if (variationCounter >= variationCap)
@@ -191,6 +191,7 @@ public class InfiniteLevelCreator : MonoBehaviour
             (state == 3 || state == -1) && (sideAState == 3 || sideAState == -1) && specialVarCount == -1)
         {
             createSpecial = true;
+            randomSide = 0;
         }
 
         if (prevSide != -1)
