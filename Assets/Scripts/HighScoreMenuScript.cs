@@ -76,7 +76,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.color = Color.red;
             GUI.Label(new Rect(0, 4 * 35, 790, 64), "                      " + CurrentGameState.previousScore);
             GUI.color = Color.white;
-            setname = GUI.TextField(new Rect(170, 6 * 35, 540, 64), setname, 10);
+            setname = GUI.TextField(new Rect(170, 6 * 35, 670, 64), setname, 16);
             if (GUI.Button(new Rect(60, 8 * 35, 700, 64), "Add score")) { Add_Score(); }
             GUI.EndGroup();
         }

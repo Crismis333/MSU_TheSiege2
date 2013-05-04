@@ -3,6 +3,9 @@ using System.Collections;
 
 public class LoaderClass : MonoBehaviour {
 
+    public string[] highscoresCampaignName, highscoresInfiniteName;
+    public int[] highscoresCampaignScore, highscoresInfiniteScore;
+
 	void Start () {
         CurrentGameState.Restart();
         if (!PlayerPrefs.HasKey("MusicVolume"))
@@ -20,13 +23,13 @@ public class LoaderClass : MonoBehaviour {
         {
             if (!PlayerPrefs.HasKey("Highscore" + i + "CampaignName"))
             {
-                PlayerPrefs.SetString("Highscore" + i + "CampaignName", "");
-                PlayerPrefs.SetString("Highscore" + i + "CampaignScore", "");
+                PlayerPrefs.SetString("Highscore" + i + "CampaignName", highscoresCampaignName[i-1]);
+                PlayerPrefs.SetString("Highscore" + i + "CampaignScore", ""+highscoresCampaignScore[i-1]);
             }
             if (!PlayerPrefs.HasKey("Highscore" + i + "InfiniteName"))
             {
-                PlayerPrefs.SetString("Highscore" + i + "InfiniteName", "");
-                PlayerPrefs.SetString("Highscore" + i + "InfiniteScore", "");
+                PlayerPrefs.SetString("Highscore" + i + "InfiniteName", highscoresInfiniteName[i-1]);
+                PlayerPrefs.SetString("Highscore" + i + "InfiniteScore", ""+highscoresInfiniteScore[i-1]);
             }
         }
 
