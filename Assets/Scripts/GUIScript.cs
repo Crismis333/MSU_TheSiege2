@@ -139,10 +139,10 @@ public class GUIScript : MonoBehaviour {
         {
             float score = (currentZ / maxZ) * maxScore;
 
-            scoreAdded = (int)(score - prevScore); //remove this to remove text popup
+            //scoreAdded = (int)(score - prevScore); //remove this to remove text popup
             SCORE += (int)(score - prevScore);
-            scoreTimer = 0.3f;
-            hitFeedback = " "; //remove this too
+            scoreTimer = 0.1f;
+            //hitFeedback = " "; //remove this too
 
             prevScore = score;
         }
