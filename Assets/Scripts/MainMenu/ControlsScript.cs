@@ -35,11 +35,33 @@ public class ControlsScript : MonoBehaviour {
             GUI.DrawTexture(new Rect(0, 0, backgroundScroll.width, backgroundScroll.height), backgroundScroll);
             GUI.EndGroup();
         }
+
+        GUI.BeginGroup(new Rect(0,0, Screen.width, Screen.height));
+        GUI.color = Color.white;
+
+
+        if (screenNr == 1)
+        {
+            GUI.DrawTexture(new Rect(Screen.width / 2 - xBoxController.width / 2 + scrollOffset.x, Screen.height / 2 - xBoxController.height / 2 + scrollOffset.y, xBoxController.width, xBoxController.height), xBoxController);
+        }
+        else if (screenNr == 2)
+        {
+            GUI.DrawTexture(new Rect(Screen.width / 2 - keyboardController.width / 2 + scrollOffset.x, Screen.height / 2 - keyboardController.height / 2 + scrollOffset.y, keyboardController.width, keyboardController.height), keyboardController);
+        }
+
+        GUI.EndGroup();
+
         GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 7.5f * 35, 790, 15 * 35));
         GUI.color = Color.black;
 
         GUI.SetNextControlName("title");
         GUI.Label(new Rect(60, 1 * 30 + 10, 790, 64), "Controls page " + (screenNr+1) + "/" + maxPages);
+
+        if (screenNr == 0)
+        {
+            GUI.Label(new Rect(15, 3 * 35 + 10, 640, 64), "You are a barbarian!");
+            GUI.Label(new Rect(15, 5 * 35 + 10, 640, 64), "Go od barbarian stuff!");
+        }
 
         GUI.color = Color.white;
         GUI.SetNextControlName("Return");
