@@ -183,8 +183,6 @@ public class HighScoreMenuScript : MonoBehaviour {
     void Start()
     {
         nextpressedcooldown = 0;
-        CurrentGameState.Restart();
-        CurrentGameState.currentScore = 999999999;
         nextpressed = false;
         guin = GetComponent<GUINavigation>();
         if (CurrentGameState.InfiniteMode)
