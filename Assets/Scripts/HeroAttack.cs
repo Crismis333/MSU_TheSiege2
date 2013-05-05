@@ -149,6 +149,7 @@ public class HeroAttack : MonoBehaviour
             chargePercent = 0;
             chargeTime = 0;
             GUI.BarActive = true;
+            GUI.lastEngagePercent = 0;
 
             anim.SetInteger("AttackState", 1);
         }

@@ -216,9 +216,38 @@ public class HeroMovement : MonoBehaviour {
             SpeedUp -= 0.2f * Time.deltaTime;
 
 		currentSpeed = moveDirection.z;
-        
-        moveDirection.x = StrafeSpeed * h;
+
+        // Change this to true to use non-smoothed input
+        if (false)
+        {
+            moveDirection.x = StrafeSpeed * h;
+            
+        }
+        else
+        {
+            float change = StrafeSpeed * h; // in [-9, 9]
+            moveDirection.x = InputSmoothing(change);
+        }
 	}
+
+    private float curSpeed = 0, interval = 50;
+
+    float InputSmoothing(float change)
+    {       
+        if (curSpeed < change)
+        {
+            curSpeed += interval * Time.deltaTime;
+        }
+        else if (curSpeed > change)
+        {
+            curSpeed -= interval * Time.deltaTime;            
+        }
+        if (change == 0 && (curSpeed < 1.5f * interval * Time.deltaTime || curSpeed > -1.5f * interval * Time.deltaTime))
+        {
+            curSpeed = 0;
+        }       
+        return curSpeed;
+    }
 
     public void ApplyGravity()
     {

@@ -470,7 +470,7 @@ public class GUIScript : MonoBehaviour {
 
             if (chargeBarForeground != null)
             {
-                float epsilon = 20.0f;
+                float epsilon = 40.0f;
                 if (engagePercent > lastEngagePercent + epsilon || engagePercent < lastEngagePercent - epsilon)
                 {
                     engagePercent = lastEngagePercent;
