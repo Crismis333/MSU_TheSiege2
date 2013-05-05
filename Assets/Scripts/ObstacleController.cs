@@ -38,6 +38,10 @@ public class ObstacleController : MonoBehaviour {
             SOLDIER_RATIO = 1;
             CATAPULT_RATIO = 1;
             OBSTACLE_RATIO = 1;
+            GUIScript.DIFFICULTY_INCREASE = 1;
+
+            GUIScript.MAX_TIMER = DifficultyIncreaseTimer;
+            GUIScript.INF_TIMER = 0;
         }
     }
 
@@ -48,11 +52,12 @@ public class ObstacleController : MonoBehaviour {
             if (!maxDifficulty && SOLDIER_RATIO == 10 && CATAPULT_RATIO == 10 && OBSTACLE_RATIO == 10)
             {
                 maxDifficulty = true;
-                return;
             }
 
             if (timer <= 0)
             {
+                GUIScript.DIFFICULTY_INCREASE++;
+
                 if (maxDifficulty)
                 {
                     ARMY.GetComponent<ArmyMovement>().InfSpeedMod += 0.1f;
@@ -99,6 +104,8 @@ public class ObstacleController : MonoBehaviour {
             {
                 timer -= Time.deltaTime;
             }
+
+            GUIScript.INF_TIMER = timer;
         }
     }
 }

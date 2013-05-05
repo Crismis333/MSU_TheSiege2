@@ -157,7 +157,10 @@ public class LevelCreator : MonoBehaviour {
 				if (variationCounter >= variationCap) {
 					int q = randomSide;
 					while(q == randomSide) {
-						randomSide = Random.Range (0,sideModules.Count);
+                        if (i < specialModuleIndex)
+                            randomSide = Random.Range(1, sideModules.Count);
+                        else
+                            randomSide = Random.Range(0, sideModules.Count);
 					}
 				}
 			}
@@ -184,13 +187,11 @@ public class LevelCreator : MonoBehaviour {
                 {
                     variationCounter++;
                 }
-
-                string realName = sideModules[randomSide].name;
 			
 				switch (transitionState)
 				{
 				case -1:
-                    side = Resources.Load("SideModules/Sides/"+realName, typeof(GameObject)) as GameObject;
+                    side = sideModules[randomSide];
 					break;
 				case 0: 
 					side = Resources.Load("SideModules/SideStarts/"+prevName+"_start", typeof(GameObject)) as GameObject;
@@ -205,7 +206,7 @@ public class LevelCreator : MonoBehaviour {
 					transitionState++;
 					break;
 				case 3:
-                    side = Resources.Load("SideModules/Sides/" + realName, typeof(GameObject)) as GameObject;
+                    side = sideModules[randomSide];
 					transitionState = -1;
 					break;
 				}

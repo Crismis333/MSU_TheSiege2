@@ -37,6 +37,11 @@ public class GUIScript : MonoBehaviour {
 
     public static bool PERFECT_RUN = true;
     public static float Multiplier = 1;
+    public static int DIFFICULTY_INCREASE = 1;
+
+    public static float MAX_TIMER = 15;
+    public static float INF_TIMER = 0;
+
     public MusicVolumeSetter music;
 
     public bool started;
@@ -173,9 +178,13 @@ public class GUIScript : MonoBehaviour {
             GUI.DrawTexture(new Rect(Screen.width - progressBackground.width * yscale, 166 * yscale, progressBackground.width * yscale, progressBackground.height * yscale), progressBackground);
         }
 
-        if (campIcon != null)
+        if (campIcon != null && !LevelCreator.INF_MODE)
         {
             GUI.DrawTexture(new Rect(Screen.width - campIcon.width * yscale, 116* yscale, campIcon.width * yscale, campIcon.height * yscale),campIcon);
+        }
+        else if (LevelCreator.INF_MODE)
+        {
+            // Draw label with text: DIFFICULTY_INCREASE
         }
 
         if (rageFull != null)
@@ -235,6 +244,10 @@ public class GUIScript : MonoBehaviour {
         GUI.BeginGroup(progRect);
 
         float p = currentZ / (maxZ - minZ);
+        if (LevelCreator.INF_MODE)
+        {
+            p = 1 - (INF_TIMER / MAX_TIMER);
+        }
 
         GUI.DrawTexture(new Rect(0, (int) (barHeight * yscale * (1-p)), progressForeground.width * yscale, (int)( progressForeground.height * yscale * p)), progressForeground);
         GUI.DrawTexture(new Rect(0, (int)(barHeight * yscale * 0.99f + 1), progressForeground.width * yscale, (int)(progressForeground.height * yscale * 0.01f)), progressForeground);
