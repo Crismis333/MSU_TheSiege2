@@ -11,6 +11,9 @@ public class ControlsScript : MonoBehaviour {
     public EffectVolumeSetter cancelSound;
     public EffectVolumeSetter selectSound;
 
+    [Multiline]
+    public string howToPlay;
+
     private Texture2D background;
     private Color activeColor, inactiveColor;
     private bool firstGUI;
@@ -59,8 +62,10 @@ public class ControlsScript : MonoBehaviour {
 
         if (screenNr == 0)
         {
-            GUI.Label(new Rect(15, 3 * 35 + 10, 640, 64), "You are a barbarian!");
-            GUI.Label(new Rect(15, 5 * 35 + 10, 640, 64), "Go od barbarian stuff!");
+            TextAnchor t = GUI.skin.label.alignment;
+            GUI.skin.label.alignment = TextAnchor.UpperLeft;
+            GUI.Label(new Rect(15, 3 * 35 + 10, 640, 640), howToPlay);
+            GUI.skin.label.alignment = t;
         }
 
         GUI.color = Color.white;

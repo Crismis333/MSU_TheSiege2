@@ -9,6 +9,9 @@ public class DeathScreenScript : MonoBehaviour {
     public Vector2 scrollOffset2;
     public EffectVolumeSetter selectSound;
 
+    [Multiline]
+    public string overrunText, gaveUpText;
+
     public Texture2D black;
     private long score;
     private long newscore;
@@ -42,12 +45,14 @@ public class DeathScreenScript : MonoBehaviour {
         GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 5 * 35, 790, 10 * 35));
         //GUI.Box(new Rect(0, 0, 790, 15 * 35), "");
         GUI.color = Color.black;
-        if (CurrentGameState.highscorecondition == EndState.GaveUp)
-            GUI.Label(new Rect(0, 1 * 35, 790, 64), "Quitters can never be winners.");
-        else
-            GUI.Label(new Rect(0, 1 * 35, 790, 64), "Your army decided to run ahead of you. Slowpoke.");
         GUI.SetNextControlName("title");
-        GUI.Label(new Rect(0, 2 * 35, 790, 64), "Your points have beeen halved.");
+        TextAnchor t = GUI.skin.label.alignment;
+        GUI.skin.label.alignment = TextAnchor.UpperLeft;
+        if (CurrentGameState.highscorecondition == EndState.GaveUp)
+            GUI.Label(new Rect(0, 0, 790, 790), gaveUpText);
+        else
+            GUI.Label(new Rect(0, 0, 790, 790), overrunText);
+        GUI.skin.label.alignment = t;
 
         GUI.Label(new Rect(0, 4 * 35, 790, 64), "Current score      ");
         GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);

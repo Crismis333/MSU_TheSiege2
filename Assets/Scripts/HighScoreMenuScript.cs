@@ -14,6 +14,9 @@ public class HighScoreMenuScript : MonoBehaviour {
     public EffectVolumeSetter cancelSound;
     public EffectVolumeSetter selectSound;
 
+    [Multiline]
+    public string infiniteText, wonText, lostText, gaveupText;
+
     private bool addnewScore, started, returned;
     private string setname;
     private float countdown;
@@ -52,32 +55,15 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 5 * 35, 790, 10 * 35));
             //GUI.Box(new Rect(0, 0, 790, 15 * 35), "");
             GUI.color = Color.black;
+            TextAnchor t = GUI.skin.label.alignment;
+            GUI.skin.label.alignment = TextAnchor.UpperLeft;
             switch (CurrentGameState.highscorecondition) {
-                case EndState.Infinite:
-                    {
-                        GUI.Label(new Rect(0, 1 * 35, 790, 64), "You have proven yourself worthy to be");
-                        GUI.Label(new Rect(0, 2 * 35, 790, 64), "mentioned on the great Halls of Scores!");
-                        break;
-                    }
-                case EndState.Won:
-                    {
-                        GUI.Label(new Rect(0, 1 * 35, 790, 64), "You have made a high score! You are truly");
-                        GUI.Label(new Rect(0, 2 * 35, 790, 64), "a great barbarian! Conglaturations!");
-                        break;
-                    }
-                case EndState.Lost:
-                    {
-                        GUI.Label(new Rect(0, 1 * 35, 790, 64), "You made the high score. Still,");
-                        GUI.Label(new Rect(0, 2 * 35, 790, 64), "try to be less bad next time.");
-                        break;
-                    }
-                case EndState.GaveUp:
-                    {
-                        GUI.Label(new Rect(0, 1 * 35, 790, 64), "A true barbarian never gives up.");
-                        GUI.Label(new Rect(0, 2 * 35, 790, 64), "But you still made the high score.");
-                        break;
-                    }
+                case EndState.Infinite: GUI.Label(new Rect(0, 0, 790, 790), infiniteText); break;
+                case EndState.Won: GUI.Label(new Rect(0, 0, 790, 790), wonText); break;
+                case EndState.Lost: GUI.Label(new Rect(0, 0, 790, 790), lostText); break;
+                case EndState.GaveUp: GUI.Label(new Rect(0, 0, 790, 790), gaveupText); break;
             }
+            GUI.skin.label.alignment = t;
 
             GUI.Label(new Rect(0, 4 * 35, 790, 64), "Final score      ");
             GUI.Label(new Rect(0, 6 * 35, 790, 64), "Name: ");
