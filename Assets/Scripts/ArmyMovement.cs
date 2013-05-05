@@ -17,7 +17,7 @@ public class ArmyMovement : MonoBehaviour
 
     private HeroMovement hm;
 
-    public float VisibleDistance = 4.0f;
+    public float VisibleDistance = 3f;
     private float closeTimer;
     public float MaxClose = 5.0f;
     private float trampleSpeed;
@@ -29,6 +29,7 @@ public class ArmyMovement : MonoBehaviour
             hm = ObstacleController.PLAYER.GetComponent<HeroMovement>();
         }
         levelLength = LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH) * 64 - 32;
+        SetFellowActive(false);
     }
 
     public void Trample()
@@ -37,6 +38,17 @@ public class ArmyMovement : MonoBehaviour
         {
             GetTrampled = true;
             trampleSpeed = 1.2f;
+        }
+    }
+
+    void SetFellowActive(bool active)
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.tag.Equals("Fellow"))
+            {
+                child.gameObject.SetActive(active);
+            }
         }
     }
 
@@ -59,15 +71,23 @@ public class ArmyMovement : MonoBehaviour
 
         speedMod = 1.05f * InfSpeedMod;
 
+       
+
         if (!AreClose)
         {
+            if (dZ - 1 < VisibleDistance)
+            {
+                SetFellowActive(true);
+            }
             if (dZ < VisibleDistance)
             {
+             //   SetFellowActive(true);
                 AreClose = true;
                 closeTimer = 0;
             }
             else
             {
+                SetFellowActive(false);
                 AreClose = false;
                 GetTrampled = false;
             }
