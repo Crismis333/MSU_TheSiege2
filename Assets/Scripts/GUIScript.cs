@@ -184,6 +184,13 @@ public class GUIScript : MonoBehaviour {
         }
         else if (LevelCreator.INF_MODE)
         {
+            GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
+            gSkin.label.fontSize = (int)(20 * yscale);
+            String s = ""+DIFFICULTY_INCREASE;
+            GUI.skin.label.alignment = TextAnchor.MiddleLeft;
+            GUI.Label(new Rect(Screen.width - (20+15*s.Length) * yscale, 100 * yscale, 100 * yscale, 100 * yscale), s);
+            GUI.skin.label.alignment = TextAnchor.MiddleCenter;
+            GUI.color = Color.white;
             // Draw label with text: DIFFICULTY_INCREASE
         }
 
