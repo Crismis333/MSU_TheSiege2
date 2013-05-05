@@ -23,6 +23,8 @@ public class HighScoreMenuScript : MonoBehaviour {
     private bool firstGUI;
     private int finalchar;
     private bool movedUp, movedDown, movedLeft, movedRight, keyDownA, keyDownB;
+    private bool nextpressed;
+    private float nextpressedcooldown;
     private int highscoreNr;
 
     private GUINavigation guin;
@@ -83,7 +85,8 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.Label(new Rect(0, 4 * 35, 790, 64), "                      " + CurrentGameState.previousScore);
             GUI.color = Color.white;
             setname = GUI.TextField(new Rect(170, 6 * 35, 670, 64), setname, 16);
-            if (GUI.Button(new Rect(60, 8 * 35, 700, 64), "Add score")) { Add_Score(); }
+            if (GUI.Button(new Rect(60, 8 * 35, 700, 64), "Add score")) 
+                Accept();
             GUI.EndGroup();
         }
         else
@@ -193,8 +196,15 @@ public class HighScoreMenuScript : MonoBehaviour {
 
     void Start()
     {
+        nextpressedcooldown = 0;
+        CurrentGameState.Restart();
+        CurrentGameState.currentScore = 999999999;
+        nextpressed = false;
         guin = GetComponent<GUINavigation>();
-        highscoreNr = 0;
+        if (CurrentGameState.InfiniteMode)
+            highscoreNr = 1;
+        else
+            highscoreNr = 0;
         finalchar = -1;
         keyDownA = false;
         keyDownB = false;
@@ -219,17 +229,22 @@ public class HighScoreMenuScript : MonoBehaviour {
 
     void Update()
     {
+        if (nextpressedcooldown > 0)
+            nextpressedcooldown -= Time.deltaTime;
+        else
+            nextpressedcooldown = 0;
+        print("nextpressed: " + nextpressed);
         //print("last character: " + GetLastCharacter());
         //SetLastCharacter('5');
         if (started)
         {
-            countdown -= 0.02f;
+            countdown -= Time.deltaTime;
             if (countdown <= 0)
                 started = false;
         }
         else if (returned)
         {
-            countdown -= 0.02f;
+            countdown -= Time.deltaTime;
             if (countdown <= 0)
                 Application.LoadLevel(0);
         }
@@ -271,7 +286,7 @@ public class HighScoreMenuScript : MonoBehaviour {
 
                 if (Input.GetKeyDown(KeyCode.Return) || GUINavigation.AButtonDown() || GUINavigation.StartButtonDown() || guin.usedMenu)
                 {
-                    Add_Score();
+                    Accept();
                     return;
                 }
 
@@ -317,6 +332,9 @@ public class HighScoreMenuScript : MonoBehaviour {
         }
         else
         {
+            if (nextpressed)
+                if (!Input.GetKeyDown(KeyCode.Return) && !GUINavigation.AButtonState() && !GUINavigation.StartButtonState() && !guin.usedMenu)
+                    nextpressed = false;
             float kh = Input.GetAxisRaw("Horizontal");
             float kh2 = Input.GetAxisRaw("DPadHorizontal");
             float kh3 = Input.GetAxisRaw("DPadVertical");
@@ -408,8 +426,9 @@ public class HighScoreMenuScript : MonoBehaviour {
 
     void Add_Score()
     {
+        nextpressedcooldown = 0.5f;
         selectSound.Play();
-       guin.SetNoPlay();
+        guin.SetNoPlay();
         addnewScore = false;
         GameObject ob = new GameObject();
         ob.AddComponent<HighScoreElement>();
@@ -433,10 +452,14 @@ public class HighScoreMenuScript : MonoBehaviour {
 
     public void Accept()
     {
-        if (addnewScore)
-            Add_Score();
-        else
-            Return();
+        if (!nextpressed && nextpressedcooldown <= 0)
+        {
+            nextpressed = true;
+            if (addnewScore)
+                Add_Score();
+            else
+                Return();
+        }
     }
   
     private char GetLastCharacter()
