@@ -71,14 +71,18 @@ public class ArmyMovement : MonoBehaviour
 
         speedMod = 1.05f * InfSpeedMod;
 
-       
+        if (dZ < VisibleDistance + 3)
+        {
+            SetFellowActive(true);
+        }
+        else
+        {
+            SetFellowActive(false);
+        }
 
         if (!AreClose)
         {
-            if (dZ - 1 < VisibleDistance)
-            {
-                SetFellowActive(true);
-            }
+            
             if (dZ < VisibleDistance)
             {
              //   SetFellowActive(true);
@@ -87,7 +91,7 @@ public class ArmyMovement : MonoBehaviour
             }
             else
             {
-                SetFellowActive(false);
+              //  SetFellowActive(false);
                 AreClose = false;
                 GetTrampled = false;
             }
