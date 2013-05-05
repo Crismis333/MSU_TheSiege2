@@ -68,7 +68,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.Label(new Rect(0, 4 * 35, 790, 64), "Final score      ");
             GUI.Label(new Rect(0, 6 * 35, 790, 64), "Name: ");
             GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
-            GUI.Label(new Rect(0, 4 * 35, 790, 64), "                      " + CurrentGameState.previousScore);
+            GUI.Label(new Rect(0, 4 * 35, 790, 64), "                      " + CurrentGameState.currentScore);
             GUI.color = Color.white;
             setname = GUI.TextField(new Rect(170, 6 * 35, 670, 64), setname, 16);
             if (GUI.Button(new Rect(60, 8 * 35, 700, 64), "Add score")) 
