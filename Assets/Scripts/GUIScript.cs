@@ -71,7 +71,6 @@ public class GUIScript : MonoBehaviour {
         guin = GetComponent<GUINavigation>();
         guin.maxKeys = 0;
         lcs = GetComponent<LevelCompleteScript>();
-        lcs.distanceScore = (int) (maxScore);
         lost = false;
         prescreencountdown = 0f;
         countdown = 0;
@@ -145,10 +144,17 @@ public class GUIScript : MonoBehaviour {
     {
         if (scoreTimer <= 0.0f)
         {
-            score = (currentZ / maxZ) * maxScore;
+            if (CurrentGameState.InfiniteMode)
+                score += 267;
+            else
+                score = (currentZ / maxZ) * maxScore;
 
             //scoreAdded = (int)(score - prevScore); //remove this to remove text popup
-            SCORE += (int)(score - prevScore);
+
+            if (CurrentGameState.InfiniteMode)
+                SCORE += 267;
+            else
+                SCORE += (int)(score - prevScore);
             scoreTimer = 0.1f;
             //hitFeedback = " "; //remove this too
 
@@ -464,6 +470,11 @@ public class GUIScript : MonoBehaviour {
 
     public void CompleteLevel()
     {
+        if (CurrentGameState.InfiniteMode)
+            lcs.distanceScore = (int)score;
+        else
+            lcs.distanceScore = (int)(maxScore);
+
         this.enabled = false;
         lcs.enabled = true;
         guin.ClearElements();
