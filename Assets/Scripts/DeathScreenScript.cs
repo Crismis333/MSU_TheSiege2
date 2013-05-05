@@ -24,7 +24,7 @@ public class DeathScreenScript : MonoBehaviour {
 
     void Menu_HighScore()
     {
-        if (guin.usingMouse)
+        if (!guin.usingMouse)
             GUI.skin.button.hover.background = null;
         else
             GUI.skin.button.hover.background = background;
@@ -50,7 +50,7 @@ public class DeathScreenScript : MonoBehaviour {
         GUI.Label(new Rect(0, 2 * 35, 790, 64), "Your points have beeen halved.");
 
         GUI.Label(new Rect(0, 4 * 35, 790, 64), "Current score      ");
-        GUI.color = Color.red;
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
         GUI.Label(new Rect(0, 4 * 35, 790, 64), "                      " + score);
         GUI.color = Color.white;
         GUI.SetNextControlName("Return");

@@ -79,7 +79,7 @@ public class HighScoreMenuScript : MonoBehaviour {
 
             GUI.Label(new Rect(0, 4 * 35, 790, 64), "Final score      ");
             GUI.Label(new Rect(0, 6 * 35, 790, 64), "Name: ");
-            GUI.color = Color.red;
+            GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
             GUI.Label(new Rect(0, 4 * 35, 790, 64), "                      " + CurrentGameState.previousScore);
             GUI.color = Color.white;
             setname = GUI.TextField(new Rect(170, 6 * 35, 670, 64), setname, 16);
@@ -101,7 +101,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             if (highscoreNr == 0)
                 GUI.Label(new Rect(60, 1 * 30+10, 790, 64), "Campaign Mode");
             else if (highscoreNr == 1)
-                GUI.Label(new Rect(60, 1 * 30 + 10, 790, 64), "Eternal Rush Mode");
+                GUI.Label(new Rect(60, 1 * 30 + 10, 790, 64), "Etternal Rush Mode");
             GUI.skin.label.fontSize = 14;
             GUI.Label(new Rect(0, 1 * 30 + 70, 790, 64), "I");
             GUI.Label(new Rect(0, 2 * 30 + 70, 790, 64), "II");
@@ -113,8 +113,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             GUI.Label(new Rect(0, 8 * 30 + 70, 790, 64), "VIII");
             GUI.Label(new Rect(0, 9 * 30 + 70, 790, 64), "IX");
             GUI.Label(new Rect(0, 10 * 30 + 70, 790, 64), "X");
-            GUI.color = Color.red;
-
+            GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
             string s = "";
             if (highscoreNr == 0)
                 s = "Campaign";
