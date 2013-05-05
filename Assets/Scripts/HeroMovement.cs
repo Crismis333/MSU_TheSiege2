@@ -218,19 +218,20 @@ public class HeroMovement : MonoBehaviour {
 		currentSpeed = moveDirection.z;
 
         // Change this to true to use non-smoothed input
-        if (false)
+        if (UseSmoothedInput)
         {
-            moveDirection.x = StrafeSpeed * h;
-            
+           
+            float change = StrafeSpeed * h; // in [-9, 9]
+            moveDirection.x = InputSmoothing(change);
         }
         else
         {
-            float change = StrafeSpeed * h; // in [-9, 9]
-            moveDirection.x = InputSmoothing(change);
+            moveDirection.x = StrafeSpeed * h;
         }
 	}
 
     private float curSpeed = 0, interval = 50;
+    public bool UseSmoothedInput;
 
     float InputSmoothing(float change)
     {       
