@@ -51,6 +51,8 @@ public class HeroMovement : MonoBehaviour {
 
     public bool Charging { get { return charging; } }
 
+    public EffectVolumeSetter SoundCharge;
+
     private float chargeSpeed = 5;
     private float chargeTimeMax = 5;
     private float chargeTime = 0;
@@ -139,10 +141,11 @@ public class HeroMovement : MonoBehaviour {
             lastJumpButtonTime = Time.time;
         }
 
-        if (Input.GetButtonDown("Fire2") && Rage >= 1) {
+        if (Input.GetButtonDown("Fire2") && Rage >= 1 && !charging) {
 
             charging = true;
             chargeTime = chargeTimeMax;
+            SoundCharge.Play();
             anim.SetBool("Charge", true);
         }
 

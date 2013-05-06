@@ -42,20 +42,21 @@ public class EnemyMovement : MonoBehaviour {
                 RaycastHit rh;
                 if (Physics.Raycast(transform.position, d, out rh, 6.0f))
                 {
-                    Vector3 offset = Vector3.zero;
+                    float offsetX = 0;
                     newPos = rh.point;
                     if (rh.collider.tag.Equals("Soldier") || rh.collider.tag.Equals("Obstacle"))
                     {
                         RaycastHit newRayHit;
-                        while(Physics.Raycast(transform.position + offset, d, out newRayHit, 6.0f)) {
-                            if (!newRayHit.collider.tag.Equals("Soldier") && !newRayHit.collider.tag.Equals("Obstacle"))
+                        float startPos = transform.position.x;
+                        while(Physics.Raycast(transform.position + new Vector3(offsetX,0,0), d, out newRayHit, 6.0f)) {
+                            offsetX += 1f;
+                            if (offsetX + transform.position.x > 6)
+                                offsetX = -(6 + transform.position.x);
+                            if ((!newRayHit.collider.tag.Equals("Soldier") && !newRayHit.collider.tag.Equals("Obstacle")) || startPos == transform.position.x + offsetX)
                             {
                                 newPos = newRayHit.point;
                                 break;
                             }
-                            offset.x += 1f;
-                            if (offset.x >= 6)
-                                offset.x = -6;
                         }
                     }
 

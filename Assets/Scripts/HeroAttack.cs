@@ -11,6 +11,9 @@ public class HeroAttack : MonoBehaviour
     public float SlowTime = 2;
     public float SlowAmount = 2;
 
+    public EffectVolumeSetter SoundKill1;
+    public EffectVolumeSetter SoundKill2;
+
     private int selectedIndex;
 
     private GUIScript GUI;
@@ -214,6 +217,11 @@ public class HeroAttack : MonoBehaviour
             {
                 if (hitableEnemies.Count > 0)
                 {
+                    int ri = UnityEngine.Random.Range(0, 2);
+                    if (ri == 1)
+                        SoundKill1.Play();
+                    else
+                        SoundKill2.Play();
 
                     HitAccuracy ha = new HitAccuracy();
                     ha.Accuracy = chargePercent;
