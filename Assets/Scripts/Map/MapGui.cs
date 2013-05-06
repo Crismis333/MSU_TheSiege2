@@ -319,6 +319,8 @@ public class MapGui : MonoBehaviour {
                     scrollPos.y += 3*f;
                 if (!backDown && (h < -0.2 || GUINavigation.LBButtonDown()))
                 {
+                    if (CurrentGameState.loc.locations.Length > 1)
+                        PlayLocationClick();
                     backDown = true;
                     if (keyLocation == -1 || keyLocation == 0)
                         keyLocation = CurrentGameState.loc.locations.Length - 1;
@@ -330,6 +332,8 @@ public class MapGui : MonoBehaviour {
                 }
                 else if (!nextDown && (h > 0.2 || GUINavigation.RBButtonDown()))
                 {
+                    if (CurrentGameState.loc.locations.Length > 1)
+                        PlayLocationClick();
                     nextDown = true;
                     if (keyLocation == -1 || keyLocation == CurrentGameState.loc.locations.Length - 1)
                         keyLocation = 0;
@@ -345,9 +349,9 @@ public class MapGui : MonoBehaviour {
                 }
             }
         }
-        if (backDown && (h >= -0.2 && GUINavigation.LBButtonUp()))
+        if (backDown && (h >= -0.2 && !GUINavigation.LBButtonState()))
             backDown = false;
-        if (nextDown && (h <= 0.2 && GUINavigation.RBButtonUp()))
+        if (nextDown && (h <= 0.2 && !GUINavigation.RBButtonState()))
             nextDown = false;
     }
 

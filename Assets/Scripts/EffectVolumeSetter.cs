@@ -8,6 +8,8 @@ public class EffectVolumeSetter : MonoBehaviour {
     public float timer = 0.1f;
 
     private float countdown;
+    private AudioSource aus;
+
     void Start()
     {
         GetComponent<AudioSource>().volume = 0;
@@ -27,6 +29,7 @@ public class EffectVolumeSetter : MonoBehaviour {
     {
         if (countdown == 0)
         {
+            if 
             GetComponent<AudioSource>().Play();
             countdown = timer;
         }

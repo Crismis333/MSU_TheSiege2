@@ -1,21 +1,27 @@
 using UnityEngine;
 using System.Collections;
 
+
 [RequireComponent(typeof(AudioSource))]
 public class MusicVolumeSetter : MonoBehaviour {
 
     public float volume;
     public bool useGlobal;
+
+    
+    private AudioSource aus;
+
 	void Start () {
-        GetComponent<AudioSource>().volume = 0;
-        GetComponent<AudioSource>().Play();
+        aus = GetComponent<AudioSource>();
+        aus.volume = 0;
+        aus.Play();
 	}
 
     void Update()
     {
         if (useGlobal)
-            GetComponent<AudioSource>().volume = OptionsValues.musicVolume;
+            aus.volume = OptionsValues.musicVolume;
         else
-            GetComponent<AudioSource>().volume = volume;
+            aus.volume = volume;
     }
 }

@@ -8,25 +8,25 @@ public class LocationClick : MonoBehaviour {
     public static LocationClick currentActive;
 
     private float countdown;
-
+    private MapGui mapg;
 	// Update is called once per frame
     void OnMouseDown()
     {
         if (!CurrentGameState.hero.completed)
             return;
-        if (Camera.mainCamera.GetComponent<MapGui>().enabled && this.GetComponent<Location>().isChildOfCurrent())
+        if (mapg.enabled && this.GetComponent<Location>().isChildOfCurrent())
         {
-            Camera.mainCamera.GetComponent<MapGui>().current_location = this.GetComponent<Location>();
-            Camera.mainCamera.GetComponent<MapGui>().keyLocation = this.GetComponent<Location>().positionInParent;
-            Camera.mainCamera.GetComponent<MapGui>().ResetScroll();
-            Camera.mainCamera.GetComponent<MapGui>().PlayLocationClick();
+            mapg.current_location = this.GetComponent<Location>();
+            mapg.keyLocation = this.GetComponent<Location>().positionInParent;
+            mapg.ResetScroll();
+            mapg.PlayLocationClick();
             CurrentGameState.hero.LookAtLoc(this.GetComponent<Location>());
 
             if (currentActive == this && countdown > 0)
             {
                 currentActive = null;
                 countdown = 0;
-                Camera.mainCamera.GetComponent<MapGui>().Battle_Pressed();
+                mapg.Battle_Pressed();
             }
             else
             {
@@ -38,6 +38,7 @@ public class LocationClick : MonoBehaviour {
 
     void Start()
     {
+        mapg = Camera.mainCamera.GetComponent<MapGui>();
         countdown = 0;
     }
 
