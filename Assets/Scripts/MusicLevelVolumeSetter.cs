@@ -39,36 +39,40 @@ public class MusicLevelVolumeSetter : MonoBehaviour {
             player = ObstacleController.PLAYER.transform;
         if (army == null)
             army = ObstacleController.ARMY.transform;
-        distance = Mathf.Clamp(((player.position.z - army.position.z - 4))/30,0,1);
-        print("distance: " + distance);
+        distance = Mathf.Clamp(((player.position.z - army.position.z))/30,0,1);
+        //print(""+distance);
         if (useGlobal)
         {
             if (distance >= 0.5f)
             {
-                music1.volume = OptionsValues.musicVolume*distance * 2;
-                music2.volume = 1 - OptionsValues.musicVolume * distance * 2;
+                float tmpD = (distance - 0.5f) * (1 / 0.5f);
+                music1.volume = OptionsValues.musicVolume * tmpD;
+                music2.volume = OptionsValues.musicVolume * (1 - tmpD);
                 music3.volume = 0;
             }
             else
             {
+                float tmpD = distance * 2;
                 music1.volume = 0;
-                music2.volume = OptionsValues.musicVolume * distance * 2;
-                music3.volume = 1 - OptionsValues.musicVolume * distance * 2;
+                music2.volume = OptionsValues.musicVolume * tmpD;
+                music3.volume = OptionsValues.musicVolume * (1 - tmpD);
             }
         }
         else
         {
             if (distance >= 0.5f)
             {
-                music1.volume = volume * distance * 2;
-                music2.volume = 1 - volume * distance * 2;
+                float tmpD = (distance - 0.5f) * (1 / 0.5f);
+                music1.volume = volume * tmpD;
+                music2.volume = volume * (1 - tmpD);
                 music3.volume = 0;
             }
             else
             {
+                float tmpD = distance * 2;
                 music1.volume = 0;
-                music2.volume = volume * distance * 2;
-                music3.volume = 1 - volume * distance * 2;
+                music2.volume = volume * tmpD;
+                music3.volume = volume * (1 - tmpD);
             }
         }
     }

@@ -42,7 +42,7 @@ public class GUIScript : MonoBehaviour {
     public static float MAX_TIMER = 15;
     public static float INF_TIMER = 0;
 
-    public MusicVolumeSetter music;
+    public MusicLevelVolumeSetter music;
 
     public bool started;
     private float screencountdown;
@@ -106,7 +106,10 @@ public class GUIScript : MonoBehaviour {
                     if (CurrentGameState.InfiniteMode)
                         CompleteLevel();
                     else
+                    {
+                        CurrentGameState.currentScore = SCORE;
                         Application.LoadLevel(4);
+                    }
                 }
             }
         }
@@ -446,7 +449,7 @@ public class GUIScript : MonoBehaviour {
                 }
             }
             gSkin.label.alignment = TextAnchor.MiddleCenter;
-            gSkin.label.fontSize = 40;
+            gSkin.label.fontSize = (int) (30 * yscale);
             if (ObstacleController.PLAYER.GetComponent<HeroMovement>().Rage >= 1)
             {
                 GUI.color = new Color(0, 0, 0, 1);
@@ -461,7 +464,7 @@ public class GUIScript : MonoBehaviour {
                 GUI.color = new Color(1, 1, 1, 1);
             }
 
-            gSkin.label.fontSize = 24;
+            gSkin.label.fontSize = (int) (24 * yscale);
             gSkin.label.alignment = TextAnchor.UpperRight;
 
             EngageReleaseBar();
