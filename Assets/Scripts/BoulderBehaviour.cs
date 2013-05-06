@@ -5,6 +5,9 @@ public class BoulderBehaviour : MonoBehaviour {
 
     public float SlowTime = 2;
     public float SlowAmount = 5;
+
+
+    public EffectVolumeSetter CrashSound;
 	
 	private ParticleSystem ps;
 	
@@ -25,10 +28,10 @@ public class BoulderBehaviour : MonoBehaviour {
             Destroy(gameObject);
         }
 		ps.transform.rotation = Quaternion.Euler(0,0,0);
-		if (!hitGround)
-			ps.transform.position = transform.position + new Vector3(0,-0.9f,0);
-		else
-			ps.transform.position = hitPos;
+        if (!hitGround)
+            ps.transform.position = transform.position + new Vector3(0, -0.9f, 0);
+        else
+            ps.transform.position = hitPos;
     }
 
     void OnTriggerEnter(Collider other)
@@ -54,6 +57,7 @@ public class BoulderBehaviour : MonoBehaviour {
 		if (other.tag.Equals("Road") && !hitGround) {
 			ps.Play();
 			hitGround = true;
+            CrashSound.Play();
 			hitPos = ps.transform.position;
 		}
     }
