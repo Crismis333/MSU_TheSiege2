@@ -12,9 +12,12 @@ public class EffectVolumeSetter : MonoBehaviour {
     private bool soundvolumeZeroer;
     private AudioSource aus;
 
+    private float startVol;
+
     void Start()
     {
         aus = GetComponent<AudioSource>();
+        startVol = aus.volume;
         aus.volume = 0;
         countdown = 0f;
         downvolume = 1f;
@@ -36,7 +39,7 @@ public class EffectVolumeSetter : MonoBehaviour {
             aus.Play();
         }
         else
-            aus.volume = OptionsValues.sfxVolume;
+            aus.volume = startVol * OptionsValues.sfxVolume;
         if (countdown > 0)
             countdown -= Time.deltaTime;
         else

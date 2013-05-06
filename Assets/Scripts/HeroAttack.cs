@@ -144,7 +144,7 @@ public class HeroAttack : MonoBehaviour
             anim.SetLayerWeight(3, 1);
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && !hm.Charging)
         {
             //print("Fire1 down");
             // Start charging attack

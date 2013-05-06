@@ -9,12 +9,12 @@ public class ObstacleBehaviour : MonoBehaviour {
 	
 	bool destroyed = false;
 
-    private ParticleSystem ps;
-
     private float moveOffset = 1.0f;
 
     private bool snapped = false;
     private int fixedCounter = 0;
+
+    public EffectVolumeSetter SoundObstacle;
 	
 	// Update is called once per frame
 	void Update () {
@@ -43,14 +43,6 @@ public class ObstacleBehaviour : MonoBehaviour {
         }
     }
 
-
-    void Start()
-    {
-        ps = gameObject.GetComponentInChildren<ParticleSystem>();
-        if (ps != null)
-            ps.Pause();
-    }
-
 	void OnTriggerEnter(Collider other) {
 		if (!destroyed && other.tag.Equals("Player")) {
 			foreach(Rigidbody rb in this.GetComponentsInChildren<Rigidbody>())
@@ -67,8 +59,8 @@ public class ObstacleBehaviour : MonoBehaviour {
 			}
 			
 			other.GetComponent<HeroMovement>().SlowHero(SlowTime,SlowAmount);
-            if (ps != null)
-                ps.Play();
+            if (SoundObstacle != null)
+                SoundObstacle.Play();
 			destroyed = true;
 		}
 
@@ -130,9 +122,9 @@ public class ObstacleBehaviour : MonoBehaviour {
 
 				Physics.IgnoreCollision(other.collider, ObstacleController.PLAYER.collider);
 			}
-            if (ps != null)
-                ps.Play();
 			destroyed = true;
+            if (SoundObstacle != null)
+                SoundObstacle.Play();
 		}
 	}
 }

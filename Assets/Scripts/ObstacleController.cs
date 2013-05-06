@@ -57,6 +57,7 @@ public class ObstacleController : MonoBehaviour {
             if (timer <= 0)
             {
                 GUIScript.DIFFICULTY_INCREASE++;
+                timer = DifficultyIncreaseTimer;
 
                 if (maxDifficulty)
                 {
@@ -97,8 +98,6 @@ public class ObstacleController : MonoBehaviour {
                             break;
                     }
                 }
-
-                timer = DifficultyIncreaseTimer;
             }
             else
             {
