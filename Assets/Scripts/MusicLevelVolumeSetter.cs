@@ -45,22 +45,31 @@ public class MusicLevelVolumeSetter : MonoBehaviour {
         {
             if (distance >= 0.5f)
             {
-                music1.volume = OptionsValues.musicVolume;
-                music2.volume = 1-OptionsValues.musicVolume;
+                music1.volume = OptionsValues.musicVolume*distance * 2;
+                music2.volume = 1 - OptionsValues.musicVolume * distance * 2;
                 music3.volume = 0;
             }
             else
             {
                 music1.volume = 0;
-                music2.volume = OptionsValues.musicVolume;
-                music3.volume = 1-OptionsValues.musicVolume;
+                music2.volume = OptionsValues.musicVolume * distance * 2;
+                music3.volume = 1 - OptionsValues.musicVolume * distance * 2;
             }
         }
         else
         {
-            music1.volume = volume;
-            music2.volume = volume;
-            music3.volume = volume;
+            if (distance >= 0.5f)
+            {
+                music1.volume = volume * distance * 2;
+                music2.volume = 1 - volume * distance * 2;
+                music3.volume = 0;
+            }
+            else
+            {
+                music1.volume = 0;
+                music2.volume = volume * distance * 2;
+                music3.volume = 1 - volume * distance * 2;
+            }
         }
     }
 }

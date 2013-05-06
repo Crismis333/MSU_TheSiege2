@@ -27,14 +27,47 @@ public class QuitAcceptMenu : MonoBehaviour {
             GUI.skin.button.focused.textColor = activeColor;
         else
             GUI.skin.button.focused.textColor = inactiveColor;
-        GUI.BeginGroup(new Rect(0, Screen.height / 2 - 100, Screen.width, Screen.height));
 
+        GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
         GUI.SetNextControlName("title");
+        GUI.skin.label.fontSize = 40;
+        GUI.skin.label.alignment = TextAnchor.MiddleCenter;
+        GUI.color = Color.black;
+        GUI.Label(new Rect(Screen.width / 2 - 400 - 1, 40 - 1, 800, 100), "The Rush of the Vanguard");
+        GUI.Label(new Rect(Screen.width / 2 - 400 - 1, 40 - 2, 800, 100), "The Rush of the Vanguard");
+        GUI.Label(new Rect(Screen.width / 2 - 400 - 2, 40 - 2, 800, 100), "The Rush of the Vanguard");
+        GUI.Label(new Rect(Screen.width / 2 - 400 - 2, 40 - 1, 800, 100), "The Rush of the Vanguard");
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
+        GUI.Label(new Rect(Screen.width / 2 - 400, 40, 800, 100), "The Rush of the Vanguard");
+        GUI.EndGroup();
+
+        GUI.BeginGroup(new Rect(0, Screen.height / 2 - 100, Screen.width, Screen.height));
+        GUI.skin.label.fontSize = 24;
+        GUI.skin.label.alignment = TextAnchor.MiddleLeft;
+        GUI.SetNextControlName("title");
+        GUI.color = Color.black;
+        GUI.Label(new Rect(-1, 0 * 70-1, Screen.width, 64), "Do you really wish to quit?");
+        GUI.Label(new Rect(1, 0 * 70-1, Screen.width, 64), "Do you really wish to quit?");
+        GUI.Label(new Rect(-1, 0 * 70+1, Screen.width, 64), "Do you really wish to quit?");
+        GUI.Label(new Rect(1, 0 * 70+1, Screen.width, 64), "Do you really wish to quit?");
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
         GUI.Label(new Rect(0, 0 * 70, Screen.width, 64), "Do you really wish to quit?");
         GUI.SetNextControlName("Yes");
+        GUI.color = Color.black;
+        GUI.Label(new Rect(-1, 1 * 70-1, Screen.width, 64), "Yes");
+        GUI.Label(new Rect(1, 1 * 70-1, Screen.width, 64), "Yes");
+        GUI.Label(new Rect(-1, 1 * 70+1, Screen.width, 64), "Yes");
+        GUI.Label(new Rect(1, 1 * 70+1, Screen.width, 64), "Yes");
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
         if (GUI.Button(new Rect(0, 1 * 70, Screen.width, 64), "Yes")) 
             Menu_Quit_Yes();
         GUI.SetNextControlName("No");
+        GUI.color = Color.black;
+        GUI.Label(new Rect(-1, 2 * 70-1, Screen.width, 64), "No");
+        GUI.Label(new Rect(1, 2 * 70-1, Screen.width, 64), "No");
+        GUI.Label(new Rect(-1, 2 * 70+1, Screen.width, 64), "No");
+        GUI.Label(new Rect(1, 2 * 70+1, Screen.width, 64), "No");
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
         if (GUI.Button(new Rect(0, 2 * 70, Screen.width, 64), "No")) 
             Menu_Quit_No();
 
