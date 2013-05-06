@@ -29,7 +29,7 @@ public class MapGui : MonoBehaviour {
 
     private GUINavigation guin;
     private PreviousLines prevl;
-
+    private Texture2D onbutton,offbutton;
     void Map_Main()
     {
         if (current_location != null)
@@ -55,7 +55,7 @@ public class MapGui : MonoBehaviour {
 
                 if (sizeOfLabel.y > 190)
                 {
-                    scrollPos = GUI.BeginScrollView(new Rect(30, 70 + 20, 330, 190), scrollPos, new Rect(0, 0, 0, sizeOfLabel.y), false, true);
+                    scrollPos = GUI.BeginScrollView(new Rect(30, 70 + 20, 313, 190), scrollPos, new Rect(0, 0, 0, sizeOfLabel.y), false, true);
                     GUI.color = Color.black;
                     GUI.Label(new Rect(0, 0, 335, sizeOfLabel.y), current_location.description);
                     GUI.EndScrollView();
@@ -80,10 +80,13 @@ public class MapGui : MonoBehaviour {
             GUI.Label(new Rect(15 + 100, 215 + 20 + 2 * 20 + 80, 128, 128), toNumerals(current_location.difficulty_obstacles));
             GUI.Label(new Rect(15 + 100, 215 + 20 + 3 * 20 + 80, 128, 128), toNumerals(current_location.difficulty_catapults));
             GUI.color = Color.white;
-
+            if (stopped)
+                GUI.skin.button.normal.background = onbutton;
             if (GUI.Button(new Rect(155+40, 35 + 20 + 10 * 20+40, 150, 150), "")) 
                 Battle_Pressed();
 
+            if (stopped)
+                GUI.skin.button.normal.background = offbutton;
             GUI.color = Color.black;
             GUI.skin.label.fontSize = 16;
             GUI.Label(new Rect(15 + 15, 215 + 20 + 12 * 20, 128, 128), "Score:");
@@ -176,6 +179,8 @@ public class MapGui : MonoBehaviour {
         GUI.skin = gSkin;
         if (!started && !stopped && (guin.QuitPressed() || guin.usedMenu))
         {
+            onbutton = GUI.skin.button.active.background;
+            offbutton = GUI.skin.button.normal.background;
             this.enabled = false;
             music.useGlobal = true;
             transform.parent.gameObject.GetComponent<MapMovementController>().enabled = false;
