@@ -80,7 +80,7 @@ public class OptionsMenuScript : MonoBehaviour {
         GUI.SetNextControlName("Accept");
         if (GUI.Button(new Rect(60, 5 * 70, 730, 64), "Accept"))
             Menu_Options_Back();
-        GUI.color = Color.red;
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
         GUI.Label(new Rect(450, 3 * 70, 340, 64), mres.width + "x" + mres.height);
         GUI.Label(new Rect(450, 4 * 70, 340, 64), QualitySettings.names[(int)quality]);
 

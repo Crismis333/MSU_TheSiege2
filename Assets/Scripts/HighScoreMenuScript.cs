@@ -88,20 +88,20 @@ public class HighScoreMenuScript : MonoBehaviour {
 
             GUI.SetNextControlName("title");
             if (highscoreNr == 0)
-                GUI.Label(new Rect(60, 1 * 30+10, 790, 64), "Campaign Mode");
+                GUI.Label(new Rect(120, 0 * 30+10, 790, 64), "Campaign Mode");
             else if (highscoreNr == 1)
-                GUI.Label(new Rect(60, 1 * 30 + 10, 790, 64), "Etternal Rush Mode");
+                GUI.Label(new Rect(120, 0 * 30 + 10, 790, 64), "Etternal Rush Mode");
             GUI.skin.label.fontSize = 14;
-            GUI.Label(new Rect(0, 1 * 30 + 70, 790, 64), "I");
-            GUI.Label(new Rect(0, 2 * 30 + 70, 790, 64), "II");
-            GUI.Label(new Rect(0, 3 * 30 + 70, 790, 64), "III");
-            GUI.Label(new Rect(0, 4 * 30 + 70, 790, 64), "IV");
-            GUI.Label(new Rect(0, 5 * 30 + 70, 790, 64), "V");
-            GUI.Label(new Rect(0, 6 * 30 + 70, 790, 64), "VI");
-            GUI.Label(new Rect(0, 7 * 30 + 70, 790, 64), "VII");
-            GUI.Label(new Rect(0, 8 * 30 + 70, 790, 64), "VIII");
-            GUI.Label(new Rect(0, 9 * 30 + 70, 790, 64), "IX");
-            GUI.Label(new Rect(0, 10 * 30 + 70, 790, 64), "X");
+            GUI.Label(new Rect(60, 0 * 30 + 70, 790, 64), "I");
+            GUI.Label(new Rect(60, 1 * 30 + 70, 790, 64), "II");
+            GUI.Label(new Rect(60, 2 * 30 + 70, 790, 64), "III");
+            GUI.Label(new Rect(60, 3 * 30 + 70, 790, 64), "IV");
+            GUI.Label(new Rect(60, 4 * 30 + 70, 790, 64), "V");
+            GUI.Label(new Rect(60, 5 * 30 + 70, 790, 64), "VI");
+            GUI.Label(new Rect(60, 6 * 30 + 70, 790, 64), "VII");
+            GUI.Label(new Rect(60, 7 * 30 + 70, 790, 64), "VIII");
+            GUI.Label(new Rect(60, 8 * 30 + 70, 790, 64), "IX");
+            GUI.Label(new Rect(60, 9 * 30 + 70, 790, 64), "X");
             GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
             string s = "";
             if (highscoreNr == 0)
@@ -109,8 +109,8 @@ public class HighScoreMenuScript : MonoBehaviour {
             else if (highscoreNr == 1)
                 s = "Infinite";
             for (int i = 1; i <= 10; i++) {
-                GUI.Label(new Rect(50, i * 30 + 70, 790, 64), "  " + PlayerPrefs.GetString("Highscore"+i+s+"Name"));
-                GUI.Label(new Rect(400, i * 30 + 70, 790, 64), PlayerPrefs.GetString("Highscore"+i+s+"Score"));
+                GUI.Label(new Rect(110, (i-1) * 30 + 70, 790, 64), "  " + PlayerPrefs.GetString("Highscore"+i+s+"Name"));
+                GUI.Label(new Rect(460, (i-1) * 30 + 70, 790, 64), PlayerPrefs.GetString("Highscore"+i+s+"Score"));
             }
             
             //GUI.color = Color.white;
@@ -127,7 +127,7 @@ public class HighScoreMenuScript : MonoBehaviour {
 
             GUI.skin.button.fontSize = 40;
             //GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 5 * 35, 790, 10 * 35));
-            GUI.BeginGroup(new Rect(Screen.width / 2 - 495, Screen.height / 2 - 7.5f * 35, 155, 15 * 35));
+            GUI.BeginGroup(new Rect(Screen.width / 2 - 435, Screen.height / 2 - 7.5f * 35, 155, 15 * 35));
             if (GUI.Button(new Rect(0, 6 * 30, 155, 100), "<"))
             {
                 guin.SetNoPlay();

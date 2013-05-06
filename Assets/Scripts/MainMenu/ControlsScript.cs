@@ -58,13 +58,13 @@ public class ControlsScript : MonoBehaviour {
         GUI.color = Color.black;
 
         GUI.SetNextControlName("title");
-        GUI.Label(new Rect(60, 1 * 30 + 10, 790, 64), "Instructions page " + (screenNr+1) + "/" + maxPages);
+        GUI.Label(new Rect(90, 0 * 30 + 10, 790, 64), "Instructions page " + (screenNr+1) + "/" + maxPages);
 
         if (screenNr == 0)
         {
             TextAnchor t = GUI.skin.label.alignment;
             GUI.skin.label.alignment = TextAnchor.UpperLeft;
-            GUI.Label(new Rect(15, 3 * 35 + 10, 640, 640), howToPlay);
+            GUI.Label(new Rect(15+30, 3 * 35 + 10, 640, 640), howToPlay);
             GUI.skin.label.alignment = t;
         }
 
@@ -78,7 +78,7 @@ public class ControlsScript : MonoBehaviour {
 
         GUI.skin.button.fontSize = 40;
             //GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 5 * 35, 790, 10 * 35));
-        GUI.BeginGroup(new Rect(Screen.width / 2 - 495, Screen.height / 2 - 7.5f * 35, 155, 15 * 35));
+        GUI.BeginGroup(new Rect(Screen.width / 2 - 435, Screen.height / 2 - 7.5f * 35, 155, 15 * 35));
         if (GUI.Button(new Rect(0, 6 * 30, 155, 100), "<"))
         {
             screenNr--;

@@ -34,11 +34,11 @@ public class CreditsScript : MonoBehaviour {
             GUI.DrawTexture(new Rect(0, 0, backgroundScroll.width, backgroundScroll.height), backgroundScroll);
             GUI.EndGroup();
         }
-        GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 7.5f * 35+80, 790, 370));
+        GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 7.5f * 35+0, 790, 450));
         GUI.color = Color.black;
         GUI.SetNextControlName("title");
         GUI.skin.label.alignment = TextAnchor.UpperLeft;
-        GUI.Label(new Rect(60, 400 - scroll, 790, 100000), credits);
+        GUI.Label(new Rect(60, 450 - scroll, 790, 100000), credits);
         GUI.skin.label.alignment = TextAnchor.MiddleLeft;
         GUI.color = Color.white;
         GUI.EndGroup();

@@ -39,7 +39,7 @@ public class DisappearingTextScript : MonoBehaviour {
         if (scoreText)
             gSkin.label.fontSize = (int)(30*yscale);
         else
-            gSkin.label.fontSize = (int)(50*yscale);
+            gSkin.label.fontSize = (int)(40*yscale);
         GUI.BeginGroup(new Rect(x-300, y-200, 600, 400));
 
         if (Time.timeScale > 0)
