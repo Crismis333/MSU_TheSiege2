@@ -58,7 +58,7 @@ public class ControlsScript : MonoBehaviour {
         GUI.color = Color.black;
 
         GUI.SetNextControlName("title");
-        GUI.Label(new Rect(60, 1 * 30 + 10, 790, 64), "Controls page " + (screenNr+1) + "/" + maxPages);
+        GUI.Label(new Rect(60, 1 * 30 + 10, 790, 64), "Instructions page " + (screenNr+1) + "/" + maxPages);
 
         if (screenNr == 0)
         {

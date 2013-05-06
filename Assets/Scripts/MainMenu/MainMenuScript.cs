@@ -35,28 +35,85 @@ public class MainMenuScript : MonoBehaviour {
 
         GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
         GUI.SetNextControlName("title");
-        GUI.Label(new Rect(Screen.width / 2 - 400, 40, 800, 100), "The assault on East Castle");
+        GUI.skin.label.fontSize = 40;
+        GUI.skin.label.alignment = TextAnchor.MiddleCenter;
+        GUI.color = Color.black;
+        GUI.Label(new Rect(Screen.width / 2 - 400-1, 40-1, 800, 100), "The Rush of the Vanguard");
+        GUI.Label(new Rect(Screen.width / 2 - 400-1, 40-2, 800, 100), "The Rush of the Vanguard");
+        GUI.Label(new Rect(Screen.width / 2 - 400-2, 40-2, 800, 100), "The Rush of the Vanguard");
+        GUI.Label(new Rect(Screen.width / 2 - 400-2, 40-1, 800, 100), "The Rush of the Vanguard");
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
+        GUI.Label(new Rect(Screen.width / 2 - 400, 40, 800, 100), "The Rush of the Vanguard");
         GUI.EndGroup();
+
         GUI.BeginGroup(new Rect(0, Screen.height / 2 - 140, Screen.width, Screen.height));
         GUI.SetNextControlName("Campaign");
-        if (GUI.Button(new Rect(0, 0 * 60, Screen.width - 30, 55), "Start Campaign")) 
+        GUI.skin.label.fontSize = 24;
+        GUI.skin.label.alignment = TextAnchor.MiddleLeft;
+        GUI.color = Color.black;
+        GUI.Label(new Rect(-1, 0 * 60 - 1, Screen.width - 30, 55), "Start Campaign");
+        GUI.Label(new Rect(1, 0 * 60 + 1, Screen.width - 30, 55), "Start Campaign");
+        GUI.Label(new Rect(-1, 0 * 60 + 1, Screen.width - 30, 55), "Start Campaign");
+        GUI.Label(new Rect(1, 0 * 60 - 1, Screen.width - 30, 55), "Start Campaign");
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
+        if (GUI.Button(new Rect(0, 0 * 60, Screen.width - 30, 55), "Start Campaign"))
             Menu_Main_Start_Campaign();
-        GUI.SetNextControlName("Endless");
+
+
+        GUI.SetNextControlName("Endless"); 
+        GUI.color = Color.black;
+        GUI.Label(new Rect(-1, 1 * 60 - 1, Screen.width - 30, 55), "Start Eternal Rush");
+        GUI.Label(new Rect(1, 1 * 60 + 1, Screen.width - 30, 55), "Start Eternal Rush");
+        GUI.Label(new Rect(-1, 1 * 60 + 1, Screen.width - 30, 55), "Start Eternal Rush");
+        GUI.Label(new Rect(1, 1 * 60 - 1, Screen.width - 30, 55), "Start Eternal Rush");
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
         if (GUI.Button(new Rect(0, 1 * 60, Screen.width - 30, 55), "Start Eternal Rush")) 
             Menu_Main_Start_Endless();
+
+
         GUI.SetNextControlName("Controls");
-        if (GUI.Button(new Rect(0, 2 * 60, Screen.width - 30, 55), "Controls")) 
+        GUI.color = Color.black;
+        GUI.Label(new Rect(-1, 2 * 60 - 1, Screen.width - 30, 55), "Instructions");
+        GUI.Label(new Rect(1, 2 * 60 + 1, Screen.width - 30, 55), "Instructions");
+        GUI.Label(new Rect(-1, 2 * 60 + 1, Screen.width - 30, 55), "Instructions");
+        GUI.Label(new Rect(1, 2 * 60 - 1, Screen.width - 30, 55), "Instructions");
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
+        if (GUI.Button(new Rect(0, 2 * 60, Screen.width - 30, 55), "Instructions")) 
             Menu_Main_Controls();
         GUI.SetNextControlName("Options");
+        GUI.color = Color.black;
+        GUI.Label(new Rect(-1, 3 * 60 - 1, Screen.width - 30, 55), "Options");
+        GUI.Label(new Rect(1, 3 * 60 + 1, Screen.width - 30, 55), "Options");
+        GUI.Label(new Rect(-1, 3 * 60 + 1, Screen.width - 30, 55), "Options");
+        GUI.Label(new Rect(1, 3 * 60 - 1, Screen.width - 30, 55), "Options");
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
         if (GUI.Button(new Rect(0, 3 * 60, Screen.width - 30, 55), "Options")) 
             Menu_Main_Options();
         GUI.SetNextControlName("Highscores");
+        GUI.color = Color.black;
+        GUI.Label(new Rect(-1, 4 * 60 - 1, Screen.width - 30, 55), "Highscores");
+        GUI.Label(new Rect(1, 4 * 60 + 1, Screen.width - 30, 55), "Highscores");
+        GUI.Label(new Rect(-1, 4 * 60 + 1, Screen.width - 30, 55), "Highscores");
+        GUI.Label(new Rect(1, 4 * 60 - 1, Screen.width - 30, 55), "Highscores");
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
         if (GUI.Button(new Rect(0, 4 * 60, Screen.width - 30, 55), "Highscores")) 
             Menu_Main_Highscores();
         GUI.SetNextControlName("Credits");
+        GUI.color = Color.black;
+        GUI.Label(new Rect(-1, 5 * 60 - 1, Screen.width - 30, 55), "Credits");
+        GUI.Label(new Rect(1, 5 * 60 + 1, Screen.width - 30, 55), "Credits");
+        GUI.Label(new Rect(-1, 5 * 60 + 1, Screen.width - 30, 55), "Credits");
+        GUI.Label(new Rect(1, 5 * 60 - 1, Screen.width - 30, 55), "Credits");
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
         if (GUI.Button(new Rect(0, 5 * 60, Screen.width - 30, 55), "Credits")) 
             Menu_Main_Credits();
         GUI.SetNextControlName("Quit");
+        GUI.color = Color.black;
+        GUI.Label(new Rect(-1, 6 * 60 - 1, Screen.width - 30, 55), "Quit");
+        GUI.Label(new Rect(1, 6 * 60 + 1, Screen.width - 30, 55), "Quit");
+        GUI.Label(new Rect(-1, 6 * 60 + 1, Screen.width - 30, 55), "Quit");
+        GUI.Label(new Rect(1, 6 * 60 - 1, Screen.width - 30, 55), "Quit");
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
         if (GUI.Button(new Rect(0, 6 * 60, Screen.width - 30, 55), "Quit")) 
             Menu_Main_Quit();
 

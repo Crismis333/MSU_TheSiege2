@@ -45,7 +45,7 @@ public class PauseMenuScript : MonoBehaviour {
         GUI.SetNextControlName("Options");
         if (GUI.Button(new Rect(60, 0 * 70, 650, 64), "Options")) { Pause_Options(); }
         GUI.SetNextControlName("Controls");
-        if (GUI.Button(new Rect(60, 1 * 70, 650, 64), "Controls")) { Pause_Controls(); }
+        if (GUI.Button(new Rect(60, 1 * 70, 650, 64), "Instructions")) { Pause_Controls(); }
         GUI.SetNextControlName("GiveUp");
         if (GUI.Button(new Rect(60, 2 * 70, 650, 64), "Give up")) { Pause_GiveUp(); }
         GUI.SetNextControlName("Quit");
