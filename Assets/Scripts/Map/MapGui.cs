@@ -55,15 +55,15 @@ public class MapGui : MonoBehaviour {
 
                 if (sizeOfLabel.y > 190)
                 {
-                    scrollPos = GUI.BeginScrollView(new Rect(10, 70 + 20, 330, 190), scrollPos, new Rect(0, 0, 0, sizeOfLabel.y), false, true);
+                    scrollPos = GUI.BeginScrollView(new Rect(30, 70 + 20, 330, 190), scrollPos, new Rect(0, 0, 0, sizeOfLabel.y), false, true);
                     GUI.color = Color.black;
-                    GUI.Label(new Rect(15, 0, 335, sizeOfLabel.y), current_location.description);
+                    GUI.Label(new Rect(0, 0, 335, sizeOfLabel.y), current_location.description);
                     GUI.EndScrollView();
                 }
                 else
                 {
                     GUI.color = Color.black;
-                    GUI.Label(new Rect(15, 70 + 20, 335, sizeOfLabel.y), current_location.description);
+                    GUI.Label(new Rect(30, 70 + 20, 335, sizeOfLabel.y), current_location.description);
                 }
                 GUI.color = Color.white;
             }
@@ -81,7 +81,8 @@ public class MapGui : MonoBehaviour {
             GUI.Label(new Rect(15 + 100, 215 + 20 + 3 * 20 + 80, 128, 128), toNumerals(current_location.difficulty_catapults));
             GUI.color = Color.white;
 
-            if (GUI.Button(new Rect(155, 35 + 20 + 10 * 20, 190, 190), "")) { Battle_Pressed(); }
+            if (GUI.Button(new Rect(155+40, 35 + 20 + 10 * 20+40, 150, 150), "")) 
+                Battle_Pressed();
 
             GUI.color = Color.black;
             GUI.skin.label.fontSize = 16;

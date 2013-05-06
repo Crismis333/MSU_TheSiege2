@@ -59,9 +59,11 @@ public class DeathScreenScript : MonoBehaviour {
         GUI.Label(new Rect(0, 4 * 35, 790, 64), "                      " + score);
         GUI.color = Color.white;
         GUI.SetNextControlName("Return");
-        if (GUI.Button(new Rect(60, 6 * 35, 700, 64), "Return to camp (cut points)")) { ReturnToCamp(); }
+        if (GUI.Button(new Rect(60, 6 * 35, 700, 64), "Return to camp (cut points)")) 
+            ReturnToCamp();
         GUI.SetNextControlName("GiveUp");
-        if (GUI.Button(new Rect(60, 8 * 35, 700, 64), "Give up")) { GiveUp(); }
+        if (GUI.Button(new Rect(60, 8 * 35, 700, 64), "Give up"))
+            GiveUp();
 
         GUI.Box(new Rect(60, 6 * 35, 700, 64), new GUIContent("", "0"));
         GUI.Box(new Rect(60, 8 * 35, 700, 64), new GUIContent("", "1"));
@@ -108,7 +110,7 @@ public class DeathScreenScript : MonoBehaviour {
         gaveup = false;
         decreaseComplete = false;
 
-        score = CurrentGameState.previousScore;
+        score = CurrentGameState.currentScore;
         newscore = score / 2;
         pointsDecreaser = newscore / 59L;
         guin = GetComponent<GUINavigation>();

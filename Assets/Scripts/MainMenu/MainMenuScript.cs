@@ -55,8 +55,8 @@ public class MainMenuScript : MonoBehaviour {
         GUI.Label(new Rect(1, 0 * 60 + 1, Screen.width - 30, 55), "Start Campaign");
         GUI.Label(new Rect(-1, 0 * 60 + 1, Screen.width - 30, 55), "Start Campaign");
         GUI.Label(new Rect(1, 0 * 60 - 1, Screen.width - 30, 55), "Start Campaign");
-        GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f); 
-        if (GUI.Button(new Rect(0, 0 * 60, Screen.width - 30, 55), "Start Campaign"))
+        GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f);
+        if (GUI.Button(new Rect(0, 0 * 60, 600, 55), "Start Campaign"))
             Menu_Main_Start_Campaign();
 
 
@@ -67,7 +67,7 @@ public class MainMenuScript : MonoBehaviour {
         GUI.Label(new Rect(-1, 1 * 60 + 1, Screen.width - 30, 55), "Start Eternal Rush");
         GUI.Label(new Rect(1, 1 * 60 - 1, Screen.width - 30, 55), "Start Eternal Rush");
         GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f);
-        if (GUI.Button(new Rect(0, 1 * 60, Screen.width - 30, 55), "Start Eternal Rush")) 
+        if (GUI.Button(new Rect(0, 1 * 60, 600, 55), "Start Eternal Rush")) 
             Menu_Main_Start_Endless();
 
 
@@ -78,7 +78,7 @@ public class MainMenuScript : MonoBehaviour {
         GUI.Label(new Rect(-1, 2 * 60 + 1, Screen.width - 30, 55), "Instructions");
         GUI.Label(new Rect(1, 2 * 60 - 1, Screen.width - 30, 55), "Instructions");
         GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f);
-        if (GUI.Button(new Rect(0, 2 * 60, Screen.width - 30, 55), "Instructions")) 
+        if (GUI.Button(new Rect(0, 2 * 60, 600, 55), "Instructions")) 
             Menu_Main_Controls();
         GUI.SetNextControlName("Options");
         GUI.color = Color.black;
@@ -87,7 +87,7 @@ public class MainMenuScript : MonoBehaviour {
         GUI.Label(new Rect(-1, 3 * 60 + 1, Screen.width - 30, 55), "Options");
         GUI.Label(new Rect(1, 3 * 60 - 1, Screen.width - 30, 55), "Options");
         GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f);
-        if (GUI.Button(new Rect(0, 3 * 60, Screen.width - 30, 55), "Options")) 
+        if (GUI.Button(new Rect(0, 3 * 60, 600, 55), "Options")) 
             Menu_Main_Options();
         GUI.SetNextControlName("Highscores");
         GUI.color = Color.black;
@@ -96,7 +96,7 @@ public class MainMenuScript : MonoBehaviour {
         GUI.Label(new Rect(-1, 4 * 60 + 1, Screen.width - 30, 55), "Highscores");
         GUI.Label(new Rect(1, 4 * 60 - 1, Screen.width - 30, 55), "Highscores");
         GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f);
-        if (GUI.Button(new Rect(0, 4 * 60, Screen.width - 30, 55), "Highscores")) 
+        if (GUI.Button(new Rect(0, 4 * 60, 600, 55), "Highscores")) 
             Menu_Main_Highscores();
         GUI.SetNextControlName("Credits");
         GUI.color = Color.black;
@@ -105,7 +105,7 @@ public class MainMenuScript : MonoBehaviour {
         GUI.Label(new Rect(-1, 5 * 60 + 1, Screen.width - 30, 55), "Credits");
         GUI.Label(new Rect(1, 5 * 60 - 1, Screen.width - 30, 55), "Credits");
         GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f);
-        if (GUI.Button(new Rect(0, 5 * 60, Screen.width - 30, 55), "Credits")) 
+        if (GUI.Button(new Rect(0, 5 * 60, 600, 55), "Credits")) 
             Menu_Main_Credits();
         GUI.SetNextControlName("Quit");
         GUI.color = Color.black;
@@ -114,16 +114,16 @@ public class MainMenuScript : MonoBehaviour {
         GUI.Label(new Rect(-1, 6 * 60 + 1, Screen.width - 30, 55), "Quit");
         GUI.Label(new Rect(1, 6 * 60 - 1, Screen.width - 30, 55), "Quit");
         GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f);
-        if (GUI.Button(new Rect(0, 6 * 60, Screen.width - 30, 55), "Quit")) 
+        if (GUI.Button(new Rect(0, 6 * 60, 600, 55), "Quit")) 
             Menu_Main_Quit();
 
-        GUI.Box(new Rect(0, 0 * 60, Screen.width - 30, 55), new GUIContent("", "0"));
-        GUI.Box(new Rect(0, 1 * 60, Screen.width - 30, 55), new GUIContent("", "1"));
-        GUI.Box(new Rect(0, 2 * 60, Screen.width - 30, 55), new GUIContent("", "2"));
-        GUI.Box(new Rect(0, 3 * 60, Screen.width - 30, 55), new GUIContent("", "3"));
-        GUI.Box(new Rect(0, 4 * 60, Screen.width - 30, 55), new GUIContent("", "4"));
-        GUI.Box(new Rect(0, 5 * 60, Screen.width - 30, 55), new GUIContent("", "5"));
-        GUI.Box(new Rect(0, 6 * 60, Screen.width - 30, 55), new GUIContent("", "6"));
+        GUI.Box(new Rect(0, 0 * 60, 600, 55), new GUIContent("", "0"));
+        GUI.Box(new Rect(0, 1 * 60, 600, 55), new GUIContent("", "1"));
+        GUI.Box(new Rect(0, 2 * 60, 600, 55), new GUIContent("", "2"));
+        GUI.Box(new Rect(0, 3 * 60, 600, 55), new GUIContent("", "3"));
+        GUI.Box(new Rect(0, 4 * 60, 600, 55), new GUIContent("", "4"));
+        GUI.Box(new Rect(0, 5 * 60, 600, 55), new GUIContent("", "5"));
+        GUI.Box(new Rect(0, 6 * 60, 600, 55), new GUIContent("", "6"));
         guin.mouseover = GUI.tooltip;
 		GUI.EndGroup();
         if (stopped)
