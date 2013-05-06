@@ -473,7 +473,7 @@ public class GUIScript : MonoBehaviour {
         if (CurrentGameState.InfiniteMode)
             lcs.distanceScore = (int)score;
         else
-            lcs.distanceScore = (int)(maxScore);
+            lcs.distanceScore = (int)maxScore;
 
         this.enabled = false;
         lcs.enabled = true;

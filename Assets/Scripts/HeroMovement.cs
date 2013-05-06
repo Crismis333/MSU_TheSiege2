@@ -19,6 +19,7 @@ public class HeroMovement : MonoBehaviour {
 	private float slowAmount = 0.0f;
 
     private bool isControllable = true;
+    private bool complete;
     public bool dead;
 
     private Vector3 moveDirection = Vector3.zero;
@@ -73,6 +74,7 @@ public class HeroMovement : MonoBehaviour {
     {
         dead = true;
         isControllable = false;
+        complete = true;
         Camera.mainCamera.GetComponent<GUIScript>().LoseLevel();
         Vector3 pos = transform.position;
         pos.z -= 5;
@@ -119,7 +121,7 @@ public class HeroMovement : MonoBehaviour {
         currentSpeed = MoveSpeed;
         dead = false;
         defaultRot = transform.rotation;
-
+        complete = false;
         anim = gameObject.GetComponent<Animator>();
         GUI = Camera.mainCamera.GetComponent<GUIScript>();
         am = GameObject.Find("FellowHeroes").GetComponent<ArmyMovement>();
@@ -193,8 +195,10 @@ public class HeroMovement : MonoBehaviour {
         if (Rage >= 0 && Rage < 1) {
             Rage = Mathf.Max(Rage - (0.03f * Time.deltaTime), 0);
         }
-		
-		if (transform.position.z >= LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH)*64-32 && !LevelCreator.INF_MODE) {
+
+        if (transform.position.z >= LevelCreator.LengthConverter(LevelCreator.LEVEL_LENGTH) * 64 - 32 && !LevelCreator.INF_MODE && !complete)
+        {
+            complete = true;
             Camera.mainCamera.GetComponent<GUIScript>().CompleteLevel();
             isControllable = false;
 		}
