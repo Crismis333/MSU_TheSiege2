@@ -29,7 +29,6 @@ public class EffectVolumeSetter : MonoBehaviour {
     {
         if (countdown == 0)
         {
-            if 
             GetComponent<AudioSource>().Play();
             countdown = timer;
         }
