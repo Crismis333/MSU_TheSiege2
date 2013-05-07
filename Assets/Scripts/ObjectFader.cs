@@ -34,22 +34,23 @@ public class ObjectFader : MonoBehaviour
             {
 				if (rendererObjects[i].material.HasProperty("_Color")) {
                 	Color newColor = rendererObjects[i].material.color;
-                	newColor.a = alphaValue;//Mathf.Min ( newColor.a, alphaValue ); 
+                	newColor.a = alphaValue;
                 	newColor.a = Mathf.Lerp(0.0f, 255.0f, alphaValue);
-                	//newColor.a = 0.2f;
                 	rendererObjects[i].material.SetColor("_Color", newColor);
 				}
             }
         }
-        else if (setColor == false)
+        else if (!setColor)
         {
             for (int i = 0; i < rendererObjects.Length; i++)
             {
-                if (rendererObjects[i].material.HasProperty("_Color"))
+                foreach (Material m in rendererObjects[i].materials)
+                    m.shader = Shader.Find("Difuse");
+                /*if (rendererObjects[i].material.HasProperty("_Color"))
                 {
                     Color newColor = rendererObjects[i].material.color;
                     rendererObjects[i].material.SetColor("_Color", newColor);
-                }
+                }*/
             }
             setColor = true;
         }
