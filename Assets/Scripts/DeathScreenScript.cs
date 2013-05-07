@@ -8,6 +8,7 @@ public class DeathScreenScript : MonoBehaviour {
     public Texture2D backgroundScroll2;
     public Vector2 scrollOffset2;
     public EffectVolumeSetter selectSound;
+    public MusicVolumeSetter music;
 
     [Multiline]
     public string overrunText, gaveUpText;
@@ -75,6 +76,7 @@ public class DeathScreenScript : MonoBehaviour {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
             GUI.color = new Color(1, 1, 1, Mathf.Lerp(1, 0, 1 - countdown));
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+            music.volume = Mathf.Lerp(0, OptionsValues.musicVolume, 1 - countdown);
             GUI.EndGroup();
         }
         else if (gaveup || returned)
@@ -82,8 +84,11 @@ public class DeathScreenScript : MonoBehaviour {
             GUI.BeginGroup(new Rect(0, 0, Screen.width, Screen.height));
             GUI.color = new Color(1, 1, 1, Mathf.Lerp(0, 1, 1 - countdown));
             GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), black);
+            music.volume = Mathf.Lerp(OptionsValues.musicVolume, 0, 1 - countdown);
             GUI.EndGroup();
         }
+        else
+            music.volume = OptionsValues.musicVolume;
 
         GUI.skin.button.hover.background = background;
         GUI.skin.button.focused.textColor = inactiveColor;
@@ -109,6 +114,7 @@ public class DeathScreenScript : MonoBehaviour {
         returned = false;
         gaveup = false;
         decreaseComplete = false;
+        music.useGlobal = false;
 
         score = CurrentGameState.currentScore;
         newscore = score / 2;
