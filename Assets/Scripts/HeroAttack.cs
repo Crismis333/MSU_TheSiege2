@@ -101,6 +101,15 @@ public class HeroAttack : MonoBehaviour
                 ha.CurrentSpeed = hm.CurrentSpeed;
                 GUI.AddHit(ha);
             }
+            else
+            {
+                HitAccuracy ha = new HitAccuracy();
+                ha.Accuracy = 10;
+                ha.NumberOfHits = Math.Max(1, hitableEnemies.Count);
+                ha.CurrentSpeed = hm.CurrentSpeed;
+                GUI.AddHit(ha);
+                KillEnemy(enemy);
+            }
             if (hitableEnemies.Contains(enemy))
             {
                 hitableEnemies.Remove(enemy);

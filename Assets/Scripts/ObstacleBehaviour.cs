@@ -57,10 +57,14 @@ public class ObstacleBehaviour : MonoBehaviour {
                 else
                     Physics.IgnoreCollision(rb.gameObject.GetComponentInChildren<BoxCollider>(), ObstacleController.PLAYER.collider);
 			}
-			
-			other.GetComponent<HeroMovement>().SlowHero(SlowTime,SlowAmount);
+
+            HeroMovement hm = other.GetComponent<HeroMovement>();
+
+			hm.SlowHero(SlowTime,SlowAmount);
             if (SoundObstacle != null)
+            {
                 SoundObstacle.Play();
+            }
 			destroyed = true;
 		}
 

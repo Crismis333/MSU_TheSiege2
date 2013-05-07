@@ -11,8 +11,7 @@ public class HighScoreMenuScript : MonoBehaviour {
     public Vector2 scrollOffset2;
     public Texture2D black;
     public bool mainMenu;
-    public EffectVolumeSetter cancelSound;
-    public EffectVolumeSetter selectSound;
+    public EffectVolumeSetter cancelSound, selectSound, switchSound;
 
     [Multiline]
     public string infiniteText, wonText, lostText, gaveupText;
@@ -131,7 +130,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             if (GUI.Button(new Rect(0, 6 * 30, 155, 100), "<"))
             {
                 guin.SetNoPlay();
-                selectSound.Play();
+                switchSound.Play();
                 highscoreNr--;
                 if (highscoreNr < 0) highscoreNr = 1;
             }
@@ -142,7 +141,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             if (GUI.Button(new Rect(0, 6*30, 155, 100), ">"))
             {
                 guin.SetNoPlay();
-                selectSound.Play();
+                switchSound.Play();
                 highscoreNr--;
                 if (highscoreNr < 0) highscoreNr = 1;
             }
@@ -325,13 +324,13 @@ public class HighScoreMenuScript : MonoBehaviour {
             if ((kh < -0.2 || kh2 < -0.2 || kh3 < -0.2) && !movedLeft)
             {
                 guin.SetNoPlay();
-                selectSound.Play();
+                switchSound.Play();
                 highscoreNr++;
             }
             else if ((kh > 0.2 || kh2 > 0.2 || kh3 > 0.2) && !movedRight)
             {
                 guin.SetNoPlay();
-                selectSound.Play();
+                switchSound.Play();
                 highscoreNr--;
             }
             if (highscoreNr < 0) highscoreNr = 1;

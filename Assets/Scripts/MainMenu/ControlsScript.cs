@@ -8,8 +8,7 @@ public class ControlsScript : MonoBehaviour {
     public Texture2D backgroundScroll, xBoxController, keyboardController;
     public Vector2 scrollOffset;
     public bool mainMenu;
-    public EffectVolumeSetter cancelSound;
-    public EffectVolumeSetter selectSound;
+    public EffectVolumeSetter cancelSound, selectSound, switchSound;
 
     [Multiline]
     public string howToPlay;
@@ -83,7 +82,7 @@ public class ControlsScript : MonoBehaviour {
         {
             screenNr--;
             guin.SetNoPlay();
-            selectSound.Play();
+            switchSound.Play();
             if (screenNr < 0) screenNr = maxPages-1;
         }
         GUI.Box(new Rect(0, 6 * 30, 155, 100), new GUIContent("", "left"));
@@ -94,7 +93,7 @@ public class ControlsScript : MonoBehaviour {
         {
             screenNr++;
             guin.SetNoPlay();
-            selectSound.Play();
+            switchSound.Play();
             if (screenNr > maxPages-1) screenNr = 0;
         }
         GUI.Box(new Rect(0, 6 * 30, 155, 100), new GUIContent("", "right"));
@@ -132,13 +131,13 @@ public class ControlsScript : MonoBehaviour {
         if ((kh > 0.2 || kh2 > 0.2) && !movedRight)
         {
             guin.SetNoPlay();
-            selectSound.Play();
+            switchSound.Play();
             screenNr++;
         }
         else if ((kh < -0.2 || kh < -0.2) && !movedLeft)
         {
             guin.SetNoPlay();
-            selectSound.Play();
+            switchSound.Play();
             screenNr--;
         }
         if (screenNr < 0) screenNr = maxPages-1;
