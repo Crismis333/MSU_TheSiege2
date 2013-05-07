@@ -33,7 +33,7 @@ public class Location : MonoBehaviour {
     
     private bool pushed;
 
-    public static List<LocationStats> LOC_STATS;
+    public static List<int> LOC_STAT_SOLDIER, LOC_STAT_OBSTACLE, LOC_STAT_BOULDER;
 
 
     void Update()
@@ -66,26 +66,23 @@ public class Location : MonoBehaviour {
 
     void Start()
     {
-        if (LOC_STATS == null)
+        if (LOC_STAT_SOLDIER == null)
         {
-            LOC_STATS = new List<LocationStats>();
-
-            for (int i = 0; i < 39; i++)
-            {
-                LOC_STATS.Add(new LocationStats());
-            }
+            LOC_STAT_SOLDIER = new List<int>();
+            for (int i = 0; i < 40; i++)
+                LOC_STAT_SOLDIER.Add(0);
+            LOC_STAT_OBSTACLE = new List<int>();
+            for (int i = 0; i < 40; i++)
+                LOC_STAT_OBSTACLE.Add(0);
+            LOC_STAT_BOULDER = new List<int>();
+            for (int i = 0; i < 40; i++)
+                LOC_STAT_BOULDER.Add(0);
         }
 
         startLocation = this.transform.position;
         offset = 0;
         RB_activated = false;
         pushed = false;
-        //if (levelID == 0)
-        //{
-        //    this.GetComponent<CapsuleCollider>().enabled = false;
-        //    foreach (MeshRenderer mr in this.GetComponentsInChildren<MeshRenderer>())
-        //        mr.enabled = false;
-        //}
 
         if (CurrentGameState.FirstTime)
         {
@@ -104,12 +101,15 @@ public class Location : MonoBehaviour {
                 lsSum = ls.Soldier + ls.Boulder + ls.Obstacle;
             }
 
-            LOC_STATS.Insert(levelID, ls);
+            LOC_STAT_SOLDIER[levelID] = ls.Soldier;
+            LOC_STAT_OBSTACLE[levelID] = ls.Obstacle;
+            LOC_STAT_BOULDER[levelID] = ls.Boulder;
+            //LOC_STATS.Insert(levelID, ls);
         }
 
-        difficulty_soldier = LOC_STATS[levelID].Soldier;
-        difficulty_obstacles = LOC_STATS[levelID].Obstacle;
-        difficulty_catapults = LOC_STATS[levelID].Boulder;
+        difficulty_soldier = LOC_STAT_SOLDIER[levelID];
+        difficulty_obstacles = LOC_STAT_OBSTACLE[levelID];
+        difficulty_catapults = LOC_STAT_BOULDER[levelID];
 
         if (CurrentGameState.JustStarted && levelID == 0)
         {
@@ -135,17 +135,6 @@ public class Location : MonoBehaviour {
         else 
         {
             linerenderes = new GameObject[0];
-            /*
-            //linerenderes = new GameObject[0];
-            GameObject lr;
-            linerenderes = new GameObject[locations.Length];
-            for (int i = 0; i < locations.Length; i++)
-            {
-                lr = new GameObject();
-                lr.AddComponent<LineRenderer>();
-                SetupLineRenderer(lr.GetComponent<LineRenderer>(), locations[i]);
-                linerenderes[i] = lr;
-            }*/
         }
         if (CurrentGameState.completedlevels.Contains(this.levelID))
         {
@@ -158,47 +147,6 @@ public class Location : MonoBehaviour {
             foreach (MeshRenderer mr in this.GetComponentsInChildren<MeshRenderer>())
                 mr.enabled = false;
         }
-
-        /*
-        float advantage = Random.value;
-
-        if (advantage > 0.9)
-        {
-            while (modifiers.Count != 3)
-            {
-                Modifier m = getRandomModifier();
-                if (!modifiers.Contains(m))
-                    modifiers.Add(m);
-            }
-        }
-        else if (advantage > 0.7)
-        {
-            while (modifiers.Count != 2)
-            {
-                Modifier m = getRandomModifier();
-                if (!modifiers.Contains(m))
-                    modifiers.Add(m);
-            }
-        }
-        else
-        {
-            modifiers.Add(getRandomModifier());   
-        }*/
-
-        /*description += "\nTaking this route will lead to:";
-        if ((modifiers.Contains(Modifier.Soldier)))
-            description += "\n- fewer soldiers";
-        if ((modifiers.Contains(Modifier.Obstacle)))
-            description += "\n- less obstacles";
-        if ((modifiers.Contains(Modifier.Catapult)))
-            description += "\n- less catapults";
-        if ((modifiers.Contains(Modifier.Jump)))
-            description += "\n- increase in jumping speed";
-        if ((modifiers.Contains(Modifier.MoveSpeed)))
-            description += "\n- faster running speed";*/
-        //if ((modifiers.Contains(Modifier.SlowDown)))
-            //description += "\nTaking this route will allow you to charge more frequently.";
-
     }
 
     private Modifier getRandomModifier()
@@ -219,10 +167,6 @@ public class Location : MonoBehaviour {
 
     private void SetupLineRenderer(LineRenderer lr, Location lo)
     {
-        //Material m = new Material(Shader.Find("Self-Illumin/Diffuse"));
-        //m.color = Color.white;
-        //lr.material = m;
-
         lr.receiveShadows = false;
         lr.SetWidth(0.02F, 0.02F);
         lr.SetVertexCount(2);
@@ -262,9 +206,6 @@ public class Location : MonoBehaviour {
         }
     }
 }
-
-
-
 
 public struct LocationStats
 {

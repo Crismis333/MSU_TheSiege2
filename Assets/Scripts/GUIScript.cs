@@ -540,6 +540,7 @@ public class GUIScript : MonoBehaviour {
 
                 Rect r = new Rect(Screen.width / 2 - chargeBarForeground.width * yscale / 2, Screen.height - chargeBarForeground.height * yscale, chargeBarForeground.width * yscale * per, chargeBarForeground.height * yscale);
                 GUI.BeginGroup(r);
+                GUI.color = Color.white;
                 GUI.DrawTexture(new Rect(0,0, chargeBarForeground.width * yscale, chargeBarForeground.height * yscale), chargeBarForeground);
                 GUI.EndGroup();
                 lastEngagePercent = engagePercent;
