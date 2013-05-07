@@ -8,8 +8,7 @@ public class PauseReturnToScript : MonoBehaviour {
     public Texture2D backgroundScroll;
     public Texture2D black;
     public Vector2 scrollOffset;
-    public EffectVolumeSetter cancelSound;
-    public EffectVolumeSetter selectSound;
+    public EffectVolumeSetter cancelSound, selectSound, quitSound, startSound;
 
     [HideInInspector]
     public bool onMap, quit, restart;
