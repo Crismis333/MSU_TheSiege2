@@ -303,7 +303,10 @@ public class MainMenuScript : MonoBehaviour {
     {
         if (stopped || started)
         {
-            countdown -= Time.deltaTime/2;
+            if (started)
+                countdown -= Time.deltaTime;
+            else
+                countdown -= Time.deltaTime / 2;
             if (started)
             {
                 if (countdown < 0)
