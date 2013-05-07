@@ -127,6 +127,20 @@ public class ArmyMovement : MonoBehaviour
         {
             transform.position += (new Vector3(0, 0, AreClose ? Mathf.Min(hm.MoveSpeed, hm.CurrentSpeed) : hm.MoveSpeed * speedMod) * Time.deltaTime);
         }
-       
+
+
+        if (dZ < VisibleDistance + 3)
+        {
+            RaycastHit rh;
+            Vector3 tmpPos = transform.position;
+            tmpPos.y += 5;
+            if (Physics.Raycast(tmpPos, Vector3.down, out rh, 6))
+            {
+                if (rh.collider.tag.Equals("Road"))
+                {
+                    transform.position = rh.point;
+                }
+            }
+        }
     }
 }
