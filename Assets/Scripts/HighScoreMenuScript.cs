@@ -18,7 +18,7 @@ public class HighScoreMenuScript : MonoBehaviour {
 
     private bool addnewScore, started, returned;
     private string setname;
-    private float countdown;
+    private float countdown, aftercountdown;
 
     private Texture2D background;
     private Color activeColor, inactiveColor;
@@ -203,6 +203,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             started = false;
         returned = false;
         countdown = 1f;
+        aftercountdown = 1f;
         if (!mainMenu)
             if (CurrentGameState.currentScore >= CurrentGameState.MinimumHighscoreRequirement())
                 addnewScore = true;
@@ -227,9 +228,13 @@ public class HighScoreMenuScript : MonoBehaviour {
         }
         else if (returned)
         {
-            countdown -= Time.deltaTime;
+            countdown -= Time.deltaTime/2;
             if (countdown <= 0)
-                Application.LoadLevel(0);
+            {
+                aftercountdown -= Time.deltaTime;
+                if (aftercountdown < 0)
+                    Application.LoadLevel(0);
+            }
         }
         else if (addnewScore)
         {

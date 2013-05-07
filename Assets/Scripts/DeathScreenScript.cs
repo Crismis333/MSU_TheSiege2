@@ -16,7 +16,7 @@ public class DeathScreenScript : MonoBehaviour {
     public Texture2D black;
     private long score;
     private long newscore;
-    private float countdown;
+    private float countdown, aftercountdown;
     private bool returned, gaveup, decreaseComplete, started;
     private long pointsDecreaser;
 
@@ -111,6 +111,7 @@ public class DeathScreenScript : MonoBehaviour {
         firstGUI = true;
         started = true;
         countdown = 1.2f;
+        aftercountdown = 1.0f;
         returned = false;
         gaveup = false;
         decreaseComplete = false;
@@ -166,7 +167,7 @@ public class DeathScreenScript : MonoBehaviour {
     {
         if (started)
         {
-            countdown -= 0.02f;
+            countdown -= Time.deltaTime;
             if (countdown <= 0)
                 started = false;
         }
@@ -182,23 +183,31 @@ public class DeathScreenScript : MonoBehaviour {
             }
             else
             {
-                countdown -= 0.02f;
+                countdown -=Time.deltaTime/2;
                 if (countdown <= 0)
                 {
-                    CurrentGameState.previousPosition = CurrentGameState.previousPreviousPosition;
-                    CurrentGameState.currentScore = newscore;
-                    CurrentGameState.failedlast = true;
-                    Application.LoadLevel(1);
+                    aftercountdown -= Time.deltaTime;
+                    if (aftercountdown < 0)
+                    {
+                        CurrentGameState.previousPosition = CurrentGameState.previousPreviousPosition;
+                        CurrentGameState.currentScore = newscore;
+                        CurrentGameState.failedlast = true;
+                        Application.LoadLevel(1);
+                    }
                 }
             }
         }
         else if (gaveup)
         {
-            countdown -= 0.02f;
+            countdown -= Time.deltaTime/2;
             if (countdown <= 0)
             {
-                CurrentGameState.highscorecondition = EndState.Lost;
-                Application.LoadLevel(3);
+                aftercountdown -= Time.deltaTime;
+                if (aftercountdown < 0)
+                {
+                    CurrentGameState.highscorecondition = EndState.Lost;
+                    Application.LoadLevel(3);
+                }
             }
         }
     }

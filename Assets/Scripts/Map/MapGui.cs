@@ -15,8 +15,7 @@ public class MapGui : MonoBehaviour {
     [HideInInspector]
     public bool stopped, started;
     public MusicVolumeSetter music;
-    public EffectVolumeSetter locationSelectSound;
-    public EffectVolumeSetter levelStartSound;
+    public EffectVolumeSetter locationSelectSound, levelStartSound, menuSound;
 
     [HideInInspector]
     public int keyLocation;
@@ -185,6 +184,8 @@ public class MapGui : MonoBehaviour {
         }
         if (!started && !stopped && (guin.QuitPressed() || guin.usedMenu))
         {
+            guin.SetNoPlay();
+            menuSound.Play();
             this.enabled = false;
             music.useGlobal = true;
             transform.parent.gameObject.GetComponent<MapMovementController>().enabled = false;
@@ -210,6 +211,7 @@ public class MapGui : MonoBehaviour {
 
     public void PlayLocationClick()
     {
+        guin.SetNoPlay();
         locationSelectSound.Play();
     }
 

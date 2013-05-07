@@ -40,8 +40,6 @@ public class PauseReturnToScript : MonoBehaviour {
             GUI.EndGroup();
         }
         GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 2.5f * 70, 790, 5 * 70));
-
-        //GUI.Box(new Rect(0, 0, 790, 5 * 70), "");
         GUI.color = Color.black;
         GUI.SetNextControlName("title");
         if (quit)
@@ -124,11 +122,11 @@ public class PauseReturnToScript : MonoBehaviour {
 
     public void Return_Yes()
     {
-        //this.enabled = false;
-
-        selectSound.Play();
         guin.SetNoPlay();
-        
+        if (quit)
+            quitSound.Play();
+        else
+            startSound.Play();
         ended = true;
         countdown = 1.0f;
 
@@ -148,7 +146,6 @@ public class PauseReturnToScript : MonoBehaviour {
                 {
                     if (quit)
                     {
-
                         CurrentGameState.Restart();
                         Application.Quit();
                     }
