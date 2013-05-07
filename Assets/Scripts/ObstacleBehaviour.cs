@@ -15,6 +15,12 @@ public class ObstacleBehaviour : MonoBehaviour {
     private int fixedCounter = 0;
 
     public EffectVolumeSetter SoundObstacle;
+    private GUIScript GUI;
+
+    void Start()
+    {
+        GUI = Camera.mainCamera.GetComponent<GUIScript>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -60,7 +66,14 @@ public class ObstacleBehaviour : MonoBehaviour {
 
             HeroMovement hm = other.GetComponent<HeroMovement>();
 
-			hm.SlowHero(SlowTime,SlowAmount);
+            if (hm.Charging)
+            {
+                GUI.DestroyObstacle();
+            }
+            else
+            {
+                hm.SlowHero(SlowTime, SlowAmount);
+            }
             if (SoundObstacle != null)
             {
                 SoundObstacle.Play();
