@@ -131,6 +131,11 @@ public class HeroAttack : MonoBehaviour
         return 0;
     }
 
+    public void SetCharging(bool charge)
+    {
+        this.charging = charge;
+    }
+
     void Update()
     {
         //if (anim != null)
