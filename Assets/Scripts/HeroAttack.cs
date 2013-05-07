@@ -13,6 +13,7 @@ public class HeroAttack : MonoBehaviour
 
     public EffectVolumeSetter SoundKill1;
     public EffectVolumeSetter SoundKill2;
+    public EffectVolumeSetter SoundMiss;
 
     private int selectedIndex;
 
@@ -276,6 +277,7 @@ public class HeroAttack : MonoBehaviour
                     ha.NumberOfHits = 0;
                     ha.CurrentSpeed = hm.CurrentSpeed;
                     GUI.AddHit(ha);
+                    SoundMiss.Play();
                 }
             }
             charging = false;
