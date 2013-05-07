@@ -75,16 +75,19 @@ public class HeroAttack : MonoBehaviour
     {
         if (other.gameObject.name.Equals("ReleaseBox"))
         {
-            //    print("Enter release box");
-
             GameObject enemy = other.transform.parent.gameObject;
-            //enemy.GetComponent<Animator>().SetInteger("State", 1);
-            //enemy.GetComponent<Animator>().enabled = false;
             if (!hitableEnemies.Contains(enemy))
             {
                 hitableEnemies.Add(enemy);
             }
         }
+
+        if (other.gameObject.name.Equals("AnimationBox"))
+        {
+            GameObject enemy = other.transform.parent.gameObject;
+            enemy.GetComponent<Animator>().SetBool("Attack", true);
+        }
+
         if (other.gameObject.name.Equals("EnemyBox"))
         {
             GameObject enemy = other.transform.parent.gameObject;
