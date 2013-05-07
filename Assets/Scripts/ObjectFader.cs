@@ -44,16 +44,20 @@ public class ObjectFader : MonoBehaviour
         {
             for (int i = 0; i < rendererObjects.Length; i++)
             {
-                foreach (Material m in rendererObjects[i].materials)
-                    m.shader = Shader.Find("Difuse");
-                /*if (rendererObjects[i].material.HasProperty("_Color"))
+                if (rendererObjects[i].material.HasProperty("_Color"))
                 {
                     Color newColor = rendererObjects[i].material.color;
                     rendererObjects[i].material.SetColor("_Color", newColor);
-                }*/
+                }
             }
             setColor = true;
         }
+
+        if (alphaValue <= 0)
+            for (int i = 0; i < rendererObjects.Length; i++)
+                foreach (Material m in rendererObjects[i].materials)
+                    if (m.shader.name == "Transparent/VertexLit with Z")
+                        m.shader = Shader.Find("Diffuse");
 	}
  
 }
