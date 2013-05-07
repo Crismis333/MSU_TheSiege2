@@ -63,8 +63,10 @@ public class ControlsScript : MonoBehaviour {
         {
             TextAnchor t = GUI.skin.label.alignment;
             GUI.skin.label.alignment = TextAnchor.UpperLeft;
-            GUI.Label(new Rect(15+30, 3 * 35 + 10, 640, 640), howToPlay);
+            GUI.skin.label.fontSize = 12;
+            GUI.Label(new Rect(15+30, 2 * 35 + 10, 640, 640), howToPlay);
             GUI.skin.label.alignment = t;
+            GUI.skin.label.fontSize = 20;
         }
 
         GUI.color = Color.white;

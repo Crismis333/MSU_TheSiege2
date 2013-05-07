@@ -10,8 +10,7 @@ public class DeathScreenScript : MonoBehaviour {
     public EffectVolumeSetter selectSound;
     public MusicVolumeSetter music;
 
-    [Multiline]
-    public string overrunText, gaveUpText;
+    public string[] overrunText, gaveUpText;
 
     public Texture2D black;
     private long score;
@@ -23,6 +22,7 @@ public class DeathScreenScript : MonoBehaviour {
     private Texture2D background;
     private Color activeColor, inactiveColor;
     private bool firstGUI;
+    private int textselect;
 
     private GUINavigation guin;
 
@@ -50,9 +50,9 @@ public class DeathScreenScript : MonoBehaviour {
         TextAnchor t = GUI.skin.label.alignment;
         GUI.skin.label.alignment = TextAnchor.UpperLeft;
         if (CurrentGameState.highscorecondition == EndState.GaveUp)
-            GUI.Label(new Rect(0, 0, 790, 790), gaveUpText);
+            GUI.Label(new Rect(0, 0, 790, 790), gaveUpText[textselect]);
         else
-            GUI.Label(new Rect(0, 0, 790, 790), overrunText);
+            GUI.Label(new Rect(0, 0, 790, 790), overrunText[textselect]);
         GUI.skin.label.alignment = t;
 
         GUI.Label(new Rect(0, 4 * 35, 790, 64), "Current score      ");
@@ -108,6 +108,11 @@ public class DeathScreenScript : MonoBehaviour {
 
     void Start()
     {
+
+        if (CurrentGameState.highscorecondition == EndState.GaveUp)
+            textselect = Random.Range(0, gaveUpText.Length-1);
+        else
+            textselect = Random.Range(0, overrunText.Length - 1);
         firstGUI = true;
         started = true;
         countdown = 1.2f;
