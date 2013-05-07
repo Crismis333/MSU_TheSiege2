@@ -134,21 +134,27 @@ public class HeroMovement : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         transform.rotation = defaultRot;
+        float v = 0;
+        float h = 0;
 
-        float v = Input.GetAxisRaw("Vertical");
-        float h = Input.GetAxisRaw("Horizontal");
-
-        if (Input.GetButtonDown("Jump") || v > 0.3f)
+        if (isControllable)
         {
-            lastJumpButtonTime = Time.time;
-        }
+            v = Input.GetAxisRaw("Vertical");
+            h = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetButtonDown("Fire2") && Rage >= 1 && !charging) {
+            if (Input.GetButtonDown("Jump") || v > 0.3f)
+            {
+                lastJumpButtonTime = Time.time;
+            }
 
-            charging = true;
-            chargeTime = chargeTimeMax;
-            SoundCharge.Play();
-            anim.SetBool("Charge", true);
+            if (Input.GetButtonDown("Fire2") && Rage >= 1 && !charging)
+            {
+
+                charging = true;
+                chargeTime = chargeTimeMax;
+                SoundCharge.Play();
+                anim.SetBool("Charge", true);
+            }
         }
 
         Run(v,h);
@@ -167,8 +173,11 @@ public class HeroMovement : MonoBehaviour {
 
         moveDirection *= Time.deltaTime;
 
-        CharacterController cc = GetComponent<CharacterController>();
-        collisionFlag = cc.Move(moveDirection);
+        if (!dead)
+        {
+            CharacterController cc = GetComponent<CharacterController>();
+            collisionFlag = cc.Move(moveDirection);
+        }
 
         if (IsGrounded() && jumping)
         {
@@ -229,7 +238,6 @@ public class HeroMovement : MonoBehaviour {
         // Change this to true to use non-smoothed input
         if (UseSmoothedInput)
         {
-           
             float change = StrafeSpeed * h; // in [-9, 9]
             moveDirection.x = InputSmoothing(change);
         }
@@ -261,21 +269,16 @@ public class HeroMovement : MonoBehaviour {
 
     public void ApplyGravity()
     {
-        if (isControllable)
+        if (jumping && !jumpingReachedApex && verticalSpeed <= 0.0)
         {
-            //bool jumpButton = Input.GetButton("Jump");
-
-            if (jumping && !jumpingReachedApex && verticalSpeed <= 0.0)
-            {
-                jumpingReachedApex = true;
-                SendMessage("DidJumpReachApex", SendMessageOptions.DontRequireReceiver);
-            }
-
-            if (IsGrounded() && !jumping)
-                verticalSpeed = 0.0f;
-            else
-                verticalSpeed -= Gravity * Time.deltaTime;
+            jumpingReachedApex = true;
+            SendMessage("DidJumpReachApex", SendMessageOptions.DontRequireReceiver);
         }
+
+        if (IsGrounded() && !jumping)
+            verticalSpeed = 0.0f;
+        else
+            verticalSpeed -= Gravity * Time.deltaTime;
     }
 
     public void ApplyJumping()
