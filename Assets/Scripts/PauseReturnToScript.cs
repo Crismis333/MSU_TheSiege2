@@ -9,6 +9,8 @@ public class PauseReturnToScript : MonoBehaviour {
     public Texture2D black;
     public Vector2 scrollOffset;
     public EffectVolumeSetter cancelSound, selectSound, quitSound, startSound;
+    public MusicVolumeSetter music;
+    public MusicLevelVolumeSetter levelmusic;
 
     [HideInInspector]
     public bool onMap, quit, restart;
@@ -136,14 +138,23 @@ public class PauseReturnToScript : MonoBehaviour {
     {
         if (ended)
         {
-            countdown -= Time.deltaTime;
+            countdown -= 0.01f;
+            if (music != null)
+            {
+                music.useGlobal = false;
+                music.volume = Mathf.Lerp(OptionsValues.musicVolume, 0, 1 - countdown);
+            }
+            else if (levelmusic != null)
+            {
+                levelmusic.useGlobal = false;
+                levelmusic.volume = Mathf.Lerp(OptionsValues.musicVolume, 0, 1 - countdown);
+            }
             if (countdown <= 0)
             {
-                Time.timeScale = 1;
-
-                aftercountdown -= Time.deltaTime;
+                aftercountdown -= 0.02f;
                 if (aftercountdown <= 0)
                 {
+                    Time.timeScale = 1;
                     if (quit)
                     {
                         CurrentGameState.Restart();
@@ -156,8 +167,16 @@ public class PauseReturnToScript : MonoBehaviour {
                     }
                     else
                     {
-                        CurrentGameState.highscorecondition = EndState.GaveUp;
-                        Application.LoadLevel(4);
+                        if (CurrentGameState.InfiniteMode)
+                        {
+                            CurrentGameState.Restart();
+                            Application.LoadLevel(0);
+                        }
+                        else
+                        {
+                            CurrentGameState.highscorecondition = EndState.GaveUp;
+                            Application.LoadLevel(4);
+                        }
                     }
                 }
             }

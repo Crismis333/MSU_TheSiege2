@@ -159,6 +159,8 @@ public class HeroAttack : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale <= 0)
+            return;
         //if (anim != null)
         //    print(anim.GetInteger("AttackState") + ", charging: " + charging);
         if (hm == null)

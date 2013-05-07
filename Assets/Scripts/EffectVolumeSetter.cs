@@ -40,8 +40,11 @@ public class EffectVolumeSetter : MonoBehaviour {
         }
         else
             aus.volume = startVol * OptionsValues.sfxVolume;
+
         if (countdown > 0)
-            countdown -= Time.deltaTime;
+        {
+            countdown -= 0.02f;
+        }
         else
             countdown = 0;
     }

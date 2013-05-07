@@ -110,9 +110,9 @@ public class DeathScreenScript : MonoBehaviour {
     {
 
         if (CurrentGameState.highscorecondition == EndState.GaveUp)
-            textselect = Random.Range(0, gaveUpText.Length-1);
+            textselect = Random.Range(0, gaveUpText.Length);
         else
-            textselect = Random.Range(0, overrunText.Length - 1);
+            textselect = Random.Range(0, overrunText.Length);
         firstGUI = true;
         started = true;
         countdown = 1.2f;
