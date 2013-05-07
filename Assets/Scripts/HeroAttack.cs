@@ -86,10 +86,12 @@ public class HeroAttack : MonoBehaviour
         }
         if (other.gameObject.name.Equals("EnemyBox"))
         {
-             GameObject enemy = other.transform.parent.gameObject;
+            GameObject enemy = other.transform.parent.gameObject;
             Vector3 exppos = ObstacleController.PLAYER.transform.position;
             exppos.y += 1;
-            other.transform.parent.GetComponent<EnemyAttack>().AddExplosion(hm.CurrentSpeed / 4 * 400, exppos);
+
+            EnemyAttack ea = other.transform.parent.GetComponent<EnemyAttack>();
+            ea.AddExplosion(hm.CurrentSpeed / 4 * 400, exppos);
             //  other.transform.parent.GetComponent<EnemyAttack>().KillSelf();
             hm.SlowHero(SlowTime, SlowAmount);
 
@@ -100,6 +102,7 @@ public class HeroAttack : MonoBehaviour
                 ha.NumberOfHits = 0;
                 ha.CurrentSpeed = hm.CurrentSpeed;
                 GUI.AddHit(ha);
+                ea.PlaySound();
             }
             else
             {
@@ -109,6 +112,11 @@ public class HeroAttack : MonoBehaviour
                 ha.CurrentSpeed = hm.CurrentSpeed;
                 GUI.AddHit(ha);
                 KillEnemy(enemy);
+                int ri = UnityEngine.Random.Range(0, 2);
+                if (ri == 1)
+                    SoundKill1.Play();
+                else
+                    SoundKill2.Play();
             }
             if (hitableEnemies.Contains(enemy))
             {

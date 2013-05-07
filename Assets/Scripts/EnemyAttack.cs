@@ -18,6 +18,8 @@ public class EnemyAttack : MonoBehaviour {
 
     private ParticleSystem ps;
 
+    public EffectVolumeSetter SoundCollision;
+
     // Use this for initialization
     void Start()
     {
@@ -76,5 +78,10 @@ public class EnemyAttack : MonoBehaviour {
     public void RecalcParticlePosition()
     {
         ps.transform.position = bip.position;
+    }
+
+    public void PlaySound()
+    {
+        SoundCollision.Play();
     }
 }
