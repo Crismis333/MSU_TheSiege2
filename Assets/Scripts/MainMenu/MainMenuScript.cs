@@ -295,7 +295,7 @@ public class MainMenuScript : MonoBehaviour {
         music.useGlobal = false;
         started = true;
         countdown = 1f;
-        aftercountdown = 1f;
+        aftercountdown = 0.8f;
         guin = GetComponent<GUINavigation>();
     }
 
