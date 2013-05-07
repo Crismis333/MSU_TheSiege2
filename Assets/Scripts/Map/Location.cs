@@ -33,6 +33,8 @@ public class Location : MonoBehaviour {
     
     private bool pushed;
 
+    public static List<LocationStats> LOC_STATS;
+
 
     void Update()
     {
@@ -64,6 +66,16 @@ public class Location : MonoBehaviour {
 
     void Start()
     {
+        if (LOC_STATS == null)
+        {
+            LOC_STATS = new List<LocationStats>();
+
+            for (int i = 0; i < 39; i++)
+            {
+                LOC_STATS.Add(new LocationStats());
+            }
+        }
+
         startLocation = this.transform.position;
         offset = 0;
         RB_activated = false;
@@ -74,6 +86,31 @@ public class Location : MonoBehaviour {
         //    foreach (MeshRenderer mr in this.GetComponentsInChildren<MeshRenderer>())
         //        mr.enabled = false;
         //}
+
+        if (CurrentGameState.FirstTime)
+        {
+            LocationStats ls = new LocationStats { Boulder = 0, Soldier = 0, Obstacle = 0 };
+            int modifier = (layer > 5) ? 2 : 1;
+
+            int sum = difficulty_soldier + difficulty_obstacles + difficulty_catapults;
+            int lsSum = 0;
+
+            while (lsSum > sum + modifier || lsSum < sum - modifier)
+            {
+                ls.Soldier = Mathf.Min(difficulty_soldier + Random.Range(-modifier, modifier + 1), 10);
+                ls.Boulder = Mathf.Min(difficulty_catapults + Random.Range(-modifier, modifier + 1), 10);
+                ls.Obstacle = Mathf.Min(difficulty_obstacles + Random.Range(-modifier, modifier + 1), 10);
+
+                lsSum = ls.Soldier + ls.Boulder + ls.Obstacle;
+            }
+
+            LOC_STATS.Insert(levelID, ls);
+        }
+
+        difficulty_soldier = LOC_STATS[levelID].Soldier;
+        difficulty_obstacles = LOC_STATS[levelID].Obstacle;
+        difficulty_catapults = LOC_STATS[levelID].Boulder;
+
         if (CurrentGameState.JustStarted && levelID == 0)
         {
             CurrentGameState.JustStarted = false;
@@ -224,4 +261,14 @@ public class Location : MonoBehaviour {
             RB_activated = true;
         }
     }
+}
+
+
+
+
+public struct LocationStats
+{
+    public int Soldier;
+    public int Obstacle;
+    public int Boulder;
 }

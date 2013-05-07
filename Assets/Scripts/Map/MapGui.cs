@@ -319,6 +319,7 @@ public class MapGui : MonoBehaviour {
                 CurrentGameState.SetWinModifiers(current_location.modifiers, current_location.levelID);
                 CurrentGameState.hero = null;
                 CurrentGameState.failedlast = false;
+                CurrentGameState.FirstTime = false;
                 Application.LoadLevel(2);
             }
         }

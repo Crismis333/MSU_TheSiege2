@@ -10,6 +10,7 @@ public class CurrentGameState : MonoBehaviour {
     public static int locID = 0;
     public static Location loc;
     public static bool JustStarted = true;
+    public static bool FirstTime = true;
     public static int soldierModifier = 0;
     public static int obstacleModifier = 0;
     public static int pitModifier = 0;
@@ -65,6 +66,7 @@ public class CurrentGameState : MonoBehaviour {
         locID = 0;
         loc = null;
         JustStarted = true;
+        FirstTime = true;
         soldierModifier = obstacleModifier = pitModifier = catapultModifier = 0;
         jumpLengthModifier = moveSpeedModifier = slowDownModifier = 1.0f;
         completedlevels = new List<int>();
