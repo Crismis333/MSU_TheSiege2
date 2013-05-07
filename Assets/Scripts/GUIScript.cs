@@ -367,6 +367,13 @@ public class GUIScript : MonoBehaviour {
         AttackFeedback(hit);
     }
 
+    public void DestroyObstacle()
+    {
+        lcs.chargeKills++;
+        scoreAdded = lcs.chargeKillScore;
+        hitFeedback = " ";
+    }
+
     public void AttackFeedback(HitAccuracy ha)
     {
         int accuracy = ConvertHitRate(ha.Accuracy);

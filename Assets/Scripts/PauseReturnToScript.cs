@@ -8,12 +8,11 @@ public class PauseReturnToScript : MonoBehaviour {
     public Texture2D backgroundScroll;
     public Texture2D black;
     public Vector2 scrollOffset;
-    public EffectVolumeSetter cancelSound;
-    public EffectVolumeSetter selectSound;
+    public EffectVolumeSetter cancelSound, selectSound, quitSound, startSound;
 
     [HideInInspector]
     public bool onMap, quit, restart;
-    private float countdown;
+    private float countdown, aftercountdown;
     private bool ended;
 
     private Texture2D background;
@@ -53,9 +52,11 @@ public class PauseReturnToScript : MonoBehaviour {
             GUI.Label(new Rect(0, 1 * 70, 790, 64), "Give up on this level?");
         GUI.color = Color.white;
         GUI.SetNextControlName("Yes");
-        if (GUI.Button(new Rect(60, 3 * 70, 730, 64), "Yes")) { Return_Yes(); }
+        if (GUI.Button(new Rect(60, 3 * 70, 730, 64), "Yes")) 
+            Return_Yes();
         GUI.SetNextControlName("No");
-        if (GUI.Button(new Rect(60, 4 * 70, 730, 64), "No")) { Return_No();  }
+        if (GUI.Button(new Rect(60, 4 * 70, 730, 64), "No")) 
+            Return_No();
 
         GUI.Box(new Rect(60, 3 * 70, 730, 64), new GUIContent("", "0"));
         GUI.Box(new Rect(60, 4 * 70, 730, 64), new GUIContent("", "1"));
@@ -137,33 +138,30 @@ public class PauseReturnToScript : MonoBehaviour {
     {
         if (ended)
         {
-            countdown -= 0.02f;
+            countdown -= Time.deltaTime;
             if (countdown <= 0)
             {
                 Time.timeScale = 1;
-                //if (restart)
-                //{
-                //    Application.LoadLevel(Application.loadedLevel);
-                //}
-                if (quit)
+
+                aftercountdown -= Time.deltaTime;
+                if (aftercountdown <= 0)
                 {
-                    CurrentGameState.Restart();
-                    Application.Quit();
-                }
-                else if (onMap)
-                {
-                    CurrentGameState.highscorecondition = EndState.GaveUp;
-                    Application.LoadLevel(3);
-                }
-                else
-                {
-                    // Wins, doesn't reset. Change when game is final
-                    //CurrentGameState.previousPosition = CurrentGameState.previousPreviousPosition;
-                    //CurrentGameState.currentScore = CurrentGameState.previousScore;
-                    //CurrentGameState.SetWin();
-                    //Application.LoadLevel(1);
-                    Application.LoadLevel(4);
-                    CurrentGameState.highscorecondition = EndState.GaveUp;
+                    if (quit)
+                    {
+
+                        CurrentGameState.Restart();
+                        Application.Quit();
+                    }
+                    else if (onMap)
+                    {
+                        CurrentGameState.highscorecondition = EndState.GaveUp;
+                        Application.LoadLevel(3);
+                    }
+                    else
+                    {
+                        CurrentGameState.highscorecondition = EndState.GaveUp;
+                        Application.LoadLevel(4);
+                    }
                 }
             }
         }
@@ -171,6 +169,8 @@ public class PauseReturnToScript : MonoBehaviour {
 
     void Start()
     {
+
+        aftercountdown = 1.2f;
         firstGUI = true;
         guin = GetComponent<GUINavigation>();
         pms = GetComponent<PauseMenuScript>();

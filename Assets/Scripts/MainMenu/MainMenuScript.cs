@@ -15,7 +15,7 @@ public class MainMenuScript : MonoBehaviour {
     public EffectVolumeSetter startGameSound;
     public EffectVolumeSetter selectSound;
 
-    private float countdown;
+    private float countdown, aftercountdown;
     private bool started, stopped, firstGUI;
     private Texture2D background;
     private Color activeColor, inactiveColor;
@@ -295,6 +295,7 @@ public class MainMenuScript : MonoBehaviour {
         music.useGlobal = false;
         started = true;
         countdown = 1f;
+        aftercountdown = 1f;
         guin = GetComponent<GUINavigation>();
     }
 
@@ -302,7 +303,7 @@ public class MainMenuScript : MonoBehaviour {
     {
         if (stopped || started)
         {
-            countdown -= 0.02f;
+            countdown -= Time.deltaTime/2;
             if (started)
             {
                 if (countdown < 0)
@@ -315,10 +316,12 @@ public class MainMenuScript : MonoBehaviour {
             }
             if (stopped && countdown < 0)
             {
-                if (infiniteMode)
-                    Application.LoadLevel(5);
-                else
-                    Application.LoadLevel(1);
+                aftercountdown -= Time.deltaTime;
+                if (aftercountdown < 0)
+                    if (infiniteMode)
+                        Application.LoadLevel(5);
+                    else
+                        Application.LoadLevel(1);
             }
         }
     }
