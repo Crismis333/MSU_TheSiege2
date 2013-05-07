@@ -152,7 +152,8 @@ public class HeroMovement : MonoBehaviour {
 
                 charging = true;
                 chargeTime = chargeTimeMax;
-                SoundCharge.Play();
+                if (!complete && !dead)
+                    SoundCharge.Play();
                 anim.SetBool("Charge", true);
             }
         }
