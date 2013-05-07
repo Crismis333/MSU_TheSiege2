@@ -67,7 +67,7 @@ public class LevelCompleteScript : MonoBehaviour {
             GUI.Label(new Rect(60, 8 * 35, 640, 64), "Perfect run bonus:");
         GUI.Label(new Rect(60, 10 * 35, 640, 64), "Final score:");
 
-        GUI.color = Color.red;
+        GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
         GUI.skin.label.alignment = TextAnchor.MiddleRight;
         GUI.Label(new Rect(400, 0 * 35, 250, 64), "" + distanceScore);
         GUI.Label(new Rect(400, 1 * 35, 250, 64), "" + averageMultiplier);

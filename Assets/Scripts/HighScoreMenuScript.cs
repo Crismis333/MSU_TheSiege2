@@ -217,7 +217,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             nextpressedcooldown -= Time.deltaTime;
         else
             nextpressedcooldown = 0;
-        print("nextpressed: " + nextpressed);
+        //print("nextpressed: " + nextpressed);
         //print("last character: " + GetLastCharacter());
         //SetLastCharacter('5');
         if (started)

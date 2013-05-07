@@ -38,6 +38,7 @@ public class HeroMovement : MonoBehaviour {
     private float jumpTimeout = 0.15f;
 
     private GUIScript GUI;
+    private HeroAttack ha;
 
     private float speedUp = 0;
 
@@ -127,6 +128,7 @@ public class HeroMovement : MonoBehaviour {
         anim = gameObject.GetComponent<Animator>();
         GUI = Camera.mainCamera.GetComponent<GUIScript>();
         am = GameObject.Find("FellowHeroes").GetComponent<ArmyMovement>();
+        ha = gameObject.GetComponent<HeroAttack>();
 	}
 	
 	// Update is called once per frame
@@ -323,6 +325,7 @@ public class HeroMovement : MonoBehaviour {
 		}
         GUI.lastEngagePercent = 0;
         GUI.BarActive = false;
+        ha.SetCharging(false);
     }
 
     private bool IsGrounded()

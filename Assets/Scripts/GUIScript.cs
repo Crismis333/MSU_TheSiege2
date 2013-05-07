@@ -13,6 +13,7 @@ public class GUIScript : MonoBehaviour {
     public GUISkin gSkin;
     public Texture2D black, sideBar, progressBackground, progressForeground, campIcon, rageOrbBackground, rageOrbForeground, rageFull, rageEmpty, rageShadow;
     public Texture2D slowDownBackground, slowDownForeground, chargeBarBackground, chargeBarForeground;
+    public Boolean hideGui;
 
     public Vector2 scrollScoreOffset, scrollLeftOffset, scrollMidOffset, scrollRightOffset;
     public float engagePercent, lastEngagePercent, releasePercent;
@@ -193,7 +194,10 @@ public class GUIScript : MonoBehaviour {
         }
         else if (LevelCreator.INF_MODE)
         {
-            GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
+            if (hm.Charging)
+                GUI.color = Color.red;
+            else
+                GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
             gSkin.label.fontSize = (int)(20 * yscale);
             String s = ""+DIFFICULTY_INCREASE;
             GUI.skin.label.alignment = TextAnchor.MiddleLeft;
@@ -246,6 +250,9 @@ public class GUIScript : MonoBehaviour {
         }
 
         gSkin.label.fontSize = (int)(30f*yscale);
+        if (hm.Charging)
+            GUI.color = Color.red;
+        else
         GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f);
         GUI.Label(new Rect(Screen.width - (225 + 15 + 60) * yscale, (15 - 5) * yscale, 250 * yscale, 75 * yscale), ""+SCORE);
         GUI.color = Color.white;
@@ -265,6 +272,10 @@ public class GUIScript : MonoBehaviour {
             p = 1 - (INF_TIMER / MAX_TIMER);
         }
 
+        if (hm.Charging)
+            GUI.color = Color.red;
+        else
+            GUI.color = Color.white;
         GUI.DrawTexture(new Rect(0, (int) (barHeight * yscale * (1-p)), progressForeground.width * yscale, (int)( progressForeground.height * yscale * p)), progressForeground);
         GUI.DrawTexture(new Rect(0, (int)(barHeight * yscale * 0.99f + 1), progressForeground.width * yscale, (int)(progressForeground.height * yscale * 0.01f)), progressForeground);
 
@@ -426,7 +437,8 @@ public class GUIScript : MonoBehaviour {
         else
         {
             GUI.skin = gSkin;
-            Level_Interface();
+            if (!hideGui)
+                Level_Interface();
 
             
             if (!hitFeedback.Equals(""))

@@ -177,10 +177,14 @@ public class MapGui : MonoBehaviour {
     void OnGUI()
     {
         GUI.skin = gSkin;
-        if (!started && !stopped && (guin.QuitPressed() || guin.usedMenu))
+        if (firstGUI)
         {
+            firstGUI = false;
             onbutton = GUI.skin.button.active.background;
             offbutton = GUI.skin.button.normal.background;
+        }
+        if (!started && !stopped && (guin.QuitPressed() || guin.usedMenu))
+        {
             this.enabled = false;
             music.useGlobal = true;
             transform.parent.gameObject.GetComponent<MapMovementController>().enabled = false;

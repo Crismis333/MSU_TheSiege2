@@ -131,6 +131,11 @@ public class HeroAttack : MonoBehaviour
         return 0;
     }
 
+    public void SetCharging(bool charge)
+    {
+        this.charging = charge;
+    }
+
     void Update()
     {
         //if (anim != null)
@@ -233,7 +238,7 @@ public class HeroAttack : MonoBehaviour
                     hm.SpeedUp += 0.5f; //capped at 4.0f in the setter
                     if (!hm.Charging)
                     {
-                        hm.Rage += chargePercent / 5;
+                        hm.Rage = Mathf.Min(hm.Rage + chargePercent / 5, 1);
                     }
                     GUI.AddHit(ha);
                     //   GUI.AttackFeedback(chargePercent);
