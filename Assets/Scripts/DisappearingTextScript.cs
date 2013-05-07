@@ -39,7 +39,7 @@ public class DisappearingTextScript : MonoBehaviour {
         if (scoreText)
             gSkin.label.fontSize = (int)(30*yscale);
         else
-            gSkin.label.fontSize = (int)(40*yscale);
+            gSkin.label.fontSize = (int)(45*yscale);
         GUI.BeginGroup(new Rect(x-300, y-200, 600, 400));
 
         if (Time.timeScale > 0)
@@ -50,8 +50,10 @@ public class DisappearingTextScript : MonoBehaviour {
             GUI.Label(new Rect(-1, -1 + offset, 600, 400), text);
             GUI.Label(new Rect(1, -1 + offset, 600, 400), text);
             GUI.Label(new Rect(-1, 1 + offset, 600, 400), text);
-
-            GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f, Mathf.Clamp(alpha, 0, 1));
+            if (ObstacleController.PLAYER.GetComponent<HeroMovement>().Charging)
+                GUI.color = new Color(1, 0, 0, Mathf.Clamp(alpha, 0, 1));
+            else
+                GUI.color = new Color(219f / 256f, 168f / 256f, 1f / 256f, Mathf.Clamp(alpha, 0, 1));
             GUI.Label(new Rect(0, offset, 600, 400), text);
         }
         GUI.EndGroup();
