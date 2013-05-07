@@ -36,8 +36,11 @@ public class ObstacleController : MonoBehaviour {
         if (LevelCreator.INF_MODE)
         {
             SOLDIER_RATIO = 1;
+            ec.RecalcTimer();
             CATAPULT_RATIO = 1;
+            bc.RecalcTimer();
             OBSTACLE_RATIO = 1;
+            oc.RecalcTimer();
             GUIScript.DIFFICULTY_INCREASE = 1;
 
             GUIScript.MAX_TIMER = DifficultyIncreaseTimer;
