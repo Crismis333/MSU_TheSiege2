@@ -13,7 +13,7 @@ public class QuitAcceptMenu : MonoBehaviour {
     private Texture2D background;
     private Color activeColor, inactiveColor;
     private bool firstGUI, stopped;
-    private float countdown;
+    private float countdown, aftercountdown;
 
     private GUINavigation guin;
 
@@ -142,6 +142,7 @@ public class QuitAcceptMenu : MonoBehaviour {
 
     void Start()
     {
+        aftercountdown = 1.2f;
         countdown = 1f;
         firstGUI = true;
         stopped = false;
@@ -153,10 +154,13 @@ public class QuitAcceptMenu : MonoBehaviour {
         if (stopped)
         {
             if (countdown > 0)
-                countdown -= Time.deltaTime;
+                countdown -= Time.deltaTime/2;
             else
             {
-                Application.Quit();
+                if (aftercountdown > 0)
+                    aftercountdown -= Time.deltaTime;
+                else
+                    Application.Quit();
             }
         }
     }
