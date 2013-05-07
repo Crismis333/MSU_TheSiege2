@@ -44,7 +44,7 @@ public class GUIScript : MonoBehaviour {
     public static float INF_TIMER = 0;
 
     public MusicLevelVolumeSetter music;
-
+    public EffectVolumeSetter menuSound;
     public bool started;
     private float screencountdown;
     private bool lost;
@@ -427,6 +427,8 @@ public class GUIScript : MonoBehaviour {
     {
         if (!started && !lost && (guin.QuitPressed() || guin.usedMenu))
         {
+            guin.SetNoPlay();
+            menuSound.Play();
             music.useGlobal = true;
             this.enabled = false;
             Time.timeScale = 0;
