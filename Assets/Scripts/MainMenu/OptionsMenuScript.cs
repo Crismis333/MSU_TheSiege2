@@ -55,7 +55,7 @@ public class OptionsMenuScript : MonoBehaviour {
         }
         
         GUI.BeginGroup(new Rect(Screen.width/2-395, Screen.height / 2 - 3*70, 790, 6*70));
-        GUI.color = Color.black;
+        GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f);
         GUI.SetNextControlName("title");
         GUI.Label(new Rect(0, 0*70, 790, 64), "Music volume");
         GUI.Label(new Rect(0, 1 * 70, 790, 64), "Effect volume");

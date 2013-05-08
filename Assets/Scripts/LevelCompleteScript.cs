@@ -53,7 +53,7 @@ public class LevelCompleteScript : MonoBehaviour {
         }
 
         GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 7.5f * 35, 790, 15 * 35));
-        GUI.color = Color.black;
+        GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f);
         GUI.SetNextControlName("title");
         GUI.Label(new Rect(60, 0 * 35, 640, 64), "Distance traveled:");
         GUI.Label(new Rect(60, 1 * 35, 640, 64), averages + "x Good kills:");

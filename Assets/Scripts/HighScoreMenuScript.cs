@@ -53,7 +53,7 @@ public class HighScoreMenuScript : MonoBehaviour {
             }
             GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 5 * 35, 790, 10 * 35));
             //GUI.Box(new Rect(0, 0, 790, 15 * 35), "");
-            GUI.color = Color.black;
+            GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f);
             TextAnchor t = GUI.skin.label.alignment;
             GUI.skin.label.alignment = TextAnchor.UpperLeft;
             switch (CurrentGameState.highscorecondition) {
@@ -83,7 +83,7 @@ public class HighScoreMenuScript : MonoBehaviour {
                 GUI.EndGroup();
             }
             GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 7.5f * 35, 790, 15 * 35));
-            GUI.color = Color.black;
+            GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f);
 
             GUI.SetNextControlName("title");
             if (highscoreNr == 0)
@@ -112,7 +112,7 @@ public class HighScoreMenuScript : MonoBehaviour {
                 GUI.Label(new Rect(460, (i-1) * 30 + 70, 790, 64), PlayerPrefs.GetString("Highscore"+i+s+"Score"));
             }
             
-            //GUI.color = Color.white;
+            GUI.color = Color.white;
             GUI.skin.label.fontSize = 20;
 
             GUI.SetNextControlName("Return");

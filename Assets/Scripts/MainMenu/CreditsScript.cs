@@ -35,7 +35,7 @@ public class CreditsScript : MonoBehaviour {
             GUI.EndGroup();
         }
         GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 7.5f * 35+0, 790, 450));
-        GUI.color = Color.black;
+        GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f);
         GUI.SetNextControlName("title");
         GUI.skin.label.alignment = TextAnchor.UpperLeft;
         GUI.Label(new Rect(60, 450 - scroll, 790, 100000), credits);

@@ -6,12 +6,13 @@ public class ControlsScript : MonoBehaviour {
 
     public GUISkin gSkin;
     public Texture2D backgroundScroll, xBoxController, keyboardController;
+    public Texture2D attackBar, chargeOrb;
     public Vector2 scrollOffset;
     public bool mainMenu;
     public EffectVolumeSetter cancelSound, selectSound, switchSound;
 
     [Multiline]
-    public string howToPlay;
+    public string howToAttack, howToCharge, howToLose;
 
     private Texture2D background;
     private Color activeColor, inactiveColor;
@@ -42,11 +43,19 @@ public class ControlsScript : MonoBehaviour {
         GUI.color = Color.white;
 
 
-        if (screenNr == 1)
+        if (screenNr == 0)
+        {
+            GUI.DrawTexture(new Rect(Screen.width / 2 - attackBar.width / 2 + scrollOffset.x, Screen.height / 2 - attackBar.height / 2 + scrollOffset.y + 100, attackBar.width, attackBar.height), attackBar);
+        }
+        else if (screenNr == 1)
+        {
+            GUI.DrawTexture(new Rect(Screen.width / 2 - chargeOrb.width / 2 + scrollOffset.x + 200, Screen.height / 2 - chargeOrb.height / 2 + scrollOffset.y + 75, chargeOrb.width, chargeOrb.height), chargeOrb);
+        }
+        else if (screenNr == 3)
         {
             GUI.DrawTexture(new Rect(Screen.width / 2 - xBoxController.width / 2 + scrollOffset.x, Screen.height / 2 - xBoxController.height / 2 + scrollOffset.y, xBoxController.width, xBoxController.height), xBoxController);
         }
-        else if (screenNr == 2)
+        else if (screenNr == 4)
         {
             GUI.DrawTexture(new Rect(Screen.width / 2 - keyboardController.width / 2 + scrollOffset.x, Screen.height / 2 - keyboardController.height / 2 + scrollOffset.y, keyboardController.width, keyboardController.height), keyboardController);
         }
@@ -54,21 +63,28 @@ public class ControlsScript : MonoBehaviour {
         GUI.EndGroup();
 
         GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 7.5f * 35, 790, 15 * 35));
-        GUI.color = Color.black;
+        GUI.color = Color.white;
 
         GUI.SetNextControlName("title");
         GUI.Label(new Rect(90, 0 * 30 + 10, 790, 64), "Instructions page " + (screenNr+1) + "/" + maxPages);
 
+        TextAnchor t = GUI.skin.label.alignment;
+        GUI.skin.label.alignment = TextAnchor.UpperLeft;
+        GUI.skin.label.fontSize = 18;
         if (screenNr == 0)
         {
-            TextAnchor t = GUI.skin.label.alignment;
-            GUI.skin.label.alignment = TextAnchor.UpperLeft;
-            GUI.skin.label.fontSize = 12;
-            GUI.Label(new Rect(15+30, 2 * 35 + 10, 640, 640), howToPlay);
-            GUI.skin.label.alignment = t;
-            GUI.skin.label.fontSize = 20;
+            GUI.Label(new Rect(15 + 30, 2 * 35 + 10, 640, 640), howToAttack);
         }
-
+        else if (screenNr == 1)
+        {
+            GUI.Label(new Rect(15 + 30, 2 * 35 + 10, 640, 640), howToCharge);
+        }
+        else if (screenNr == 2)
+        {
+            GUI.Label(new Rect(15 + 30, 2 * 35 + 10, 640, 640), howToLose);
+        }
+        GUI.skin.label.alignment = t;
+        GUI.skin.label.fontSize = 20;
         GUI.color = Color.white;
         GUI.SetNextControlName("Return");
         if (GUI.Button(new Rect(60, 12 * 35, 640, 64), "Return")) { Return(); }
@@ -117,7 +133,7 @@ public class ControlsScript : MonoBehaviour {
 
     void Start()
     {
-        maxPages = 3;
+        maxPages = 5;
         screenNr = 0;
         movedLeft = false;
         movedRight = false;

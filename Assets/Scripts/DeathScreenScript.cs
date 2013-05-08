@@ -45,7 +45,7 @@ public class DeathScreenScript : MonoBehaviour {
         }
         GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 5 * 35, 790, 10 * 35));
         //GUI.Box(new Rect(0, 0, 790, 15 * 35), "");
-        GUI.color = Color.black;
+        GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f);
         GUI.SetNextControlName("title");
         TextAnchor t = GUI.skin.label.alignment;
         GUI.skin.label.alignment = TextAnchor.UpperLeft;

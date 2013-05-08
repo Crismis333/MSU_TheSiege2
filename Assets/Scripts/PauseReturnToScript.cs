@@ -42,7 +42,7 @@ public class PauseReturnToScript : MonoBehaviour {
             GUI.EndGroup();
         }
         GUI.BeginGroup(new Rect(Screen.width / 2 - 395, Screen.height / 2 - 2.5f * 70, 790, 5 * 70));
-        GUI.color = Color.black;
+        GUI.color = new Color(206 / 256f, 206 / 256f, 206f / 256f);
         GUI.SetNextControlName("title");
         if (quit)
             GUI.Label(new Rect(0, 1 * 70, 790, 64), "Do you really wish to quit? All progress will be lost.");
