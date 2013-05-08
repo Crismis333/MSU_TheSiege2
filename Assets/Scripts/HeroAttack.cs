@@ -112,7 +112,7 @@ public class HeroAttack : MonoBehaviour
             {
                 HitAccuracy ha = new HitAccuracy();
                 ha.Accuracy = 10;
-                ha.NumberOfHits = Math.Max(1, hitableEnemies.Count);
+                ha.NumberOfHits = 1;
                 ha.CurrentSpeed = hm.CurrentSpeed;
                 GUI.AddHit(ha);
                 KillEnemy(enemy);
@@ -161,6 +161,15 @@ public class HeroAttack : MonoBehaviour
     {
         if (Time.timeScale <= 0)
             return;
+
+        if (hm.Charging)
+        {
+            charging = false;
+            GUI.ResetBar();
+            GUI.BarActive = false;
+            anim.SetInteger("AttackState", 0);
+        }
+
         //if (anim != null)
         //    print(anim.GetInteger("AttackState") + ", charging: " + charging);
         if (hm == null)
@@ -282,7 +291,8 @@ public class HeroAttack : MonoBehaviour
                     ha.NumberOfHits = 0;
                     ha.CurrentSpeed = hm.CurrentSpeed;
                     GUI.AddHit(ha);
-                    SoundMiss.Play();
+                    if (!hm.complete && !hm.dead)
+                        SoundMiss.Play();
                 }
             }
             charging = false;

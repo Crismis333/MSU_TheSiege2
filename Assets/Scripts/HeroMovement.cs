@@ -19,7 +19,7 @@ public class HeroMovement : MonoBehaviour {
 	private float slowAmount = 0.0f;
 
     private bool isControllable = true;
-    private bool complete;
+    public bool complete;
     public bool dead;
 
     private Vector3 moveDirection = Vector3.zero;
@@ -152,8 +152,7 @@ public class HeroMovement : MonoBehaviour {
 
                 charging = true;
                 chargeTime = chargeTimeMax;
-                if (!complete && !dead)
-                    SoundCharge.Play();
+                SoundCharge.Play();
                 anim.SetBool("Charge", true);
             }
         }

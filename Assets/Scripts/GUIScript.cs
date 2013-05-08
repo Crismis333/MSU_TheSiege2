@@ -32,6 +32,7 @@ public class GUIScript : MonoBehaviour {
     private float countdown;
 
     private string hitFeedback = "";
+    private float feedbackCountdown = 0f;
 
     private float scoreTimer = 0.3f;
     private float maxScore, prevScore = 0;
@@ -146,7 +147,7 @@ public class GUIScript : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if (scoreTimer <= 0.0f)
+        if (scoreTimer <= 0.0f && !hm.dead)
         {
             if (CurrentGameState.InfiniteMode)
                 score += 267;
@@ -165,7 +166,9 @@ public class GUIScript : MonoBehaviour {
             prevScore = score;
         }
 
-        scoreTimer -= Time.deltaTime;
+        scoreTimer = Mathf.Max(scoreTimer - Time.deltaTime, 0);
+
+        feedbackCountdown = Mathf.Max(feedbackCountdown - Time.deltaTime, 0);
     }
 
     string TrimFloat(float f)
@@ -370,6 +373,7 @@ public class GUIScript : MonoBehaviour {
     public void DestroyObstacle()
     {
         lcs.chargeKills++;
+        SCORE += lcs.chargeKillScore;
         scoreAdded = lcs.chargeKillScore;
         hitFeedback = " ";
     }
@@ -405,6 +409,14 @@ public class GUIScript : MonoBehaviour {
             lcs.tripleKills++;
         }
         hitFeedback += "!";
+
+        if (feedbackCountdown > 0)
+        {
+            if (accuracy == 0 || accuracy == -1)
+                hitFeedback = "";
+        }
+        else
+            feedbackCountdown = 0.5f;
     }
 
     float CalculateEfficiency()
